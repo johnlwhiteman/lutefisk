@@ -293,4 +293,4 @@ scripts/        build, package, SBOM, deprecation check, sample book
 test/           unit tests and an end-to-end test driving the real app
 ```
 
-© 2026 John L. Whiteman
+Copyright (c) 2026 John L. Whiteman
