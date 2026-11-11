@@ -16,19 +16,21 @@ Everything else (Electron, the editor, fonts and export libraries) is installed 
 ```bash
 git clone https://github.com/<you>/lutefisk.git
 cd lutefisk
-npm install
-npm start
+npm ci
+npm start                 # build and launch
+npm test                  # unit tests
+node scripts/make-sample.mjs "./The Lantern Road"   # sample book to open
+node scripts/make-sample-screenplay.mjs "./The Lantern Road (Screenplay)"   # sample screenplay
 ```
 
 ### Build a standalone app (optional)
 ```bash
 npm run package
+npm run package:mac       # run on macOS   → release/Lutefisk-darwin-<arch>/Lutefisk.app
+npm run package:win       # run on Windows → release/Lutefisk-win32-x64/Lutefisk.exe
+npm run package:linux     # run on Linux   → release/Lutefisk-linux-x64/lutefisk
 ```
 The app is saved in the `release/` folder. To build for a specific system, run that system's command on that system: `npm run package:mac`, `npm run package:win` or `npm run package:linux`.
-
-## Disclaimer
-
-Lutefisk is an experimental, AI-built project by Your Name, provided "as is", without warranty of any kind. Features, file formats and behavior may change or be removed at any time, and there is no guaranteed support, bug fixing or future updates. You use it at your own risk, and the author is not liable for lost work, data or any other damages. Please keep regular backups of your books.
 
 ## Details
 
@@ -253,26 +255,6 @@ The chapters use Markdown with a few book-specific additions:
 | Footnote | `text[^1]` and `[^1]: note text` |
 | Sized image | `![alt](assets/map.png "Caption"){width=60% align=center}` |
 | Placeholders (copyright page) | `{{author}}`, `{{year}}`, `{{title}}`, `{{isbn}}` |
-
-## Run it
-
-Requires Node.js 22 or later.
-
-```bash
-npm ci
-npm start                 # build and launch
-npm test                  # unit tests
-node scripts/make-sample.mjs "./The Lantern Road"   # sample book to open
-node scripts/make-sample-screenplay.mjs "./The Lantern Road (Screenplay)"   # sample screenplay
-```
-
-## Package installable apps
-
-```bash
-npm run package:mac       # run on macOS   → release/Lutefisk-darwin-<arch>/Lutefisk.app
-npm run package:win       # run on Windows → release/Lutefisk-win32-x64/Lutefisk.exe
-npm run package:linux     # run on Linux   → release/Lutefisk-linux-x64/lutefisk
-```
 
 Packaging also sets Electron's security fuses:
 
