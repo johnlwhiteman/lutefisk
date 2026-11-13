@@ -1,0 +1,3609 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "serialNumber": "urn:uuid:f68d9b40-b98e-4d83-974d-4556d5a59cf3",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-11-13T19:51:00.518Z",
+    "lifecycles": [
+      {
+        "phase": "build"
+      }
+    ],
+    "tools": [
+      {
+        "vendor": "npm",
+        "name": "cli",
+        "version": "10.9.9"
+      }
+    ],
+    "component": {
+      "bom-ref": "lutefisk@1.0.0",
+      "type": "application",
+      "name": "bindery",
+      "version": "1.0.0",
+      "scope": "required",
+      "description": "Local-first book writing and formatting studio with live device previews.",
+      "purl": "pkg:npm/lutefisk@1.0.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": ""
+        },
+        {
+          "name": "cdx:npm:package:private",
+          "value": "true"
+        }
+      ],
+      "externalReferences": [],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "bom-ref": "@fontsource/alegreya@5.3.0",
+      "type": "library",
+      "name": "@fontsource/alegreya",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Alegreya font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/alegreya@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/alegreya"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/alegreya/-/alegreya-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/alegreya"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "602b29f5d1d87cc35d8205f18a730c4b49e41a5664cecd8cbcf2fba8f56348ee03335b89dbd8662847530bf7c13fed8ae006bee19e3826e390cf4e5e0dcbcd24"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/atkinson-hyperlegible@5.3.0",
+      "type": "library",
+      "name": "@fontsource/atkinson-hyperlegible",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Atkinson Hyperlegible font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/atkinson-hyperlegible@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/atkinson-hyperlegible"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/atkinson-hyperlegible/-/atkinson-hyperlegible-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/atkinson-hyperlegible"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "4a9f157bcfab42610d6362efd36547eec2e99edcd34ef9e772724c4db444ec35fa4cbc46ada378ca465fcda51622808599aa26c24bcd8aa9a53e4aca06e0e848"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/cinzel@5.3.0",
+      "type": "library",
+      "name": "@fontsource/cinzel",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Cinzel font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/cinzel@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/cinzel"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/cinzel/-/cinzel-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/cinzel"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "2843984ecad1a695b4b9120f5810cfad082e9c24ba7fcbb89f367161105fa3d4829272a88cb6232bb074668566261c952de7f3dbbd5941117d10ea476657e147"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/cormorant-garamond@5.3.0",
+      "type": "library",
+      "name": "@fontsource/cormorant-garamond",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Cormorant Garamond font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/cormorant-garamond@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/cormorant-garamond"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/cormorant-garamond/-/cormorant-garamond-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/cormorant-garamond"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "c1eb86b028ab1955815aaa6de98529d322d38537b81bc60ee399e8abcc31789091bc4a6ae6516bc4d305493c5cc8ec95e64e68b7327c82e0f361e81d62570b31"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/courier-prime@5.3.0",
+      "type": "library",
+      "name": "@fontsource/courier-prime",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Courier Prime font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/courier-prime@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/courier-prime"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/courier-prime/-/courier-prime-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/courier-prime"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "2888b5938546d56bfefc21a96f5014a4b914b8e01003ace6bed86ac4e646374015f011204206caeea02daaebf5e33b012406356dbe411c811b59514b804361d3"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/crimson-pro@5.3.0",
+      "type": "library",
+      "name": "@fontsource/crimson-pro",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Crimson Pro font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/crimson-pro@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/crimson-pro"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/crimson-pro/-/crimson-pro-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/crimson-pro"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "3d7407d0d1a66b6c30b24640c92047facfdecc0601c320c7d08e28454441bbdbbcd673540a6e4370d0896944bd1f4511d72f2a96c94b7d5454ea69c30697dfac"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/eb-garamond@5.3.0",
+      "type": "library",
+      "name": "@fontsource/eb-garamond",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the EB Garamond font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/eb-garamond@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/eb-garamond"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/eb-garamond/-/eb-garamond-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/eb-garamond"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "5699701e907c14bbb397ee06e4b0dc8b56f76784a0862b971fc5c481ac639ce6f96ae7b9984b759e398329e3ba8b22de19aef72df7d4ecf0bb8739dc2d1c7464"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/im-fell-english@5.3.0",
+      "type": "library",
+      "name": "@fontsource/im-fell-english",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the IM Fell English font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/im-fell-english@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/im-fell-english"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/im-fell-english/-/im-fell-english-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/im-fell-english"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "15c81d59f63d59e50cda04247e6c219f811df4b56d96597c2d2499bc77dbb14ae71cae6d1c79c683a060c007c7a20a79d9a754dde13cf49ff7079daa5776fe57"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/inter@5.3.0",
+      "type": "library",
+      "name": "@fontsource/inter",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Inter font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/inter@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/inter"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/inter/-/inter-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/inter"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "4687ccca56668e52447c42d778d1c558145c4acef9ac653fe9b5764b68df9efbffdeb3d73c67b42e05094e495c1d9f6533839998054585c24f9c009f6fdd40de"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/jetbrains-mono@5.3.0",
+      "type": "library",
+      "name": "@fontsource/jetbrains-mono",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the JetBrains Mono font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/jetbrains-mono@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/jetbrains-mono"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/jetbrains-mono/-/jetbrains-mono-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/jetbrains-mono"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "7ea0df07923d7f5a754d5e3ce9a52007db7cccff383f43b516d411e4e97dbe3c0fcbe4be1081a55589b572f8f65b9b217193138369d915d54ca07e7016ef1ad4"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/lato@5.3.0",
+      "type": "library",
+      "name": "@fontsource/lato",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Lato font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/lato@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/lato"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/lato/-/lato-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/lato"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "d16845ff8ae1af0f84ac8ca778abe11e7d98025fb17fc183b659603a03b30e679a4a52d0b63a428576903a95a11b605c8505b4589cb6ccb575d87760d2774e33"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/libre-baskerville@5.3.0",
+      "type": "library",
+      "name": "@fontsource/libre-baskerville",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Libre Baskerville font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/libre-baskerville@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/libre-baskerville"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/libre-baskerville/-/libre-baskerville-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/libre-baskerville"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "200e8e2eadfafc958c5fbd0585ad79b2b8b6a96b228c587b8607435c24591e32941ed59aacb4288868a5be6ee232a9bb1e260512ff5a705dfe22e4473bd91488"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/libre-caslon-text@5.3.0",
+      "type": "library",
+      "name": "@fontsource/libre-caslon-text",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Libre Caslon Text font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/libre-caslon-text@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/libre-caslon-text"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/libre-caslon-text/-/libre-caslon-text-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/libre-caslon-text"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "cee181304b5e90d05b787e1821b2f6b14bbc0592851abd68e9be35bff40f9d668400e8191d27f864576bf7462645b137b81e46d680042080028309c5464fc5ef"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/literata@5.3.0",
+      "type": "library",
+      "name": "@fontsource/literata",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Literata font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/literata@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/literata"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/literata/-/literata-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/literata"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "f4918c4f9f987c12b8f6d86832af4049a311244ac74f857842e321004c0a1d12eb78eb0830fdb13fa6512e13c9d1ee989444fe92359326e37b2c0c6df7f81619"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/lora@5.3.0",
+      "type": "library",
+      "name": "@fontsource/lora",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Lora font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/lora@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/lora"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/lora/-/lora-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/lora"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "38ad60d73d35ac754fa8ee5ac3f14e2280ea738e8a29865d80bdcd38b9312d60e4e908431e176bfe1d815757247ba813bd1d6dce90df74ac94906b02fac40b79"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/merriweather@5.3.0",
+      "type": "library",
+      "name": "@fontsource/merriweather",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Merriweather font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/merriweather@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/merriweather"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/merriweather/-/merriweather-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/merriweather"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "f4ba4fb0d4d8cd100b8f8ebc523d4af54b25e5e5e4f7dd4bfe42a67297566d31759daf4d7ccc805cc81400194c45e562535318073f6427c8c4cc43ad5fda860e"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/noto-serif@5.3.0",
+      "type": "library",
+      "name": "@fontsource/noto-serif",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Noto Serif font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/noto-serif@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/noto-serif"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/noto-serif/-/noto-serif-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/noto-serif"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "66b3338ee425048730faa99ad6c95941d53760326fae32c6fbd0965356f149fdd84e4b9cc2a7771186bf29fa384ecd7dc3c20c4c6026b4e13777ac169609c1b4"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/open-sans@5.3.0",
+      "type": "library",
+      "name": "@fontsource/open-sans",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Open Sans font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/open-sans@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/open-sans"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/open-sans/-/open-sans-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/open-sans"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "5756dd32518dc99ac9c33addbacb2130ec36611d1aa980cbee43a8f5d9315042a5f1d16feba03d1cb72438e5e5e7bdac1bfee88610d0ac2ad31464a7f4b65c4b"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/opendyslexic@5.3.0",
+      "type": "library",
+      "name": "@fontsource/opendyslexic",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Abbie Gonzalez",
+      "description": "Self-host the OpenDyslexic font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/opendyslexic@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/opendyslexic"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/opendyslexic/-/opendyslexic-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/opendyslexic"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "0556085bf8217355368808218584cdf86156899de59c2cbc25fd8a9190b6dda1d01c135c32a293ef5f337247ea571471e2ab1726620c3d6bdcce2ad1ba19adb2"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/playfair-display@5.3.0",
+      "type": "library",
+      "name": "@fontsource/playfair-display",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Playfair Display font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/playfair-display@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/playfair-display"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/playfair-display/-/playfair-display-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/playfair-display"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "b8948005a96f756735d1f10fa6942342871a993db52c4c917f3cd67d17ea6e43f3fac46ffa42a96032b296e054b24bc94449094e8b3d7a98f55a3411386bbdf5"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/pt-serif@5.3.0",
+      "type": "library",
+      "name": "@fontsource/pt-serif",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the PT Serif font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/pt-serif@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/pt-serif"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/pt-serif/-/pt-serif-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/pt-serif"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "493fa3fdbc81199c3a1fe4d0317efca3a4259e07e3d956bf43d7c0271ab9e08b35650935fc584122eab225c2e69e98b4b6b1bc57f8563bd071e99634f40d0305"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/roboto@5.3.0",
+      "type": "library",
+      "name": "@fontsource/roboto",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Roboto font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/roboto@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/roboto"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/roboto/-/roboto-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/roboto"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "05aa5124e5983fe2d9db5ce9fb00508dfa4f60a468c5ce0bb2927f44bb88f8748c043e6efd7e0ef84483ad2bc4a834b2d2b025ec6c0127ed3d99d735e9c550d5"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/shippori-mincho@5.3.0",
+      "type": "library",
+      "name": "@fontsource/shippori-mincho",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Shippori Mincho font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/shippori-mincho@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/shippori-mincho"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/shippori-mincho/-/shippori-mincho-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/shippori-mincho"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "4b8d6447142eb9b01a62cb3e2de5eed0839cd36450c2c3da25b475716671e15575e615da6195621f7580bdef47a43545a8a61dfc1564f3a060ee5a7dcad57729"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/source-serif-4@5.3.1",
+      "type": "library",
+      "name": "@fontsource/source-serif-4",
+      "version": "5.3.1",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Source Serif 4 font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/source-serif-4@5.3.1",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/source-serif-4"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/source-serif-4/-/source-serif-4-5.3.1.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/source-serif-4"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "7167130978d862b805f40ebb7d38558abd5549cd253c4626c10ea3038a4fb74d6cd8c4828bf99a20d51c6680b36aa9d4f1fc9445e0cef7b7867015241e039eba"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/spectral@5.3.0",
+      "type": "library",
+      "name": "@fontsource/spectral",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Spectral font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/spectral@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/spectral"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/spectral/-/spectral-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/spectral"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "d932f959618e663e1222c0663c513329e03ad2d5d7775429d4ea9a6951169092fc21f4862e4e989a2bac982e38d621647490c8b857a5bb5afc9610a64145379b"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/stix-two-math@5.3.0",
+      "type": "library",
+      "name": "@fontsource/stix-two-math",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the STIX Two Math font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/stix-two-math@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/stix-two-math"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/stix-two-math/-/stix-two-math-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/stix-two-math"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9de8287a8cf0e954978d9328cf02914a6fdd842413eb672c65cb9e6bd23c298a8f699abff0a6db041ac0d3664717b032b91e6654c2ffa7eab46f016e4887f619"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/uncial-antiqua@5.3.0",
+      "type": "library",
+      "name": "@fontsource/uncial-antiqua",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the Uncial Antiqua font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/uncial-antiqua@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/uncial-antiqua"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/uncial-antiqua/-/uncial-antiqua-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/uncial-antiqua"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "1c0fdc3926e602df914278a894ecdc91660ecd55018376207339150f4d6b44eeb512b4fd3d83777eb82abc7ec9a8de7fef083e5b4e44618ffb31b3ddb604f483"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@fontsource/unifrakturmaguntia@5.3.0",
+      "type": "library",
+      "name": "@fontsource/unifrakturmaguntia",
+      "version": "5.3.0",
+      "scope": "required",
+      "author": "Google Inc.",
+      "description": "Self-host the UnifrakturMaguntia font in a neatly bundled NPM package.",
+      "purl": "pkg:npm/%40fontsource/unifrakturmaguntia@5.3.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@fontsource/unifrakturmaguntia"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@fontsource/unifrakturmaguntia/-/unifrakturmaguntia-5.3.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fontsource/font-files.git"
+        },
+        {
+          "type": "website",
+          "url": "https://fontsource.org/fonts/unifrakturmaguntia"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fontsource/font-files/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "cfc346394780bb44f9df867cb44cae35bb9466c52246840ace0de0441e6c6f6a360e2a7112a99842a1dd970c6c6cdd20a7086070294aac2b81fc0855798d9439"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "OFL-1.1"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@types/linkify-it@5.0.0",
+      "type": "library",
+      "name": "@types/linkify-it",
+      "version": "5.0.0",
+      "scope": "required",
+      "description": "TypeScript definitions for linkify-it",
+      "purl": "pkg:npm/%40types/linkify-it@5.0.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@types/linkify-it"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@types/linkify-it/-/linkify-it-5.0.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/linkify-it"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "b150c0e7ccc0c3879601f7ca39a407e7fe63dd779acae9330e4f9ec12b27bf7a78c891191c20b330389933c7b4394ad1be6a4667ce637f8c831e41ec80136bf5"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@types/markdown-it@14.2.0",
+      "type": "library",
+      "name": "@types/markdown-it",
+      "version": "14.2.0",
+      "scope": "required",
+      "description": "TypeScript definitions for markdown-it",
+      "purl": "pkg:npm/%40types/markdown-it@14.2.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@types/markdown-it"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@types/markdown-it/-/markdown-it-14.2.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/markdown-it"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "368436c8694b5a3e30a7132cf9362644a937b610eb43deda82beec16a7cbb0096fa12f12350b93ae539b845a86f62ba0753b60384f63a49e8534ce191ac6b9c5"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@types/mdurl@2.0.0",
+      "type": "library",
+      "name": "@types/mdurl",
+      "version": "2.0.0",
+      "scope": "required",
+      "description": "TypeScript definitions for mdurl",
+      "purl": "pkg:npm/%40types/mdurl@2.0.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@types/mdurl"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@types/mdurl/-/mdurl-2.0.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/mdurl"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "4467608d05196dae69e90105015c763866fcad00cbfdc3d11bb1a279d47331c275b589d400d0677236d20753511b06ef8dc3de8a4440073da7b21c8f9356e15a"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@types/node@26.6.6",
+      "type": "library",
+      "name": "@types/node",
+      "version": "26.6.6",
+      "scope": "required",
+      "description": "TypeScript definitions for node",
+      "purl": "pkg:npm/%40types/node@26.6.6",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@types/node"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@types/node/-/node-26.6.6.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "333423fbc2b1dd7238d0e994004e90a21e7c64c36cb4d34cc27da77dddea5ac7deee70cd4aa24dcdeb389e3873e801f0ad21ce7df48bc1753ac9be3be10e1aa2"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@types/trusted-types@2.0.7",
+      "type": "library",
+      "name": "@types/trusted-types",
+      "version": "2.0.7",
+      "scope": "optional",
+      "description": "TypeScript definitions for trusted-types",
+      "purl": "pkg:npm/%40types/trusted-types@2.0.7",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/@types/trusted-types"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@types/trusted-types/-/trusted-types-2.0.7.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/trusted-types"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/DefinitelyTyped/DefinitelyTyped/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "49c68f767d5d41cce06e5d101537933a65471542eddfde17260390368c95859eabdaf2e730b25f04f779dd2079d93ff71b7e95235fe0d8c65a5f47300ee5ec7f"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "argparse@3.0.4",
+      "type": "library",
+      "name": "argparse",
+      "version": "3.0.4",
+      "scope": "required",
+      "description": "CLI arguments parser. Native port of python's argparse.",
+      "purl": "pkg:npm/argparse@3.0.4",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/argparse"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/argparse/-/argparse-3.0.4.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/nodeca/argparse.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/nodeca/argparse#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/nodeca/argparse/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "7f058add9ab6da5e172498f1e667011c68a4224fa126a3bedf674f9b426eafbfabb46e71d6c70e8d27dd4fd64a7961cfa6cc9afe5d071cae2d0c8981913aedbc"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "PSF-2.0"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "docx@9.15.3",
+      "type": "library",
+      "name": "docx",
+      "version": "9.15.3",
+      "scope": "required",
+      "author": "Dolan Miu",
+      "description": "Easily generate .docx files with JS/TS with a nice declarative API. Works for Node and on the Browser.",
+      "purl": "pkg:npm/docx@9.15.3",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/docx"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/docx/-/docx-9.15.3.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/dolanmiu/docx.git"
+        },
+        {
+          "type": "website",
+          "url": "https://docx.js.org"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/dolanmiu/docx/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "dc59d4e8ae5cbaf1971009f6e3286f3f799fad9d46f24f7e847f294950d8b0c47e98699f2bfb74351e40c28310a1d9da6b1891b767be4af7247df7097bf36f4d"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "dompurify@3.4.17",
+      "type": "library",
+      "name": "dompurify",
+      "version": "3.4.17",
+      "scope": "required",
+      "author": "Dr.-Ing. Mario Heiderich, Cure53",
+      "description": "DOMPurify is a DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML and SVG. It runs as JavaScript and works in all modern browsers, as well as in Node.js (via jsdom). DOMPurify is written by security people who have vast background in web attacks and XSS. Fear not.",
+      "purl": "pkg:npm/dompurify@3.4.17",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/dompurify"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/dompurify/-/dompurify-3.4.17.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git://github.com/cure53/DOMPurify.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/cure53/DOMPurify"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/cure53/DOMPurify/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "07fa52958547439f24a88483ff20e3b89d727f3237e26d60178940a1dd9bc1246188de0ae429771fc01fee1a81d8f9932fdd75b5d12e7679d79f9167851a33d3"
+        }
+      ],
+      "licenses": [
+        {
+          "expression": "(MPL-2.0 OR Apache-2.0)"
+        }
+      ]
+    },
+    {
+      "bom-ref": "entities@8.1.0",
+      "type": "library",
+      "name": "entities",
+      "version": "8.1.0",
+      "scope": "required",
+      "author": "Felix Boehm",
+      "description": "Encode & decode XML and HTML entities with ease & speed",
+      "purl": "pkg:npm/entities@8.1.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/entities"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/entities/-/entities-8.1.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/fb55/entities.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/fb55/entities#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fb55/entities/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9312fb9ac21f7d2ba1f5a68500c0fbaf1008b9344c00731e06d8075b6c94756c3bdf664d87831e86417681d8efb5d9a29246883fd6c50c324e3e5b2f9bb6afac"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-2-Clause"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "fflate@0.8.3",
+      "type": "library",
+      "name": "fflate",
+      "version": "0.8.3",
+      "scope": "required",
+      "author": "Arjun Barrett",
+      "description": "High performance (de)compression in an 8kB package",
+      "purl": "pkg:npm/fflate@0.8.3",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/fflate"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/fflate/-/fflate-0.8.3.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/101arrowz/fflate.git"
+        },
+        {
+          "type": "website",
+          "url": "https://101arrowz.github.io/fflate"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/101arrowz/fflate/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "b5b64db89acbc06529df3b2106d772e16f8e47166e221f1ae629722044030b9ad8d5fdd4db424caf2d0b977581cd4e7c1192ac12e2455e16f9830bfc0ac3ef80"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "highlight.js@11.12.0",
+      "type": "library",
+      "name": "highlight.js",
+      "version": "11.12.0",
+      "scope": "required",
+      "author": "Josh Goebel",
+      "description": "Syntax highlighting with language autodetection.",
+      "purl": "pkg:npm/highlight.js@11.12.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/highlight.js"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/highlight.js/-/highlight.js-11.12.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git://github.com/highlightjs/highlight.js.git"
+        },
+        {
+          "type": "website",
+          "url": "https://highlightjs.org/"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/highlightjs/highlight.js/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "9db7d6a7244c70cacf3260f0241f9d857fde89a3cab5cd9107ed1066c92a2775a3440fc50d2d1ef6166bc7c102fe56c4bfc817cbdf057036cd6bf76ca4068932"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-3-Clause"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "linkify-it@6.1.0",
+      "type": "library",
+      "name": "linkify-it",
+      "version": "6.1.0",
+      "scope": "required",
+      "description": "Links recognition library with FULL unicode support",
+      "purl": "pkg:npm/linkify-it@6.1.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/linkify-it"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/linkify-it/-/linkify-it-6.1.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/markdown-it/linkify-it.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/markdown-it/linkify-it#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/markdown-it/linkify-it/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "c09fd3c294834cb7a90ab42861660813120a83965c85ec76367e729369859c1fba3ed7641edc8bc7be3699df5cb118e33a71a42884bf46b6d8ee5f03ea04fd57"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "markdown-it@15.0.3",
+      "type": "library",
+      "name": "markdown-it",
+      "version": "15.0.3",
+      "scope": "required",
+      "description": "Markdown-it - modern pluggable markdown parser.",
+      "purl": "pkg:npm/markdown-it@15.0.3",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/markdown-it"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/markdown-it/-/markdown-it-15.0.3.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/markdown-it/markdown-it.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/markdown-it/markdown-it#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/markdown-it/markdown-it/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "f80cfb3a3cf78911aef0a60cbc9eb1561bebc4fdde13ebc4b495fbe4ec3cf17069710355ff49465f96729c82017ed444a380c2da3b2f78030369e96d9a6f10bd"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "mdurl@2.1.0",
+      "type": "library",
+      "name": "mdurl",
+      "version": "2.1.0",
+      "scope": "required",
+      "description": "URL utilities for markdown-it",
+      "purl": "pkg:npm/mdurl@2.1.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/mdurl"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/mdurl/-/mdurl-2.1.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/markdown-it/mdurl.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/markdown-it/mdurl#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/markdown-it/mdurl/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "d7e1c168ec74ce2fdd41686df2b36ff4c61ff6aaa9a8bfe4c48d215c8994e98e78ef333a4a78bc05089bb7b89f80c718b50838d5aa3722f77a72748cf3a8a7a6"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "nanoid@6.0.2",
+      "type": "library",
+      "name": "nanoid",
+      "version": "6.0.2",
+      "scope": "required",
+      "author": "Andrey Sitnik",
+      "description": "A tiny (117 bytes), secure URL-friendly unique string ID generator",
+      "purl": "pkg:npm/nanoid@6.0.2",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/nanoid"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/nanoid/-/nanoid-6.0.2.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/ai/nanoid.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/ai/nanoid#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/ai/nanoid/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "848bd539bf50af5a7ff4234d2ce7b43a55af831ff3893b15c0a37f1834acb80acdd8ad300e269f3f7b344969ac9bba3605d9f24bc67d67ae0d14151b9face206"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "orderedmap@2.1.1",
+      "type": "library",
+      "name": "orderedmap",
+      "version": "2.1.1",
+      "scope": "required",
+      "author": "Marijn Haverbeke",
+      "description": "Persistent ordered mapping from strings",
+      "purl": "pkg:npm/orderedmap@2.1.1",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/orderedmap"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/orderedmap/-/orderedmap-2.1.1.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/marijnh/orderedmap.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/marijnh/orderedmap#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/marijnh/orderedmap/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "4ef016c62d270ded63febb4c7167088fde3e15f7ba9fbce1a30df7878d122b19ac9a8cece9dcff7be11a8f299fa0570777bb31367f321ccf3cdfdba2c4c395ea"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "prosemirror-commands@1.7.2",
+      "type": "library",
+      "name": "prosemirror-commands",
+      "version": "1.7.2",
+      "scope": "required",
+      "description": "Editing commands for ProseMirror",
+      "purl": "pkg:npm/prosemirror-commands@1.7.2",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-commands"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/prosemirror-commands/-/prosemirror-commands-1.7.2.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://code.haverbeke.berlin/prosemirror/prosemirror-commands.git"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "aba43ab33c6a76ef5777a11c74ab2a5e086ee6741d653a41e10f72774e1645ceff8edefaddefeb4fad0ec21d0bd46618f93e3aa39ac3fbd944377e9d652e37b7"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "prosemirror-dropcursor@1.8.4",
+      "type": "library",
+      "name": "prosemirror-dropcursor",
+      "version": "1.8.4",
+      "scope": "required",
+      "description": "Drop cursor plugin for ProseMirror",
+      "purl": "pkg:npm/prosemirror-dropcursor@1.8.4",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-dropcursor"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/prosemirror-dropcursor/-/prosemirror-dropcursor-1.8.4.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://code.haverbeke.berlin/prosemirror/prosemirror-dropcursor.git"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "5662b185c03a6be879a0f49899f17564d790a8f6f261a231a99b0aa9e602c9394fb6b8d480d6872f73fcbd568ed7da2a015d33b9a33f6b1928c191eb0753f74e"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "prosemirror-gapcursor@1.4.1",
+      "type": "library",
+      "name": "prosemirror-gapcursor",
+      "version": "1.4.1",
+      "scope": "required",
+      "description": "ProseMirror plugin for cursors at normally impossible-to-reach positions",
+      "purl": "pkg:npm/prosemirror-gapcursor@1.4.1",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-gapcursor"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/prosemirror-gapcursor/-/prosemirror-gapcursor-1.4.1.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git://github.com/prosemirror/prosemirror-gapcursor.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/prosemirror/prosemirror-gapcursor#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/prosemirror/prosemirror-gapcursor/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "a4c7586849e334c4b0975d728c41ad81398b911d3c9bf565f898f8e37d7aee9f5e0771d540a85809ce20987543b0b3ce0df65f8ebfcc9a2aec7726738976d02b"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "prosemirror-history@1.5.1",
+      "type": "library",
+      "name": "prosemirror-history",
+      "version": "1.5.1",
+      "scope": "required",
+      "description": "Undo history for ProseMirror",
+      "purl": "pkg:npm/prosemirror-history@1.5.1",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-history"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/prosemirror-history/-/prosemirror-history-1.5.1.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://code.haverbeke.berlin/prosemirror/prosemirror-history.git"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "a279709ea2af82d160eacad93a60ce021940cb51481d0a4e131391c9b5f44be0ef25ea44e6d3c02eb07d8867adff6b2aaaaade9529c1d743a888e26a02fbb60c"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "prosemirror-inputrules@1.5.1",
+      "type": "library",
+      "name": "prosemirror-inputrules",
+      "version": "1.5.1",
+      "scope": "required",
+      "description": "Automatic transforms on text input for ProseMirror",
+      "purl": "pkg:npm/prosemirror-inputrules@1.5.1",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-inputrules"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/prosemirror-inputrules/-/prosemirror-inputrules-1.5.1.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git://github.com/prosemirror/prosemirror-inputrules.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/prosemirror/prosemirror-inputrules#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/prosemirror/prosemirror-inputrules/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "ef08f8b8c8ca69758043508383137336d47d025b2ec331df7451f5ca01070362871760ce11a5e5d4225f34f00a0a0f6a344878aee9bdef940b6828903f263a17"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "prosemirror-keymap@1.2.3",
+      "type": "library",
+      "name": "prosemirror-keymap",
+      "version": "1.2.3",
+      "scope": "required",
+      "description": "Keymap plugin for ProseMirror",
+      "purl": "pkg:npm/prosemirror-keymap@1.2.3",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-keymap"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/prosemirror-keymap/-/prosemirror-keymap-1.2.3.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git://github.com/prosemirror/prosemirror-keymap.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/prosemirror/prosemirror-keymap#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/prosemirror/prosemirror-keymap/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "e07b9c465a622ddd483d041736a7a8f35046b6463c022e6c98784a5bd8e33ca45cdb0408c64b20ec7975b5323621f4f607f2e05fa6df62f5f1129265eda2982b"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "prosemirror-markdown@1.13.9",
+      "type": "library",
+      "name": "prosemirror-markdown",
+      "version": "1.13.9",
+      "scope": "required",
+      "description": "ProseMirror Markdown integration",
+      "purl": "pkg:npm/prosemirror-markdown@1.13.9",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-markdown"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/prosemirror-markdown/-/prosemirror-markdown-1.13.9.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://code.haverbeke.berlin/prosemirror/prosemirror-markdown.git"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "a8023723d61db635878d308112b734f22bebdb8292ad48dc4e1e5d627702c4533e252d36913d221de5988cedf9c5e4cfc2de6df2b845ade95ec17857cf5e9665"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "argparse@2.0.1",
+      "type": "library",
+      "name": "argparse",
+      "version": "2.0.1",
+      "scope": "required",
+      "description": "CLI arguments parser. Native port of python's argparse.",
+      "purl": "pkg:npm/argparse@2.0.1",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-markdown/node_modules/argparse"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/nodeca/argparse.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/nodeca/argparse#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/nodeca/argparse/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "f3ef56a9e6db173a57f4e47e59ae8edbd6ac22881e44ccdc1ad00835da4c1c7c80835d1fd3969215505b704a867ff3d7c35123019faadbf6c4060dc3beeacadd"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Python-2.0"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "entities@4.5.0",
+      "type": "library",
+      "name": "entities",
+      "version": "4.5.0",
+      "scope": "required",
+      "author": "Felix Boehm",
+      "description": "Encode & decode XML and HTML entities with ease & speed",
+      "purl": "pkg:npm/entities@4.5.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-markdown/node_modules/entities"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/entities/-/entities-4.5.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git://github.com/fb55/entities.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/fb55/entities#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/fb55/entities/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "5748631f87463e1f40a39a74328458e8156ab700a3873eaf2392d3f00279e47fb883dff8bdb1f1d48e787d2d17b9c94b8431c0acf40288c8c3c6368bf1f3f187"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "BSD-2-Clause"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "linkify-it@5.0.2",
+      "type": "library",
+      "name": "linkify-it",
+      "version": "5.0.2",
+      "scope": "required",
+      "description": "Links recognition library with FULL unicode support",
+      "purl": "pkg:npm/linkify-it@5.0.2",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-markdown/node_modules/linkify-it"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/linkify-it/-/linkify-it-5.0.2.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/markdown-it/linkify-it.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/markdown-it/linkify-it#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/markdown-it/linkify-it/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "38d4e6da308c0156638106bf172d6449c5ecb8ea05e4d3d3b28141744d4a548676bc087fafdf81aa8fb48c83420589dabd33d0673dfc43315399eefd10da0ddd"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "markdown-it@14.3.3",
+      "type": "library",
+      "name": "markdown-it",
+      "version": "14.3.3",
+      "scope": "required",
+      "description": "Markdown-it - modern pluggable markdown parser.",
+      "purl": "pkg:npm/markdown-it@14.3.3",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-markdown/node_modules/markdown-it"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/markdown-it/-/markdown-it-14.3.3.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/markdown-it/markdown-it.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/markdown-it/markdown-it#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/markdown-it/markdown-it/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "2fffed0c09234e324253aa4151205382cdca83822755a66e519a20fdbe95d7650a85c0d0ed2efcf3bee26db09a9d1131c0fb983f50990fb19dd9dc52cb519746"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "uc.micro@2.1.0",
+      "type": "library",
+      "name": "uc.micro",
+      "version": "2.1.0",
+      "scope": "required",
+      "description": "Micro subset of unicode data files for markdown-it projects.",
+      "purl": "pkg:npm/uc.micro@2.1.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-markdown/node_modules/uc.micro"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/uc.micro/-/uc.micro-2.1.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/markdown-it/uc.micro.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/markdown-it/uc.micro#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/markdown-it/uc.micro/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "0110c99a986676f524e86970ef2f434366c590a047c101cb8b696c687e8f3e6cff29af6c14e06c065ba8ce10e5b569a7bfdbbf705e91b7cef39d14cf57eca9fc"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "prosemirror-model@1.25.13",
+      "type": "library",
+      "name": "prosemirror-model",
+      "version": "1.25.13",
+      "scope": "required",
+      "description": "ProseMirror's document model",
+      "purl": "pkg:npm/prosemirror-model@1.25.13",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-model"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/prosemirror-model/-/prosemirror-model-1.25.13.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://code.haverbeke.berlin/prosemirror/prosemirror-model.git"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "3250cc5868d85da60e78288ed7b8dcc9b9ed08eccf9cdfbded4d3cd3d91ed90b203edc56de7e7fb03e992b224e35480cc3588ff77a216538de2a39d127b2fa91"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "prosemirror-schema-list@1.6.0",
+      "type": "library",
+      "name": "prosemirror-schema-list",
+      "version": "1.6.0",
+      "scope": "required",
+      "description": "List-related schema elements and commands for ProseMirror",
+      "purl": "pkg:npm/prosemirror-schema-list@1.6.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-schema-list"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/prosemirror-schema-list/-/prosemirror-schema-list-1.6.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://code.haverbeke.berlin/prosemirror/prosemirror-schema-list.git"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "1b5b2b0ed6a7f95a969feaa9996163ffa8f462c679ccc53e6489465485b8d5ae491768c02378f37cc4569920019841f6428ab53e6006fe8da6b9c30c74b3ac2e"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "prosemirror-state@1.4.4",
+      "type": "library",
+      "name": "prosemirror-state",
+      "version": "1.4.4",
+      "scope": "required",
+      "description": "ProseMirror editor state",
+      "purl": "pkg:npm/prosemirror-state@1.4.4",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-state"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/prosemirror-state/-/prosemirror-state-1.4.4.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git://github.com/prosemirror/prosemirror-state.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/prosemirror/prosemirror-state#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/prosemirror/prosemirror-state/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "ea38981c7d822066c27e7c5d1db5d9d7683248563f7f3fee959137df71ba6cfa8867817e4d7a3d89f891f3a9c01e95a77e836339bde8e444a2ec9f14cf58d71f"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "prosemirror-tables@1.8.5",
+      "type": "library",
+      "name": "prosemirror-tables",
+      "version": "1.8.5",
+      "scope": "required",
+      "description": "ProseMirror's rowspan/colspan tables component",
+      "purl": "pkg:npm/prosemirror-tables@1.8.5",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-tables"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/prosemirror-tables/-/prosemirror-tables-1.8.5.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/ProseMirror/prosemirror-tables.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/ProseMirror/prosemirror-tables#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/ProseMirror/prosemirror-tables/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "57fd1c0c2b072877bfb5f5a47829ad84d51c129d4854ede9eafc0df17b7013d3d940b01926281bc37428ada01d7c93e2af834a26d36f381f2860629197eb740f"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "prosemirror-transform@1.12.5",
+      "type": "library",
+      "name": "prosemirror-transform",
+      "version": "1.12.5",
+      "scope": "required",
+      "description": "ProseMirror document transformations",
+      "purl": "pkg:npm/prosemirror-transform@1.12.5",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-transform"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/prosemirror-transform/-/prosemirror-transform-1.12.5.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://code.haverbeke.berlin/prosemirror/prosemirror-transform.git"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "dc405764133887730ab96becf6c43b200d3fbfa8c2a82678c02d3c3c8bf36355524160cbf74284c9f8390b4131e765097ac7ff415a20c6fb81b1974a98b73735"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "prosemirror-view@1.42.9",
+      "type": "library",
+      "name": "prosemirror-view",
+      "version": "1.42.9",
+      "scope": "required",
+      "description": "ProseMirror's view component",
+      "purl": "pkg:npm/prosemirror-view@1.42.9",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/prosemirror-view"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/prosemirror-view/-/prosemirror-view-1.42.9.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://code.haverbeke.berlin/prosemirror/prosemirror-view.git"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "6ca6dfcde2993aed87d89414d93689998bba101728af75671884788d1df571b12dd73b549df501e9b286575f9f27338976b55647eb51534db4f33337a10c78c0"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "punycode.js@2.3.1",
+      "type": "library",
+      "name": "punycode.js",
+      "version": "2.3.1",
+      "scope": "required",
+      "author": "Mathias Bynens",
+      "description": "A robust Punycode converter that fully complies to RFC 3492 and RFC 5891, and works on nearly all JavaScript platforms.",
+      "purl": "pkg:npm/punycode.js@2.3.1",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/punycode.js"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/punycode.js/-/punycode.js-2.3.1.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/mathiasbynens/punycode.js.git"
+        },
+        {
+          "type": "website",
+          "url": "https://mths.be/punycode"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/mathiasbynens/punycode.js/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "bb11481d4d189476210d0b55e11f49e9ae7648bc76f010a34fee227a1ec819b83054958efa49b8df5738c9195111402c026b7fb8c8d05324073443dfd0cdfd08"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "rope-sequence@1.3.4",
+      "type": "library",
+      "name": "rope-sequence",
+      "version": "1.3.4",
+      "scope": "required",
+      "author": "Marijn Haverbeke",
+      "description": "Rope-based persistent sequence type",
+      "purl": "pkg:npm/rope-sequence@1.3.4",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/rope-sequence"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/rope-sequence/-/rope-sequence-1.3.4.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/marijnh/rope-sequence.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/marijnh/rope-sequence#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/marijnh/rope-sequence/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "513e440ded9cbb613fe8ee22814af93d216cdb79efbee9227161f1e869ce3e51c08a261bccdb824500ae89474725072a29a94b2a5ad82678d8d32486b173505d"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "temml@0.14.0",
+      "type": "library",
+      "name": "temml",
+      "version": "0.14.0",
+      "scope": "required",
+      "description": "TeX to MathML conversion in JavaScript.",
+      "purl": "pkg:npm/temml@0.14.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/temml"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/temml/-/temml-0.14.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/ronkok/Temml.git"
+        },
+        {
+          "type": "website",
+          "url": "https://temml.org"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/ronkok/Temml/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "b73d4b5bfe486694e12bc73b669753487fe7e7a7808fe4e18ab2e2784aed2b1602dc4282222078b0a75151e840807f9f426bc82aa31f3f782a4cb05d2e9cbdcf"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "uc.micro@3.0.0",
+      "type": "library",
+      "name": "uc.micro",
+      "version": "3.0.0",
+      "scope": "required",
+      "description": "Micro subset of unicode data files for markdown-it projects.",
+      "purl": "pkg:npm/uc.micro@3.0.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/uc.micro"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/uc.micro/-/uc.micro-3.0.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/markdown-it/uc.micro.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/markdown-it/uc.micro#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/markdown-it/uc.micro/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "5373e9a449257a84e721f8bc068cccc77ca3bb7a9cfcbe92c2a5a8d92c3ee783d7f8f5f4abd23eaf5526e470a6a83ee7f550d7e7fbf7bd01ff02303a75e0ddb7"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "undici-types@8.9.0",
+      "type": "library",
+      "name": "undici-types",
+      "version": "8.9.0",
+      "scope": "required",
+      "description": "A stand-alone types package for Undici",
+      "purl": "pkg:npm/undici-types@8.9.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/undici-types"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/undici-types/-/undici-types-8.9.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/nodejs/undici.git"
+        },
+        {
+          "type": "website",
+          "url": "https://undici.nodejs.org"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/nodejs/undici/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "2930f2453617f2c5a629702290f1c74b273adc244f11331cb728ca16ea5c0ba3812d74f7c6c3747bd685ee6fa6217bad156a545ee79db68c06ee22cece9d2442"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "w3c-keyname@2.2.8",
+      "type": "library",
+      "name": "w3c-keyname",
+      "version": "2.2.8",
+      "scope": "required",
+      "author": "Marijn Haverbeke",
+      "description": "Get a KeyboardEvent.key-style string from an event",
+      "purl": "pkg:npm/w3c-keyname@2.2.8",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/w3c-keyname"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/w3c-keyname/-/w3c-keyname-2.2.8.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/marijnh/w3c-keyname.git"
+        },
+        {
+          "type": "website",
+          "url": "https://github.com/marijnh/w3c-keyname#readme"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/marijnh/w3c-keyname/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "769a2306136c08d37b4fcd939bb936e80e86f4c2f7364843b27c3d9ff7a8c52465541078084b4843f29308b2361707f76ad6925d1858164422dd29671703ef3d"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "yaml@2.9.1",
+      "type": "library",
+      "name": "yaml",
+      "version": "2.9.1",
+      "scope": "required",
+      "author": "Eemeli Aro",
+      "description": "JavaScript parser and stringifier for YAML",
+      "purl": "pkg:npm/yaml@2.9.1",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/yaml"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/yaml/-/yaml-2.9.1.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/eemeli/yaml.git"
+        },
+        {
+          "type": "website",
+          "url": "https://eemeli.org/yaml/"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/eemeli/yaml/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "dcdc4df3eefc39dcdb4fb0bf5a31acc9f3c0b4968ddc5343b16c6fed8ee6703b13fe83a6816f01a72410145067bd91378fd63649dcf550b14b7b32fb11bdb217"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "ISC"
+          }
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "lutefisk@1.0.0",
+      "dependsOn": [
+        "@fontsource/alegreya@5.3.0",
+        "@fontsource/atkinson-hyperlegible@5.3.0",
+        "@fontsource/cinzel@5.3.0",
+        "@fontsource/cormorant-garamond@5.3.0",
+        "@fontsource/courier-prime@5.3.0",
+        "@fontsource/crimson-pro@5.3.0",
+        "@fontsource/eb-garamond@5.3.0",
+        "@fontsource/im-fell-english@5.3.0",
+        "@fontsource/inter@5.3.0",
+        "@fontsource/jetbrains-mono@5.3.0",
+        "@fontsource/lato@5.3.0",
+        "@fontsource/libre-baskerville@5.3.0",
+        "@fontsource/libre-caslon-text@5.3.0",
+        "@fontsource/literata@5.3.0",
+        "@fontsource/lora@5.3.0",
+        "@fontsource/merriweather@5.3.0",
+        "@fontsource/noto-serif@5.3.0",
+        "@fontsource/open-sans@5.3.0",
+        "@fontsource/opendyslexic@5.3.0",
+        "@fontsource/playfair-display@5.3.0",
+        "@fontsource/pt-serif@5.3.0",
+        "@fontsource/roboto@5.3.0",
+        "@fontsource/shippori-mincho@5.3.0",
+        "@fontsource/source-serif-4@5.3.1",
+        "@fontsource/spectral@5.3.0",
+        "@fontsource/stix-two-math@5.3.0",
+        "@fontsource/uncial-antiqua@5.3.0",
+        "@fontsource/unifrakturmaguntia@5.3.0",
+        "docx@9.15.3",
+        "dompurify@3.4.17",
+        "fflate@0.8.3",
+        "highlight.js@11.12.0",
+        "markdown-it@15.0.3",
+        "prosemirror-commands@1.7.2",
+        "prosemirror-dropcursor@1.8.4",
+        "prosemirror-gapcursor@1.4.1",
+        "prosemirror-history@1.5.1",
+        "prosemirror-inputrules@1.5.1",
+        "prosemirror-keymap@1.2.3",
+        "prosemirror-markdown@1.13.9",
+        "prosemirror-model@1.25.13",
+        "prosemirror-schema-list@1.6.0",
+        "prosemirror-state@1.4.4",
+        "prosemirror-tables@1.8.5",
+        "prosemirror-transform@1.12.5",
+        "prosemirror-view@1.42.9",
+        "temml@0.14.0",
+        "yaml@2.9.1"
+      ]
+    },
+    {
+      "ref": "@fontsource/alegreya@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/atkinson-hyperlegible@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/cinzel@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/cormorant-garamond@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/courier-prime@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/crimson-pro@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/eb-garamond@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/im-fell-english@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/inter@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/jetbrains-mono@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/lato@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/libre-baskerville@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/libre-caslon-text@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/literata@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/lora@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/merriweather@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/noto-serif@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/open-sans@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/opendyslexic@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/playfair-display@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/pt-serif@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/roboto@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/shippori-mincho@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/source-serif-4@5.3.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/spectral@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/stix-two-math@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/uncial-antiqua@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@fontsource/unifrakturmaguntia@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@types/linkify-it@5.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@types/markdown-it@14.2.0",
+      "dependsOn": [
+        "@types/linkify-it@5.0.0",
+        "@types/mdurl@2.0.0"
+      ]
+    },
+    {
+      "ref": "@types/mdurl@2.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "@types/node@26.6.6",
+      "dependsOn": [
+        "undici-types@8.9.0"
+      ]
+    },
+    {
+      "ref": "@types/trusted-types@2.0.7",
+      "dependsOn": []
+    },
+    {
+      "ref": "argparse@3.0.4",
+      "dependsOn": []
+    },
+    {
+      "ref": "docx@9.15.3",
+      "dependsOn": [
+        "@types/node@26.6.6",
+        "fflate@0.8.3",
+        "nanoid@6.0.2"
+      ]
+    },
+    {
+      "ref": "dompurify@3.4.17",
+      "dependsOn": [
+        "@types/trusted-types@2.0.7"
+      ]
+    },
+    {
+      "ref": "entities@8.1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "fflate@0.8.3",
+      "dependsOn": []
+    },
+    {
+      "ref": "highlight.js@11.12.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "linkify-it@6.1.0",
+      "dependsOn": [
+        "uc.micro@3.0.0"
+      ]
+    },
+    {
+      "ref": "markdown-it@15.0.3",
+      "dependsOn": [
+        "argparse@3.0.4",
+        "entities@8.1.0",
+        "linkify-it@6.1.0",
+        "mdurl@2.1.0",
+        "punycode.js@2.3.1",
+        "uc.micro@3.0.0"
+      ]
+    },
+    {
+      "ref": "mdurl@2.1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "nanoid@6.0.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "orderedmap@2.1.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "prosemirror-commands@1.7.2",
+      "dependsOn": [
+        "prosemirror-model@1.25.13",
+        "prosemirror-transform@1.12.5",
+        "prosemirror-state@1.4.4"
+      ]
+    },
+    {
+      "ref": "prosemirror-dropcursor@1.8.4",
+      "dependsOn": [
+        "prosemirror-state@1.4.4",
+        "prosemirror-view@1.42.9",
+        "prosemirror-transform@1.12.5"
+      ]
+    },
+    {
+      "ref": "prosemirror-gapcursor@1.4.1",
+      "dependsOn": [
+        "prosemirror-keymap@1.2.3",
+        "prosemirror-model@1.25.13",
+        "prosemirror-state@1.4.4",
+        "prosemirror-view@1.42.9"
+      ]
+    },
+    {
+      "ref": "prosemirror-history@1.5.1",
+      "dependsOn": [
+        "prosemirror-state@1.4.4",
+        "prosemirror-transform@1.12.5",
+        "prosemirror-view@1.42.9",
+        "rope-sequence@1.3.4"
+      ]
+    },
+    {
+      "ref": "prosemirror-inputrules@1.5.1",
+      "dependsOn": [
+        "prosemirror-state@1.4.4",
+        "prosemirror-transform@1.12.5"
+      ]
+    },
+    {
+      "ref": "prosemirror-keymap@1.2.3",
+      "dependsOn": [
+        "w3c-keyname@2.2.8",
+        "prosemirror-state@1.4.4"
+      ]
+    },
+    {
+      "ref": "prosemirror-markdown@1.13.9",
+      "dependsOn": [
+        "markdown-it@14.3.3",
+        "prosemirror-model@1.25.13",
+        "@types/markdown-it@14.2.0"
+      ]
+    },
+    {
+      "ref": "argparse@2.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "entities@4.5.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "linkify-it@5.0.2",
+      "dependsOn": [
+        "uc.micro@2.1.0"
+      ]
+    },
+    {
+      "ref": "markdown-it@14.3.3",
+      "dependsOn": [
+        "argparse@2.0.1",
+        "entities@4.5.0",
+        "linkify-it@5.0.2",
+        "mdurl@2.1.0",
+        "punycode.js@2.3.1",
+        "uc.micro@2.1.0"
+      ]
+    },
+    {
+      "ref": "uc.micro@2.1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "prosemirror-model@1.25.13",
+      "dependsOn": [
+        "orderedmap@2.1.1"
+      ]
+    },
+    {
+      "ref": "prosemirror-schema-list@1.6.0",
+      "dependsOn": [
+        "prosemirror-model@1.25.13",
+        "prosemirror-transform@1.12.5",
+        "prosemirror-state@1.4.4"
+      ]
+    },
+    {
+      "ref": "prosemirror-state@1.4.4",
+      "dependsOn": [
+        "prosemirror-model@1.25.13",
+        "prosemirror-transform@1.12.5",
+        "prosemirror-view@1.42.9"
+      ]
+    },
+    {
+      "ref": "prosemirror-tables@1.8.5",
+      "dependsOn": [
+        "prosemirror-keymap@1.2.3",
+        "prosemirror-model@1.25.13",
+        "prosemirror-state@1.4.4",
+        "prosemirror-transform@1.12.5",
+        "prosemirror-view@1.42.9"
+      ]
+    },
+    {
+      "ref": "prosemirror-transform@1.12.5",
+      "dependsOn": [
+        "prosemirror-model@1.25.13"
+      ]
+    },
+    {
+      "ref": "prosemirror-view@1.42.9",
+      "dependsOn": [
+        "prosemirror-model@1.25.13",
+        "prosemirror-state@1.4.4",
+        "prosemirror-transform@1.12.5"
+      ]
+    },
+    {
+      "ref": "punycode.js@2.3.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "rope-sequence@1.3.4",
+      "dependsOn": []
+    },
+    {
+      "ref": "temml@0.14.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "uc.micro@3.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "undici-types@8.9.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "w3c-keyname@2.2.8",
+      "dependsOn": []
+    },
+    {
+      "ref": "yaml@2.9.1",
+      "dependsOn": []
+    }
+  ]
+}

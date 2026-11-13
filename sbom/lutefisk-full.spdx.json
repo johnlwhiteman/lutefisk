@@ -1,0 +1,3920 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "lutefisk@1.0.0",
+  "documentNamespace": "http://spdx.org/spdxdocs/lutefisk-1.0.0-00344fe0-4abf-4b9a-9ab9-1ed4c5370359",
+  "creationInfo": {
+    "created": "2026-11-13T19:51:01.435Z",
+    "creators": [
+      "Tool: npm/cli-10.9.9"
+    ]
+  },
+  "documentDescribes": [
+    "SPDXRef-Package-lutefisk-1.0.0"
+  ],
+  "packages": [
+    {
+      "name": "lutefisk",
+      "SPDXID": "SPDXRef-Package-lutefisk-1.0.0",
+      "versionInfo": "1.0.0",
+      "packageFileName": "",
+      "description": "Local-first book writing and formatting studio with live device previews.",
+      "primaryPackagePurpose": "LIBRARY",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "homepage": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/lutefisk@1.0.0"
+        }
+      ]
+    },
+    {
+      "name": "@electron-internal/extract-zip",
+      "SPDXID": "SPDXRef-Package-electron-internal.extract-zip-1.0.8",
+      "versionInfo": "1.0.8",
+      "packageFileName": "node_modules/@electron-internal/extract-zip",
+      "description": "Fast, safe, native zip extraction for Node.js. Drop-in replacement for extract-zip.",
+      "downloadLocation": "https://registry.npmjs.org/@electron-internal/extract-zip/-/extract-zip-1.0.8.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/electron/extract-zip#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40electron-internal/extract-zip@1.0.8"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "f226a378b15bccdc0cd26dc0b106526606111168250089b21afbc5496537e0580c5bcb079737708fd40abeff5d80dee330fe7dd4415417fb0b382dc997d6088d"
+        }
+      ]
+    },
+    {
+      "name": "@electron/asar",
+      "SPDXID": "SPDXRef-Package-electron.asar-4.3.1",
+      "versionInfo": "4.3.1",
+      "packageFileName": "node_modules/@electron/asar",
+      "description": "Creating Electron app packages",
+      "downloadLocation": "https://registry.npmjs.org/@electron/asar/-/asar-4.3.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/electron/asar",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40electron/asar@4.3.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "ea923ae33fed31206451364b405621b3662207b7d2f6c280ea0cbbff69c7d49bbb186c13df650fb23e0cc6cc2ce4d326b51e82d3361d5d5c4453fac6a8944224"
+        }
+      ]
+    },
+    {
+      "name": "@electron/fuses",
+      "SPDXID": "SPDXRef-Package-electron.fuses-2.1.3",
+      "versionInfo": "2.1.3",
+      "packageFileName": "node_modules/@electron/fuses",
+      "description": "Flip Electron Fuses and customize your packaged build of Electron",
+      "downloadLocation": "https://registry.npmjs.org/@electron/fuses/-/fuses-2.1.3.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/electron/fuses#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40electron/fuses@2.1.3"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "2e828951736227824cf0822b525b521c8fbca64a206868f9c26271f358c4fd6937836c35fe47cc6d310a368639922b4613c8620b5da1df647fd52972c05b715e"
+        }
+      ]
+    },
+    {
+      "name": "@electron/get",
+      "SPDXID": "SPDXRef-Package-electron.get-5.1.0",
+      "versionInfo": "5.1.0",
+      "packageFileName": "node_modules/@electron/get",
+      "description": "Utility for downloading artifacts from different versions of Electron",
+      "downloadLocation": "https://registry.npmjs.org/@electron/get/-/get-5.1.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/electron/get#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40electron/get@5.1.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "de4481b46f0e6dc4d57d76a79b9bd527a52704b115995b1193533ebc6a82b8c055f972c26c962e5907ee97ec88cb41900ec4a52b490712b8841e7ed23e4e049c"
+        }
+      ]
+    },
+    {
+      "name": "@electron/notarize",
+      "SPDXID": "SPDXRef-Package-electron.notarize-3.1.2",
+      "versionInfo": "3.1.2",
+      "packageFileName": "node_modules/@electron/notarize",
+      "description": "Notarize your Electron app",
+      "downloadLocation": "https://registry.npmjs.org/@electron/notarize/-/notarize-3.1.2.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/electron/notarize#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40electron/notarize@3.1.2"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "4bf107e96fc64dedd7883e286075beeb1b945995a373d17981ac8cacd76644bbfba86f4a458998136ebe443802d61614655637a8ba5ad557edc6e2feb0be5542"
+        }
+      ]
+    },
+    {
+      "name": "@electron/osx-sign",
+      "SPDXID": "SPDXRef-Package-electron.osx-sign-2.7.2",
+      "versionInfo": "2.7.2",
+      "packageFileName": "node_modules/@electron/osx-sign",
+      "description": "Codesign Electron macOS apps",
+      "downloadLocation": "https://registry.npmjs.org/@electron/osx-sign/-/osx-sign-2.7.2.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/electron/osx-sign",
+      "licenseDeclared": "BSD-2-Clause",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40electron/osx-sign@2.7.2"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "043e59c8a0f3cc2d4f2f35900a5d67c3e5f6fc4ad108918420fc2d8df3a7087fbc2912df05efd5afd92152e1090b96dbad500297cb8ed90d8efd4a8eceb70583"
+        }
+      ]
+    },
+    {
+      "name": "@electron/packager",
+      "SPDXID": "SPDXRef-Package-electron.packager-20.3.0",
+      "versionInfo": "20.3.0",
+      "packageFileName": "node_modules/@electron/packager",
+      "description": "Customize and package your Electron app with OS-specific bundles (.app, .exe, etc.) via JS or CLI",
+      "downloadLocation": "https://registry.npmjs.org/@electron/packager/-/packager-20.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/electron/packager",
+      "licenseDeclared": "BSD-2-Clause",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40electron/packager@20.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "dccbe0260cba609e6d8b4a061812ab58a758c294daa11ae1ada9cc0e01d243a8b9b79eb2655f48443ca85d3baa069f7b2e22aa9d978031edb04dc17ff7e7cfe6"
+        }
+      ]
+    },
+    {
+      "name": "@electron/universal",
+      "SPDXID": "SPDXRef-Package-electron.universal-3.0.6",
+      "versionInfo": "3.0.6",
+      "packageFileName": "node_modules/@electron/universal",
+      "description": "Utility for creating Universal macOS applications from two x64 and arm64 Electron applications",
+      "downloadLocation": "https://registry.npmjs.org/@electron/universal/-/universal-3.0.6.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/electron/universal#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40electron/universal@3.0.6"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "3289d2d647e465d48490b648d29751fd30b1f1e731c114859bbb0e45fc0890323d51a21b1e79383207aaabe39bf6a0d0455f0b67dfa11c29a29a903d05170dc7"
+        }
+      ]
+    },
+    {
+      "name": "@electron/windows-sign",
+      "SPDXID": "SPDXRef-Package-electron.windows-sign-2.1.0",
+      "versionInfo": "2.1.0",
+      "packageFileName": "node_modules/@electron/windows-sign",
+      "description": "Codesign Electron Windows apps",
+      "downloadLocation": "https://registry.npmjs.org/@electron/windows-sign/-/windows-sign-2.1.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/electron/windows-sign",
+      "licenseDeclared": "BSD-2-Clause",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40electron/windows-sign@2.1.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "872444d7be6958dc54dd1d24ec1ed9c26e0aa5280afd097eef2a943d17e761cf4ad3ab953c90cbbd71faa17a65fd100a6cbbb4635d78c6e1fa05d8c3845fe928"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/linux-x64",
+      "SPDXID": "SPDXRef-Package-esbuild.linux-x64-0.28.2",
+      "versionInfo": "0.28.2",
+      "packageFileName": "node_modules/@esbuild/linux-x64",
+      "description": "The Linux 64-bit binary for esbuild, a JavaScript bundler.",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/linux-x64/-/linux-x64-0.28.2.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/evanw/esbuild#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/linux-x64@0.28.2"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "e314d9af5154992a105b85c85a68addedcd0ad44d933e3773f45d5f3144e298179d177c8ef178ef74fb56d9bcdc3122e7d0f610d0551247e588603d517c03f1d"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/alegreya",
+      "SPDXID": "SPDXRef-Package-fontsource.alegreya-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/alegreya",
+      "description": "Self-host the Alegreya font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/alegreya/-/alegreya-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/alegreya",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/alegreya@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "602b29f5d1d87cc35d8205f18a730c4b49e41a5664cecd8cbcf2fba8f56348ee03335b89dbd8662847530bf7c13fed8ae006bee19e3826e390cf4e5e0dcbcd24"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/atkinson-hyperlegible",
+      "SPDXID": "SPDXRef-Package-fontsource.atkinson-hyperlegible-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/atkinson-hyperlegible",
+      "description": "Self-host the Atkinson Hyperlegible font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/atkinson-hyperlegible/-/atkinson-hyperlegible-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/atkinson-hyperlegible",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/atkinson-hyperlegible@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "4a9f157bcfab42610d6362efd36547eec2e99edcd34ef9e772724c4db444ec35fa4cbc46ada378ca465fcda51622808599aa26c24bcd8aa9a53e4aca06e0e848"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/cinzel",
+      "SPDXID": "SPDXRef-Package-fontsource.cinzel-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/cinzel",
+      "description": "Self-host the Cinzel font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/cinzel/-/cinzel-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/cinzel",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/cinzel@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "2843984ecad1a695b4b9120f5810cfad082e9c24ba7fcbb89f367161105fa3d4829272a88cb6232bb074668566261c952de7f3dbbd5941117d10ea476657e147"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/cormorant-garamond",
+      "SPDXID": "SPDXRef-Package-fontsource.cormorant-garamond-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/cormorant-garamond",
+      "description": "Self-host the Cormorant Garamond font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/cormorant-garamond/-/cormorant-garamond-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/cormorant-garamond",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/cormorant-garamond@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "c1eb86b028ab1955815aaa6de98529d322d38537b81bc60ee399e8abcc31789091bc4a6ae6516bc4d305493c5cc8ec95e64e68b7327c82e0f361e81d62570b31"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/courier-prime",
+      "SPDXID": "SPDXRef-Package-fontsource.courier-prime-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/courier-prime",
+      "description": "Self-host the Courier Prime font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/courier-prime/-/courier-prime-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/courier-prime",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/courier-prime@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "2888b5938546d56bfefc21a96f5014a4b914b8e01003ace6bed86ac4e646374015f011204206caeea02daaebf5e33b012406356dbe411c811b59514b804361d3"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/crimson-pro",
+      "SPDXID": "SPDXRef-Package-fontsource.crimson-pro-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/crimson-pro",
+      "description": "Self-host the Crimson Pro font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/crimson-pro/-/crimson-pro-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/crimson-pro",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/crimson-pro@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "3d7407d0d1a66b6c30b24640c92047facfdecc0601c320c7d08e28454441bbdbbcd673540a6e4370d0896944bd1f4511d72f2a96c94b7d5454ea69c30697dfac"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/eb-garamond",
+      "SPDXID": "SPDXRef-Package-fontsource.eb-garamond-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/eb-garamond",
+      "description": "Self-host the EB Garamond font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/eb-garamond/-/eb-garamond-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/eb-garamond",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/eb-garamond@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "5699701e907c14bbb397ee06e4b0dc8b56f76784a0862b971fc5c481ac639ce6f96ae7b9984b759e398329e3ba8b22de19aef72df7d4ecf0bb8739dc2d1c7464"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/im-fell-english",
+      "SPDXID": "SPDXRef-Package-fontsource.im-fell-english-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/im-fell-english",
+      "description": "Self-host the IM Fell English font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/im-fell-english/-/im-fell-english-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/im-fell-english",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/im-fell-english@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "15c81d59f63d59e50cda04247e6c219f811df4b56d96597c2d2499bc77dbb14ae71cae6d1c79c683a060c007c7a20a79d9a754dde13cf49ff7079daa5776fe57"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/inter",
+      "SPDXID": "SPDXRef-Package-fontsource.inter-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/inter",
+      "description": "Self-host the Inter font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/inter/-/inter-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/inter",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/inter@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "4687ccca56668e52447c42d778d1c558145c4acef9ac653fe9b5764b68df9efbffdeb3d73c67b42e05094e495c1d9f6533839998054585c24f9c009f6fdd40de"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/jetbrains-mono",
+      "SPDXID": "SPDXRef-Package-fontsource.jetbrains-mono-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/jetbrains-mono",
+      "description": "Self-host the JetBrains Mono font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/jetbrains-mono/-/jetbrains-mono-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/jetbrains-mono",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/jetbrains-mono@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "7ea0df07923d7f5a754d5e3ce9a52007db7cccff383f43b516d411e4e97dbe3c0fcbe4be1081a55589b572f8f65b9b217193138369d915d54ca07e7016ef1ad4"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/lato",
+      "SPDXID": "SPDXRef-Package-fontsource.lato-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/lato",
+      "description": "Self-host the Lato font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/lato/-/lato-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/lato",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/lato@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "d16845ff8ae1af0f84ac8ca778abe11e7d98025fb17fc183b659603a03b30e679a4a52d0b63a428576903a95a11b605c8505b4589cb6ccb575d87760d2774e33"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/libre-baskerville",
+      "SPDXID": "SPDXRef-Package-fontsource.libre-baskerville-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/libre-baskerville",
+      "description": "Self-host the Libre Baskerville font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/libre-baskerville/-/libre-baskerville-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/libre-baskerville",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/libre-baskerville@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "200e8e2eadfafc958c5fbd0585ad79b2b8b6a96b228c587b8607435c24591e32941ed59aacb4288868a5be6ee232a9bb1e260512ff5a705dfe22e4473bd91488"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/libre-caslon-text",
+      "SPDXID": "SPDXRef-Package-fontsource.libre-caslon-text-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/libre-caslon-text",
+      "description": "Self-host the Libre Caslon Text font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/libre-caslon-text/-/libre-caslon-text-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/libre-caslon-text",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/libre-caslon-text@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "cee181304b5e90d05b787e1821b2f6b14bbc0592851abd68e9be35bff40f9d668400e8191d27f864576bf7462645b137b81e46d680042080028309c5464fc5ef"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/literata",
+      "SPDXID": "SPDXRef-Package-fontsource.literata-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/literata",
+      "description": "Self-host the Literata font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/literata/-/literata-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/literata",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/literata@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "f4918c4f9f987c12b8f6d86832af4049a311244ac74f857842e321004c0a1d12eb78eb0830fdb13fa6512e13c9d1ee989444fe92359326e37b2c0c6df7f81619"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/lora",
+      "SPDXID": "SPDXRef-Package-fontsource.lora-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/lora",
+      "description": "Self-host the Lora font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/lora/-/lora-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/lora",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/lora@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "38ad60d73d35ac754fa8ee5ac3f14e2280ea738e8a29865d80bdcd38b9312d60e4e908431e176bfe1d815757247ba813bd1d6dce90df74ac94906b02fac40b79"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/merriweather",
+      "SPDXID": "SPDXRef-Package-fontsource.merriweather-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/merriweather",
+      "description": "Self-host the Merriweather font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/merriweather/-/merriweather-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/merriweather",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/merriweather@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "f4ba4fb0d4d8cd100b8f8ebc523d4af54b25e5e5e4f7dd4bfe42a67297566d31759daf4d7ccc805cc81400194c45e562535318073f6427c8c4cc43ad5fda860e"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/noto-serif",
+      "SPDXID": "SPDXRef-Package-fontsource.noto-serif-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/noto-serif",
+      "description": "Self-host the Noto Serif font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/noto-serif/-/noto-serif-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/noto-serif",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/noto-serif@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "66b3338ee425048730faa99ad6c95941d53760326fae32c6fbd0965356f149fdd84e4b9cc2a7771186bf29fa384ecd7dc3c20c4c6026b4e13777ac169609c1b4"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/open-sans",
+      "SPDXID": "SPDXRef-Package-fontsource.open-sans-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/open-sans",
+      "description": "Self-host the Open Sans font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/open-sans/-/open-sans-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/open-sans",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/open-sans@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "5756dd32518dc99ac9c33addbacb2130ec36611d1aa980cbee43a8f5d9315042a5f1d16feba03d1cb72438e5e5e7bdac1bfee88610d0ac2ad31464a7f4b65c4b"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/opendyslexic",
+      "SPDXID": "SPDXRef-Package-fontsource.opendyslexic-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/opendyslexic",
+      "description": "Self-host the OpenDyslexic font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/opendyslexic/-/opendyslexic-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/opendyslexic",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/opendyslexic@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "0556085bf8217355368808218584cdf86156899de59c2cbc25fd8a9190b6dda1d01c135c32a293ef5f337247ea571471e2ab1726620c3d6bdcce2ad1ba19adb2"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/playfair-display",
+      "SPDXID": "SPDXRef-Package-fontsource.playfair-display-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/playfair-display",
+      "description": "Self-host the Playfair Display font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/playfair-display/-/playfair-display-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/playfair-display",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/playfair-display@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "b8948005a96f756735d1f10fa6942342871a993db52c4c917f3cd67d17ea6e43f3fac46ffa42a96032b296e054b24bc94449094e8b3d7a98f55a3411386bbdf5"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/pt-serif",
+      "SPDXID": "SPDXRef-Package-fontsource.pt-serif-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/pt-serif",
+      "description": "Self-host the PT Serif font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/pt-serif/-/pt-serif-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/pt-serif",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/pt-serif@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "493fa3fdbc81199c3a1fe4d0317efca3a4259e07e3d956bf43d7c0271ab9e08b35650935fc584122eab225c2e69e98b4b6b1bc57f8563bd071e99634f40d0305"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/roboto",
+      "SPDXID": "SPDXRef-Package-fontsource.roboto-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/roboto",
+      "description": "Self-host the Roboto font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/roboto/-/roboto-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/roboto",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/roboto@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "05aa5124e5983fe2d9db5ce9fb00508dfa4f60a468c5ce0bb2927f44bb88f8748c043e6efd7e0ef84483ad2bc4a834b2d2b025ec6c0127ed3d99d735e9c550d5"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/shippori-mincho",
+      "SPDXID": "SPDXRef-Package-fontsource.shippori-mincho-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/shippori-mincho",
+      "description": "Self-host the Shippori Mincho font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/shippori-mincho/-/shippori-mincho-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/shippori-mincho",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/shippori-mincho@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "4b8d6447142eb9b01a62cb3e2de5eed0839cd36450c2c3da25b475716671e15575e615da6195621f7580bdef47a43545a8a61dfc1564f3a060ee5a7dcad57729"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/source-serif-4",
+      "SPDXID": "SPDXRef-Package-fontsource.source-serif-4-5.3.1",
+      "versionInfo": "5.3.1",
+      "packageFileName": "node_modules/@fontsource/source-serif-4",
+      "description": "Self-host the Source Serif 4 font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/source-serif-4/-/source-serif-4-5.3.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/source-serif-4",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/source-serif-4@5.3.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "7167130978d862b805f40ebb7d38558abd5549cd253c4626c10ea3038a4fb74d6cd8c4828bf99a20d51c6680b36aa9d4f1fc9445e0cef7b7867015241e039eba"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/spectral",
+      "SPDXID": "SPDXRef-Package-fontsource.spectral-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/spectral",
+      "description": "Self-host the Spectral font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/spectral/-/spectral-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/spectral",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/spectral@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "d932f959618e663e1222c0663c513329e03ad2d5d7775429d4ea9a6951169092fc21f4862e4e989a2bac982e38d621647490c8b857a5bb5afc9610a64145379b"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/stix-two-math",
+      "SPDXID": "SPDXRef-Package-fontsource.stix-two-math-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/stix-two-math",
+      "description": "Self-host the STIX Two Math font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/stix-two-math/-/stix-two-math-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/stix-two-math",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/stix-two-math@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "9de8287a8cf0e954978d9328cf02914a6fdd842413eb672c65cb9e6bd23c298a8f699abff0a6db041ac0d3664717b032b91e6654c2ffa7eab46f016e4887f619"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/uncial-antiqua",
+      "SPDXID": "SPDXRef-Package-fontsource.uncial-antiqua-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/uncial-antiqua",
+      "description": "Self-host the Uncial Antiqua font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/uncial-antiqua/-/uncial-antiqua-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/uncial-antiqua",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/uncial-antiqua@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "1c0fdc3926e602df914278a894ecdc91660ecd55018376207339150f4d6b44eeb512b4fd3d83777eb82abc7ec9a8de7fef083e5b4e44618ffb31b3ddb604f483"
+        }
+      ]
+    },
+    {
+      "name": "@fontsource/unifrakturmaguntia",
+      "SPDXID": "SPDXRef-Package-fontsource.unifrakturmaguntia-5.3.0",
+      "versionInfo": "5.3.0",
+      "packageFileName": "node_modules/@fontsource/unifrakturmaguntia",
+      "description": "Self-host the UnifrakturMaguntia font in a neatly bundled NPM package.",
+      "downloadLocation": "https://registry.npmjs.org/@fontsource/unifrakturmaguntia/-/unifrakturmaguntia-5.3.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://fontsource.org/fonts/unifrakturmaguntia",
+      "licenseDeclared": "OFL-1.1",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40fontsource/unifrakturmaguntia@5.3.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "cfc346394780bb44f9df867cb44cae35bb9466c52246840ace0de0441e6c6f6a360e2a7112a99842a1dd970c6c6cdd20a7086070294aac2b81fc0855798d9439"
+        }
+      ]
+    },
+    {
+      "name": "@isaacs/nonrecursive-glob-match",
+      "SPDXID": "SPDXRef-Package-isaacs.nonrecursive-glob-match-1.1.0",
+      "versionInfo": "1.1.0",
+      "packageFileName": "node_modules/@isaacs/nonrecursive-glob-match",
+      "description": "a single-path-portion glob matcher not subject to recursive backtracking ReDoS",
+      "downloadLocation": "https://registry.npmjs.org/@isaacs/nonrecursive-glob-match/-/nonrecursive-glob-match-1.1.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "NOASSERTION",
+      "licenseDeclared": "BlueOak-1.0.0",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40isaacs/nonrecursive-glob-match@1.1.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "18f9bf0dbbe4e512e68519f15c86bb9d3a4ad31b65e04d308f432c96cb8d889d45211394fb6fbd960502fdd805ec4cb84025a17c4b20c6294c44c09d1cf7c37f"
+        }
+      ]
+    },
+    {
+      "name": "@malept/cross-spawn-promise",
+      "SPDXID": "SPDXRef-Package-malept.cross-spawn-promise-2.0.0",
+      "versionInfo": "2.0.0",
+      "packageFileName": "node_modules/@malept/cross-spawn-promise",
+      "description": "Promisified version of cross-spawn",
+      "downloadLocation": "https://registry.npmjs.org/@malept/cross-spawn-promise/-/cross-spawn-promise-2.0.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/malept/cross-spawn-promise#readme",
+      "licenseDeclared": "Apache-2.0",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40malept/cross-spawn-promise@2.0.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "d43a4a5346794e196d0708cdc92302d788340a46f28426b3f45921c6a36c648eae00f257152f1c3179412a8dba149f19b96e92f4608c711f483b99365f9ffd16"
+        }
+      ]
+    },
+    {
+      "name": "@types/linkify-it",
+      "SPDXID": "SPDXRef-Package-types.linkify-it-5.0.0",
+      "versionInfo": "5.0.0",
+      "packageFileName": "node_modules/@types/linkify-it",
+      "description": "TypeScript definitions for linkify-it",
+      "downloadLocation": "https://registry.npmjs.org/@types/linkify-it/-/linkify-it-5.0.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/linkify-it",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40types/linkify-it@5.0.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "b150c0e7ccc0c3879601f7ca39a407e7fe63dd779acae9330e4f9ec12b27bf7a78c891191c20b330389933c7b4394ad1be6a4667ce637f8c831e41ec80136bf5"
+        }
+      ]
+    },
+    {
+      "name": "@types/markdown-it",
+      "SPDXID": "SPDXRef-Package-types.markdown-it-14.2.0",
+      "versionInfo": "14.2.0",
+      "packageFileName": "node_modules/@types/markdown-it",
+      "description": "TypeScript definitions for markdown-it",
+      "downloadLocation": "https://registry.npmjs.org/@types/markdown-it/-/markdown-it-14.2.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/markdown-it",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40types/markdown-it@14.2.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "368436c8694b5a3e30a7132cf9362644a937b610eb43deda82beec16a7cbb0096fa12f12350b93ae539b845a86f62ba0753b60384f63a49e8534ce191ac6b9c5"
+        }
+      ]
+    },
+    {
+      "name": "@types/mdurl",
+      "SPDXID": "SPDXRef-Package-types.mdurl-2.0.0",
+      "versionInfo": "2.0.0",
+      "packageFileName": "node_modules/@types/mdurl",
+      "description": "TypeScript definitions for mdurl",
+      "downloadLocation": "https://registry.npmjs.org/@types/mdurl/-/mdurl-2.0.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/mdurl",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40types/mdurl@2.0.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "4467608d05196dae69e90105015c763866fcad00cbfdc3d11bb1a279d47331c275b589d400d0677236d20753511b06ef8dc3de8a4440073da7b21c8f9356e15a"
+        }
+      ]
+    },
+    {
+      "name": "@types/node",
+      "SPDXID": "SPDXRef-Package-types.node-26.6.6",
+      "versionInfo": "26.6.6",
+      "packageFileName": "node_modules/@types/node",
+      "description": "TypeScript definitions for node",
+      "downloadLocation": "https://registry.npmjs.org/@types/node/-/node-26.6.6.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40types/node@26.6.6"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "333423fbc2b1dd7238d0e994004e90a21e7c64c36cb4d34cc27da77dddea5ac7deee70cd4aa24dcdeb389e3873e801f0ad21ce7df48bc1753ac9be3be10e1aa2"
+        }
+      ]
+    },
+    {
+      "name": "@types/trusted-types",
+      "SPDXID": "SPDXRef-Package-types.trusted-types-2.0.7",
+      "versionInfo": "2.0.7",
+      "packageFileName": "node_modules/@types/trusted-types",
+      "description": "TypeScript definitions for trusted-types",
+      "downloadLocation": "https://registry.npmjs.org/@types/trusted-types/-/trusted-types-2.0.7.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/trusted-types",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40types/trusted-types@2.0.7"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "49c68f767d5d41cce06e5d101537933a65471542eddfde17260390368c95859eabdaf2e730b25f04f779dd2079d93ff71b7e95235fe0d8c65a5f47300ee5ec7f"
+        }
+      ]
+    },
+    {
+      "name": "@xmldom/xmldom",
+      "SPDXID": "SPDXRef-Package-xmldom.xmldom-0.9.12",
+      "versionInfo": "0.9.12",
+      "packageFileName": "node_modules/@xmldom/xmldom",
+      "description": "A pure JavaScript W3C standard-based (XML DOM Level 2 Core) DOMParser and XMLSerializer module.",
+      "downloadLocation": "https://registry.npmjs.org/@xmldom/xmldom/-/xmldom-0.9.12.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/xmldom/xmldom",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40xmldom/xmldom@0.9.12"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "e405e3adc302953af23def4b819af2829075963eecd12f44d3e5be0076952805721da9da7caf3a88f4af1b9c47552a7f8c2f951f5517bb44c0126636efdc47ec"
+        }
+      ]
+    },
+    {
+      "name": "argparse",
+      "SPDXID": "SPDXRef-Package-argparse-3.0.4",
+      "versionInfo": "3.0.4",
+      "packageFileName": "node_modules/argparse",
+      "description": "CLI arguments parser. Native port of python's argparse.",
+      "downloadLocation": "https://registry.npmjs.org/argparse/-/argparse-3.0.4.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/nodeca/argparse#readme",
+      "licenseDeclared": "PSF-2.0",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/argparse@3.0.4"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "7f058add9ab6da5e172498f1e667011c68a4224fa126a3bedf674f9b426eafbfabb46e71d6c70e8d27dd4fd64a7961cfa6cc9afe5d071cae2d0c8981913aedbc"
+        }
+      ]
+    },
+    {
+      "name": "balanced-match",
+      "SPDXID": "SPDXRef-Package-balanced-match-4.0.4",
+      "versionInfo": "4.0.4",
+      "packageFileName": "node_modules/balanced-match",
+      "description": "Match balanced character pairs, like \"{\" and \"}\"",
+      "downloadLocation": "https://registry.npmjs.org/balanced-match/-/balanced-match-4.0.4.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/juliangruber/balanced-match#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/balanced-match@4.0.4"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "04bae011c453c17da8ea01b118e08dc8cbc64a9df96287ee633c3d87520c4d198aaadb40659554ebb6dd6fd3ebdaf50703cfa3de2dad25f8cee82ebee26c864c"
+        }
+      ]
+    },
+    {
+      "name": "base64-js",
+      "SPDXID": "SPDXRef-Package-base64-js-1.5.1",
+      "versionInfo": "1.5.1",
+      "packageFileName": "node_modules/base64-js",
+      "description": "Base64 encoding/decoding in pure JS",
+      "downloadLocation": "https://registry.npmjs.org/base64-js/-/base64-js-1.5.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/beatgammit/base64-js",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/base64-js@1.5.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "00aa5a6251e7f2de1255b3870b2f9be7e28a82f478bebb03f2f6efadb890269b3b7ca0d3923903af2ea38b4ad42630b49336cd78f2f0cf1abc8b2a68e35a9e58"
+        }
+      ]
+    },
+    {
+      "name": "brace-expansion",
+      "SPDXID": "SPDXRef-Package-brace-expansion-5.0.12",
+      "versionInfo": "5.0.12",
+      "packageFileName": "node_modules/brace-expansion",
+      "description": "Brace expansion as known from sh/bash",
+      "downloadLocation": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.12.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/juliangruber/brace-expansion#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/brace-expansion@5.0.12"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "628bd0debce168b308ac38cd0cc90d4b4d6d79af77aa11211b9c72f1febe47497e770dca8bee6c0a822823de368ae2d94c75a881692d830543854d3d88d12299"
+        }
+      ]
+    },
+    {
+      "name": "commander",
+      "SPDXID": "SPDXRef-Package-commander-9.5.0",
+      "versionInfo": "9.5.0",
+      "packageFileName": "node_modules/commander",
+      "description": "the complete solution for node.js command-line programs",
+      "downloadLocation": "https://registry.npmjs.org/commander/-/commander-9.5.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/tj/commander.js#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/commander@9.5.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "291b3b5950ca83ce8f5a2b80aa10eb0109d35d92ab69570273abc574bd78aab67f0dc5b0b91a3b5688985da9573bb4b918aa6a622544c026e01437f134728905"
+        }
+      ]
+    },
+    {
+      "name": "cross-spawn",
+      "SPDXID": "SPDXRef-Package-cross-spawn-7.0.6",
+      "versionInfo": "7.0.6",
+      "packageFileName": "node_modules/cross-spawn",
+      "description": "Cross platform child_process#spawn and child_process#spawnSync",
+      "downloadLocation": "https://registry.npmjs.org/cross-spawn/-/cross-spawn-7.0.6.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/moxystudio/node-cross-spawn",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/cross-spawn@7.0.6"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "b95d903963f69d6ceccb668ca7c69189b862f5d9731791e0879487681f4e893184c834e2249cb1d2ecb9d505ddc966ed00736e6b85c9cd429c6b73b3294777bc"
+        }
+      ]
+    },
+    {
+      "name": "debug",
+      "SPDXID": "SPDXRef-Package-debug-4.4.3",
+      "versionInfo": "4.4.3",
+      "packageFileName": "node_modules/debug",
+      "description": "Lightweight debugging utility for Node.js and the browser",
+      "downloadLocation": "https://registry.npmjs.org/debug/-/debug-4.4.3.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/debug-js/debug#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/debug@4.4.3"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "446c305a7c10be455f6af295b76d8518bc3ec5849dcc04709b4aeee83853540dee994e6165cdbc57790ee2cb6062bcab4e52e9baf808f468a28e5b408cd6dca8"
+        }
+      ]
+    },
+    {
+      "name": "docx",
+      "SPDXID": "SPDXRef-Package-docx-9.15.3",
+      "versionInfo": "9.15.3",
+      "packageFileName": "node_modules/docx",
+      "description": "Easily generate .docx files with JS/TS with a nice declarative API. Works for Node and on the Browser.",
+      "downloadLocation": "https://registry.npmjs.org/docx/-/docx-9.15.3.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://docx.js.org",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/docx@9.15.3"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "dc59d4e8ae5cbaf1971009f6e3286f3f799fad9d46f24f7e847f294950d8b0c47e98699f2bfb74351e40c28310a1d9da6b1891b767be4af7247df7097bf36f4d"
+        }
+      ]
+    },
+    {
+      "name": "dompurify",
+      "SPDXID": "SPDXRef-Package-dompurify-3.4.17",
+      "versionInfo": "3.4.17",
+      "packageFileName": "node_modules/dompurify",
+      "description": "DOMPurify is a DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML and SVG. It runs as JavaScript and works in all modern browsers, as well as in Node.js (via jsdom). DOMPurify is written by security people who have vast background in web attacks and XSS. Fear not.",
+      "downloadLocation": "https://registry.npmjs.org/dompurify/-/dompurify-3.4.17.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/cure53/DOMPurify",
+      "licenseDeclared": "(MPL-2.0 OR Apache-2.0)",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/dompurify@3.4.17"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "07fa52958547439f24a88483ff20e3b89d727f3237e26d60178940a1dd9bc1246188de0ae429771fc01fee1a81d8f9932fdd75b5d12e7679d79f9167851a33d3"
+        }
+      ]
+    },
+    {
+      "name": "electron",
+      "SPDXID": "SPDXRef-Package-electron-45.2.3",
+      "versionInfo": "45.2.3",
+      "packageFileName": "node_modules/electron",
+      "description": "Build cross platform desktop apps with JavaScript, HTML, and CSS",
+      "downloadLocation": "https://registry.npmjs.org/electron/-/electron-45.2.3.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/electron/electron#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/electron@45.2.3"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "56eaf3bb950e0399d3193e0ba88c170f5e90146ace65d897c45fb550fe0a36c00ea3f62d0dc4f7feed2384fe164b0349d222eb2c38bce61cc12746ab9c60e1cb"
+        }
+      ]
+    },
+    {
+      "name": "@types/node",
+      "SPDXID": "SPDXRef-Package-types.node-24.19.2",
+      "versionInfo": "24.19.2",
+      "packageFileName": "node_modules/electron/node_modules/@types/node",
+      "description": "TypeScript definitions for node",
+      "downloadLocation": "https://registry.npmjs.org/@types/node/-/node-24.19.2.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40types/node@24.19.2"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "f77778f700962640b237ceccc4ba4d37a2973c2c05c3b6d5520efd986515d4e4b8d09196c150abf27eb50d7092ab3ec257afd57cf91bef179ceee3f633e40759"
+        }
+      ]
+    },
+    {
+      "name": "undici-types",
+      "SPDXID": "SPDXRef-Package-undici-types-7.24.6",
+      "versionInfo": "7.24.6",
+      "packageFileName": "node_modules/electron/node_modules/undici-types",
+      "description": "A stand-alone types package for Undici",
+      "downloadLocation": "https://registry.npmjs.org/undici-types/-/undici-types-7.24.6.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://undici.nodejs.org",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/undici-types@7.24.6"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "591356fac2608f9381378ff42691c5aadab38696e75741ae07e3a8cc0f6008bedaf7ddd2994fb5241642ccb37162c6cc7c87832fe953b29843e6337937e9f4ce"
+        }
+      ]
+    },
+    {
+      "name": "entities",
+      "SPDXID": "SPDXRef-Package-entities-8.1.0",
+      "versionInfo": "8.1.0",
+      "packageFileName": "node_modules/entities",
+      "description": "Encode & decode XML and HTML entities with ease & speed",
+      "downloadLocation": "https://registry.npmjs.org/entities/-/entities-8.1.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/fb55/entities#readme",
+      "licenseDeclared": "BSD-2-Clause",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/entities@8.1.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "9312fb9ac21f7d2ba1f5a68500c0fbaf1008b9344c00731e06d8075b6c94756c3bdf664d87831e86417681d8efb5d9a29246883fd6c50c324e3e5b2f9bb6afac"
+        }
+      ]
+    },
+    {
+      "name": "env-paths",
+      "SPDXID": "SPDXRef-Package-env-paths-3.0.0",
+      "versionInfo": "3.0.0",
+      "packageFileName": "node_modules/env-paths",
+      "description": "Get paths for storing things like data, config, cache, etc",
+      "downloadLocation": "https://registry.npmjs.org/env-paths/-/env-paths-3.0.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/sindresorhus/env-paths#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/env-paths@3.0.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "76d2544dea73316dcb9bf34fc517f7c0fe3ae365168632f6b10c5cfb29b660c8f59bf1f6cc33503a57b369fce41f09fab0cb2d8c74f01ba89042c72d0d6fdbd4"
+        }
+      ]
+    },
+    {
+      "name": "err-code",
+      "SPDXID": "SPDXRef-Package-err-code-2.0.3",
+      "versionInfo": "2.0.3",
+      "packageFileName": "node_modules/err-code",
+      "description": "Create an error with a code",
+      "downloadLocation": "https://registry.npmjs.org/err-code/-/err-code-2.0.3.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/IndigoUnited/js-err-code#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/err-code@2.0.3"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "d9b9a546934a0714ff09198f3a5c88490a4d8fea92798bdcca6fee4f4271d9b30e94a2ed4b2d5998bb95c5210a2b2a2bfcde7286fa7f6621b5a04dc311831214"
+        }
+      ]
+    },
+    {
+      "name": "esbuild",
+      "SPDXID": "SPDXRef-Package-esbuild-0.28.2",
+      "versionInfo": "0.28.2",
+      "packageFileName": "node_modules/esbuild",
+      "description": "An extremely fast JavaScript and CSS bundler and minifier.",
+      "downloadLocation": "https://registry.npmjs.org/esbuild/-/esbuild-0.28.2.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/evanw/esbuild#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/esbuild@0.28.2"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "1ca54b4bc76f208fb1a0a5bd926ab16d12ab9d61177c926bfc56618499a2a880747b4e7740d605a8e068b9330efe4e6c203e0cbc28940afbfc6fd338877db020"
+        }
+      ]
+    },
+    {
+      "name": "fflate",
+      "SPDXID": "SPDXRef-Package-fflate-0.8.3",
+      "versionInfo": "0.8.3",
+      "packageFileName": "node_modules/fflate",
+      "description": "High performance (de)compression in an 8kB package",
+      "downloadLocation": "https://registry.npmjs.org/fflate/-/fflate-0.8.3.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://101arrowz.github.io/fflate",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/fflate@0.8.3"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "b5b64db89acbc06529df3b2106d772e16f8e47166e221f1ae629722044030b9ad8d5fdd4db424caf2d0b977581cd4e7c1192ac12e2455e16f9830bfc0ac3ef80"
+        }
+      ]
+    },
+    {
+      "name": "filename-reserved-regex",
+      "SPDXID": "SPDXRef-Package-filename-reserved-regex-3.0.0",
+      "versionInfo": "3.0.0",
+      "packageFileName": "node_modules/filename-reserved-regex",
+      "description": "Regular expression for matching reserved filename characters",
+      "downloadLocation": "https://registry.npmjs.org/filename-reserved-regex/-/filename-reserved-regex-3.0.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/sindresorhus/filename-reserved-regex#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/filename-reserved-regex@3.0.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "867e1c41f53a18e4ffedc1475c1a9e060d936eb30181d0f491c8cb86f490618c26dece01e9c8ef05f6fb9c100b24b017aa6539c5a8d26bb5f636752e77f54277"
+        }
+      ]
+    },
+    {
+      "name": "filenamify",
+      "SPDXID": "SPDXRef-Package-filenamify-6.0.0",
+      "versionInfo": "6.0.0",
+      "packageFileName": "node_modules/filenamify",
+      "description": "Convert a string to a valid safe filename",
+      "downloadLocation": "https://registry.npmjs.org/filenamify/-/filenamify-6.0.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/sindresorhus/filenamify#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/filenamify@6.0.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "bea22536880a7b20f7cb3ae6d3285131083c84e57061c6117e3128383778f620a9acc9f81cbf3980adc7732910139dc43c8a57dc77006c603910b42fdb5e9d01"
+        }
+      ]
+    },
+    {
+      "name": "flora-colossus",
+      "SPDXID": "SPDXRef-Package-flora-colossus-3.0.2",
+      "versionInfo": "3.0.2",
+      "packageFileName": "node_modules/flora-colossus",
+      "description": "Walks your node_modules tree",
+      "downloadLocation": "https://registry.npmjs.org/flora-colossus/-/flora-colossus-3.0.2.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/MarshallOfSound/flora-colossus#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/flora-colossus@3.0.2"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "264efc2bf4f3b7ab1ac503c60a1949c3af71b851a95b24d2012f04754d21fc5c97c03d8ae3ac8d3979a8ea7447719f68a1e932040ccc9309a218db7bc0e0b9ce"
+        }
+      ]
+    },
+    {
+      "name": "galactus",
+      "SPDXID": "SPDXRef-Package-galactus-2.0.2",
+      "versionInfo": "2.0.2",
+      "packageFileName": "node_modules/galactus",
+      "description": "Prunes dependencies from your package",
+      "downloadLocation": "https://registry.npmjs.org/galactus/-/galactus-2.0.2.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/MarshallOfSound/galactus#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/galactus@2.0.2"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "1e62b24c51a899d01c873e2e9b1f0cc019eb9df166769c224f2180e19385eebc9ad8b9a06dcf6a6ad7b8cb07889cbfb481405522685acf5d92046a56dd263862"
+        }
+      ]
+    },
+    {
+      "name": "glob",
+      "SPDXID": "SPDXRef-Package-glob-14.0.4",
+      "versionInfo": "14.0.4",
+      "packageFileName": "node_modules/glob",
+      "description": "the most correct and second fastest glob implementation in JavaScript",
+      "downloadLocation": "https://registry.npmjs.org/glob/-/glob-14.0.4.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/isaacs/node-glob#readme",
+      "licenseDeclared": "BlueOak-1.0.0",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/glob@14.0.4"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "98c8b034aa096781c0211549c68b4ee8bb0d451780df4810c0ff44dbfa7de2d7cbbfe8f28023692838e18522fa38b63a2c4dfbd44666e4401fed1a58b94aa5b3"
+        }
+      ]
+    },
+    {
+      "name": "graceful-fs",
+      "SPDXID": "SPDXRef-Package-graceful-fs-4.2.11",
+      "versionInfo": "4.2.11",
+      "packageFileName": "node_modules/graceful-fs",
+      "description": "A drop-in replacement for fs, making various improvements.",
+      "downloadLocation": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.11.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/isaacs/node-graceful-fs#readme",
+      "licenseDeclared": "ISC",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/graceful-fs@4.2.11"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "45b279fe398570d342703579a3d7939c12c9fc7b33595d0fef76dcf857f89d2feb263f98692e881b288e2f45680585fe9755ab97793ade1fcaac7fa7849d17bd"
+        }
+      ]
+    },
+    {
+      "name": "highlight.js",
+      "SPDXID": "SPDXRef-Package-highlight.js-11.12.0",
+      "versionInfo": "11.12.0",
+      "packageFileName": "node_modules/highlight.js",
+      "description": "Syntax highlighting with language autodetection.",
+      "downloadLocation": "https://registry.npmjs.org/highlight.js/-/highlight.js-11.12.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://highlightjs.org/",
+      "licenseDeclared": "BSD-3-Clause",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/highlight.js@11.12.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "9db7d6a7244c70cacf3260f0241f9d857fde89a3cab5cd9107ed1066c92a2775a3440fc50d2d1ef6166bc7c102fe56c4bfc817cbdf057036cd6bf76ca4068932"
+        }
+      ]
+    },
+    {
+      "name": "isbinaryfile",
+      "SPDXID": "SPDXRef-Package-isbinaryfile-4.0.10",
+      "versionInfo": "4.0.10",
+      "packageFileName": "node_modules/isbinaryfile",
+      "description": "Detects if a file is binary in Node.js. Similar to Perl's -B.",
+      "downloadLocation": "https://registry.npmjs.org/isbinaryfile/-/isbinaryfile-4.0.10.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/gjtorikian/isBinaryFile#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/isbinaryfile@4.0.10"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "887aea7b9b21bc151c15b999abdcce40706878e85926ee91406ac3a4181e9d49bf026f85dc9336320423fab2b767ad357f3acbe602d95ad00f1f638169255ccb"
+        }
+      ]
+    },
+    {
+      "name": "isexe",
+      "SPDXID": "SPDXRef-Package-isexe-2.0.0",
+      "versionInfo": "2.0.0",
+      "packageFileName": "node_modules/isexe",
+      "description": "Minimal module to check if a file is executable.",
+      "downloadLocation": "https://registry.npmjs.org/isexe/-/isexe-2.0.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/isaacs/isexe#readme",
+      "licenseDeclared": "ISC",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/isexe@2.0.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "447c4c2e9f659ca1c61d19e0f5016144231b600715a67ebdb2648672addfdfac638155564e18f8aaa2db4cb96aed2b23f01f9f210d44b8210623694ab3241e23"
+        }
+      ]
+    },
+    {
+      "name": "junk",
+      "SPDXID": "SPDXRef-Package-junk-4.0.1",
+      "versionInfo": "4.0.1",
+      "packageFileName": "node_modules/junk",
+      "description": "Filter out system junk files like .DS_Store and Thumbs.db",
+      "downloadLocation": "https://registry.npmjs.org/junk/-/junk-4.0.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/sindresorhus/junk#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/junk@4.0.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "42eb21d2e3fe1bc65272918c66f1d48917c8d18056b81de0541625234bf4bef389b7914b89c728f8890fd1ae742ea4d34219adb3f9bab4fe52584f944b222f71"
+        }
+      ]
+    },
+    {
+      "name": "linkify-it",
+      "SPDXID": "SPDXRef-Package-linkify-it-6.1.0",
+      "versionInfo": "6.1.0",
+      "packageFileName": "node_modules/linkify-it",
+      "description": "Links recognition library with FULL unicode support",
+      "downloadLocation": "https://registry.npmjs.org/linkify-it/-/linkify-it-6.1.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/markdown-it/linkify-it#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/linkify-it@6.1.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "c09fd3c294834cb7a90ab42861660813120a83965c85ec76367e729369859c1fba3ed7641edc8bc7be3699df5cb118e33a71a42884bf46b6d8ee5f03ea04fd57"
+        }
+      ]
+    },
+    {
+      "name": "lru-cache",
+      "SPDXID": "SPDXRef-Package-lru-cache-11.5.3",
+      "versionInfo": "11.5.3",
+      "packageFileName": "node_modules/lru-cache",
+      "description": "A cache object that deletes the least-recently-used items.",
+      "downloadLocation": "https://registry.npmjs.org/lru-cache/-/lru-cache-11.5.3.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/isaacs/node-lru-cache#readme",
+      "licenseDeclared": "BlueOak-1.0.0",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/lru-cache@11.5.3"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "53837c160ce65b173c935547f0aafa950835f14ec58ef6f2eb05c75515ff659ec8c166d1320ad16cfd16adbe6ae4d5629ebca9e1241a9a91ca76fb5e708b7152"
+        }
+      ]
+    },
+    {
+      "name": "markdown-it",
+      "SPDXID": "SPDXRef-Package-markdown-it-15.0.3",
+      "versionInfo": "15.0.3",
+      "packageFileName": "node_modules/markdown-it",
+      "description": "Markdown-it - modern pluggable markdown parser.",
+      "downloadLocation": "https://registry.npmjs.org/markdown-it/-/markdown-it-15.0.3.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/markdown-it/markdown-it#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/markdown-it@15.0.3"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "f80cfb3a3cf78911aef0a60cbc9eb1561bebc4fdde13ebc4b495fbe4ec3cf17069710355ff49465f96729c82017ed444a380c2da3b2f78030369e96d9a6f10bd"
+        }
+      ]
+    },
+    {
+      "name": "mdurl",
+      "SPDXID": "SPDXRef-Package-mdurl-2.1.0",
+      "versionInfo": "2.1.0",
+      "packageFileName": "node_modules/mdurl",
+      "description": "URL utilities for markdown-it",
+      "downloadLocation": "https://registry.npmjs.org/mdurl/-/mdurl-2.1.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/markdown-it/mdurl#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/mdurl@2.1.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "d7e1c168ec74ce2fdd41686df2b36ff4c61ff6aaa9a8bfe4c48d215c8994e98e78ef333a4a78bc05089bb7b89f80c718b50838d5aa3722f77a72748cf3a8a7a6"
+        }
+      ]
+    },
+    {
+      "name": "minimatch",
+      "SPDXID": "SPDXRef-Package-minimatch-11.0.5",
+      "versionInfo": "11.0.5",
+      "packageFileName": "node_modules/minimatch",
+      "description": "a glob matcher in javascript",
+      "downloadLocation": "https://registry.npmjs.org/minimatch/-/minimatch-11.0.5.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/isaacs/minimatch#readme",
+      "licenseDeclared": "BlueOak-1.0.0",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/minimatch@11.0.5"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "b273e5569a4571859f2cb1501a10f153205c1cdb4c9569a7de3b63ee911a3be0cff29a8bd08bc0cd784c6269f5cfd01236d826c0b05d17149fe2d31407439328"
+        }
+      ]
+    },
+    {
+      "name": "minipass",
+      "SPDXID": "SPDXRef-Package-minipass-7.1.3",
+      "versionInfo": "7.1.3",
+      "packageFileName": "node_modules/minipass",
+      "description": "minimal implementation of a PassThrough stream",
+      "downloadLocation": "https://registry.npmjs.org/minipass/-/minipass-7.1.3.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/isaacs/minipass#readme",
+      "licenseDeclared": "BlueOak-1.0.0",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/minipass@7.1.3"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "b44047a839c8a0cff5ad7304d738246bd83a43695ca029311cbb9cece0c9e41c5b3f977873667970682d5c092ee7ddb4d02c7b762b874ce61f4810fc9fa9a6f0"
+        }
+      ]
+    },
+    {
+      "name": "ms",
+      "SPDXID": "SPDXRef-Package-ms-2.1.3",
+      "versionInfo": "2.1.3",
+      "packageFileName": "node_modules/ms",
+      "description": "Tiny millisecond conversion utility",
+      "downloadLocation": "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/vercel/ms#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/ms@2.1.3"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "e85973b9b4cb646dc9d9afcd542025784863ceae68c601f268253dc985ef70bb2fa1568726afece715c8ebf5d73fab73ed1f7100eb479d23bfb57b45dd645394"
+        }
+      ]
+    },
+    {
+      "name": "nanoid",
+      "SPDXID": "SPDXRef-Package-nanoid-6.0.2",
+      "versionInfo": "6.0.2",
+      "packageFileName": "node_modules/nanoid",
+      "description": "A tiny (117 bytes), secure URL-friendly unique string ID generator",
+      "downloadLocation": "https://registry.npmjs.org/nanoid/-/nanoid-6.0.2.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/ai/nanoid#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/nanoid@6.0.2"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "848bd539bf50af5a7ff4234d2ce7b43a55af831ff3893b15c0a37f1834acb80acdd8ad300e269f3f7b344969ac9bba3605d9f24bc67d67ae0d14151b9face206"
+        }
+      ]
+    },
+    {
+      "name": "orderedmap",
+      "SPDXID": "SPDXRef-Package-orderedmap-2.1.1",
+      "versionInfo": "2.1.1",
+      "packageFileName": "node_modules/orderedmap",
+      "description": "Persistent ordered mapping from strings",
+      "downloadLocation": "https://registry.npmjs.org/orderedmap/-/orderedmap-2.1.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/marijnh/orderedmap#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/orderedmap@2.1.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "4ef016c62d270ded63febb4c7167088fde3e15f7ba9fbce1a30df7878d122b19ac9a8cece9dcff7be11a8f299fa0570777bb31367f321ccf3cdfdba2c4c395ea"
+        }
+      ]
+    },
+    {
+      "name": "path-key",
+      "SPDXID": "SPDXRef-Package-path-key-3.1.1",
+      "versionInfo": "3.1.1",
+      "packageFileName": "node_modules/path-key",
+      "description": "Get the PATH environment variable key cross-platform",
+      "downloadLocation": "https://registry.npmjs.org/path-key/-/path-key-3.1.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/sindresorhus/path-key#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/path-key@3.1.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "a2399e374a9dfb2d23b3312da18e3caf43deab97703049089423aee90e5fe3595f92cc17b8ab58ae18284e92e7c887079b6e1486ac7ee53aa6d889d2c0b844e9"
+        }
+      ]
+    },
+    {
+      "name": "path-scurry",
+      "SPDXID": "SPDXRef-Package-path-scurry-3.0.0",
+      "versionInfo": "3.0.0",
+      "packageFileName": "node_modules/path-scurry",
+      "description": "walk paths fast and efficiently",
+      "downloadLocation": "https://registry.npmjs.org/path-scurry/-/path-scurry-3.0.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/isaacs/path-scurry#readme",
+      "licenseDeclared": "BlueOak-1.0.0",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/path-scurry@3.0.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "d694db42a1f5c08c0c8bf7a5790e657854d30a4cc5b0f7205cd8f0380f181865bf5b8fe41d3dddb2c13b67a347fb3baa34b3b3381d2e683eb5ca5edc01c56182"
+        }
+      ]
+    },
+    {
+      "name": "pe-library",
+      "SPDXID": "SPDXRef-Package-pe-library-1.0.1",
+      "versionInfo": "1.0.1",
+      "packageFileName": "node_modules/pe-library",
+      "description": "Node.js library for Portable Executable format",
+      "downloadLocation": "https://registry.npmjs.org/pe-library/-/pe-library-1.0.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/jet2jet/pe-library-js",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/pe-library@1.0.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "9e1dfd328d5e1969994bbcbe98afdd408aa0ed2d65a77f03a51c64ca81dfd19714b3f1c373ecb24e3b8eb53bd23191e67d22ee490697f78e6ed3963643a51666"
+        }
+      ]
+    },
+    {
+      "name": "plist",
+      "SPDXID": "SPDXRef-Package-plist-3.1.1",
+      "versionInfo": "3.1.1",
+      "packageFileName": "node_modules/plist",
+      "description": "Apple's property list parser/builder for Node.js and browsers",
+      "downloadLocation": "https://registry.npmjs.org/plist/-/plist-3.1.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/TooTallNate/node-plist#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/plist@3.1.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "6487dc2c90beec4ec50459c3c66f4c3e6b7b0fe0e2772436ea57b089e3bbe407610366b232db094844b4896cea2506dc5514ab4ee7d0a32d0347de311ee7b4a0"
+        }
+      ]
+    },
+    {
+      "name": "postject",
+      "SPDXID": "SPDXRef-Package-postject-1.0.0-alpha.6",
+      "versionInfo": "1.0.0-alpha.6",
+      "packageFileName": "node_modules/postject",
+      "description": "Easily inject arbitrary read-only resources into executable formats (Mach-O, PE, ELF) and use it at runtime.",
+      "downloadLocation": "https://registry.npmjs.org/postject/-/postject-1.0.0-alpha.6.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/nodejs/postject#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/postject@1.0.0-alpha.6"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "6fd11bf21d9e56a344f1e76f29dc2a92b63a3bb900c2623c91c9c1bf535272895825ba39f57505d27a05abe9716c2d72376d1b982d160446c30b91ffec049bd0"
+        }
+      ]
+    },
+    {
+      "name": "progress",
+      "SPDXID": "SPDXRef-Package-progress-2.0.3",
+      "versionInfo": "2.0.3",
+      "packageFileName": "node_modules/progress",
+      "description": "Flexible ascii progress bar",
+      "downloadLocation": "https://registry.npmjs.org/progress/-/progress-2.0.3.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/visionmedia/node-progress#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/progress@2.0.3"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "ecf887b4b965e4b767288330d74d08fbcc495d1e605b6430598913ea226f6b46d78ad64a6bf5ccad26dd9a0debd979da89dcfd42e99dd153da32b66517d57db0"
+        }
+      ]
+    },
+    {
+      "name": "promise-retry",
+      "SPDXID": "SPDXRef-Package-promise-retry-2.0.1",
+      "versionInfo": "2.0.1",
+      "packageFileName": "node_modules/promise-retry",
+      "description": "Retries a function that returns a promise, leveraging the power of the retry module.",
+      "downloadLocation": "https://registry.npmjs.org/promise-retry/-/promise-retry-2.0.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/IndigoUnited/node-promise-retry#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/promise-retry@2.0.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "cbe58a165051f011979ec3652071463d99b20dfdc314ca0b85a7e5027c99815eab1bac6ef89c1eb13a3643d47a5f0626b66c001429009377b7e6311da1e87fde"
+        }
+      ]
+    },
+    {
+      "name": "prosemirror-commands",
+      "SPDXID": "SPDXRef-Package-prosemirror-commands-1.7.2",
+      "versionInfo": "1.7.2",
+      "packageFileName": "node_modules/prosemirror-commands",
+      "description": "Editing commands for ProseMirror",
+      "downloadLocation": "https://registry.npmjs.org/prosemirror-commands/-/prosemirror-commands-1.7.2.tgz",
+      "filesAnalyzed": false,
+      "homepage": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/prosemirror-commands@1.7.2"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "aba43ab33c6a76ef5777a11c74ab2a5e086ee6741d653a41e10f72774e1645ceff8edefaddefeb4fad0ec21d0bd46618f93e3aa39ac3fbd944377e9d652e37b7"
+        }
+      ]
+    },
+    {
+      "name": "prosemirror-dropcursor",
+      "SPDXID": "SPDXRef-Package-prosemirror-dropcursor-1.8.4",
+      "versionInfo": "1.8.4",
+      "packageFileName": "node_modules/prosemirror-dropcursor",
+      "description": "Drop cursor plugin for ProseMirror",
+      "downloadLocation": "https://registry.npmjs.org/prosemirror-dropcursor/-/prosemirror-dropcursor-1.8.4.tgz",
+      "filesAnalyzed": false,
+      "homepage": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/prosemirror-dropcursor@1.8.4"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "5662b185c03a6be879a0f49899f17564d790a8f6f261a231a99b0aa9e602c9394fb6b8d480d6872f73fcbd568ed7da2a015d33b9a33f6b1928c191eb0753f74e"
+        }
+      ]
+    },
+    {
+      "name": "prosemirror-gapcursor",
+      "SPDXID": "SPDXRef-Package-prosemirror-gapcursor-1.4.1",
+      "versionInfo": "1.4.1",
+      "packageFileName": "node_modules/prosemirror-gapcursor",
+      "description": "ProseMirror plugin for cursors at normally impossible-to-reach positions",
+      "downloadLocation": "https://registry.npmjs.org/prosemirror-gapcursor/-/prosemirror-gapcursor-1.4.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/prosemirror/prosemirror-gapcursor#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/prosemirror-gapcursor@1.4.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "a4c7586849e334c4b0975d728c41ad81398b911d3c9bf565f898f8e37d7aee9f5e0771d540a85809ce20987543b0b3ce0df65f8ebfcc9a2aec7726738976d02b"
+        }
+      ]
+    },
+    {
+      "name": "prosemirror-history",
+      "SPDXID": "SPDXRef-Package-prosemirror-history-1.5.1",
+      "versionInfo": "1.5.1",
+      "packageFileName": "node_modules/prosemirror-history",
+      "description": "Undo history for ProseMirror",
+      "downloadLocation": "https://registry.npmjs.org/prosemirror-history/-/prosemirror-history-1.5.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/prosemirror-history@1.5.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "a279709ea2af82d160eacad93a60ce021940cb51481d0a4e131391c9b5f44be0ef25ea44e6d3c02eb07d8867adff6b2aaaaade9529c1d743a888e26a02fbb60c"
+        }
+      ]
+    },
+    {
+      "name": "prosemirror-inputrules",
+      "SPDXID": "SPDXRef-Package-prosemirror-inputrules-1.5.1",
+      "versionInfo": "1.5.1",
+      "packageFileName": "node_modules/prosemirror-inputrules",
+      "description": "Automatic transforms on text input for ProseMirror",
+      "downloadLocation": "https://registry.npmjs.org/prosemirror-inputrules/-/prosemirror-inputrules-1.5.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/prosemirror/prosemirror-inputrules#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/prosemirror-inputrules@1.5.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "ef08f8b8c8ca69758043508383137336d47d025b2ec331df7451f5ca01070362871760ce11a5e5d4225f34f00a0a0f6a344878aee9bdef940b6828903f263a17"
+        }
+      ]
+    },
+    {
+      "name": "prosemirror-keymap",
+      "SPDXID": "SPDXRef-Package-prosemirror-keymap-1.2.3",
+      "versionInfo": "1.2.3",
+      "packageFileName": "node_modules/prosemirror-keymap",
+      "description": "Keymap plugin for ProseMirror",
+      "downloadLocation": "https://registry.npmjs.org/prosemirror-keymap/-/prosemirror-keymap-1.2.3.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/prosemirror/prosemirror-keymap#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/prosemirror-keymap@1.2.3"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "e07b9c465a622ddd483d041736a7a8f35046b6463c022e6c98784a5bd8e33ca45cdb0408c64b20ec7975b5323621f4f607f2e05fa6df62f5f1129265eda2982b"
+        }
+      ]
+    },
+    {
+      "name": "prosemirror-markdown",
+      "SPDXID": "SPDXRef-Package-prosemirror-markdown-1.13.9",
+      "versionInfo": "1.13.9",
+      "packageFileName": "node_modules/prosemirror-markdown",
+      "description": "ProseMirror Markdown integration",
+      "downloadLocation": "https://registry.npmjs.org/prosemirror-markdown/-/prosemirror-markdown-1.13.9.tgz",
+      "filesAnalyzed": false,
+      "homepage": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/prosemirror-markdown@1.13.9"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "a8023723d61db635878d308112b734f22bebdb8292ad48dc4e1e5d627702c4533e252d36913d221de5988cedf9c5e4cfc2de6df2b845ade95ec17857cf5e9665"
+        }
+      ]
+    },
+    {
+      "name": "argparse",
+      "SPDXID": "SPDXRef-Package-argparse-2.0.1",
+      "versionInfo": "2.0.1",
+      "packageFileName": "node_modules/prosemirror-markdown/node_modules/argparse",
+      "description": "CLI arguments parser. Native port of python's argparse.",
+      "downloadLocation": "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/nodeca/argparse#readme",
+      "licenseDeclared": "Python-2.0",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/argparse@2.0.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "f3ef56a9e6db173a57f4e47e59ae8edbd6ac22881e44ccdc1ad00835da4c1c7c80835d1fd3969215505b704a867ff3d7c35123019faadbf6c4060dc3beeacadd"
+        }
+      ]
+    },
+    {
+      "name": "entities",
+      "SPDXID": "SPDXRef-Package-entities-4.5.0",
+      "versionInfo": "4.5.0",
+      "packageFileName": "node_modules/prosemirror-markdown/node_modules/entities",
+      "description": "Encode & decode XML and HTML entities with ease & speed",
+      "downloadLocation": "https://registry.npmjs.org/entities/-/entities-4.5.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/fb55/entities#readme",
+      "licenseDeclared": "BSD-2-Clause",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/entities@4.5.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "5748631f87463e1f40a39a74328458e8156ab700a3873eaf2392d3f00279e47fb883dff8bdb1f1d48e787d2d17b9c94b8431c0acf40288c8c3c6368bf1f3f187"
+        }
+      ]
+    },
+    {
+      "name": "linkify-it",
+      "SPDXID": "SPDXRef-Package-linkify-it-5.0.2",
+      "versionInfo": "5.0.2",
+      "packageFileName": "node_modules/prosemirror-markdown/node_modules/linkify-it",
+      "description": "Links recognition library with FULL unicode support",
+      "downloadLocation": "https://registry.npmjs.org/linkify-it/-/linkify-it-5.0.2.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/markdown-it/linkify-it#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/linkify-it@5.0.2"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "38d4e6da308c0156638106bf172d6449c5ecb8ea05e4d3d3b28141744d4a548676bc087fafdf81aa8fb48c83420589dabd33d0673dfc43315399eefd10da0ddd"
+        }
+      ]
+    },
+    {
+      "name": "markdown-it",
+      "SPDXID": "SPDXRef-Package-markdown-it-14.3.3",
+      "versionInfo": "14.3.3",
+      "packageFileName": "node_modules/prosemirror-markdown/node_modules/markdown-it",
+      "description": "Markdown-it - modern pluggable markdown parser.",
+      "downloadLocation": "https://registry.npmjs.org/markdown-it/-/markdown-it-14.3.3.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/markdown-it/markdown-it#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/markdown-it@14.3.3"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "2fffed0c09234e324253aa4151205382cdca83822755a66e519a20fdbe95d7650a85c0d0ed2efcf3bee26db09a9d1131c0fb983f50990fb19dd9dc52cb519746"
+        }
+      ]
+    },
+    {
+      "name": "uc.micro",
+      "SPDXID": "SPDXRef-Package-uc.micro-2.1.0",
+      "versionInfo": "2.1.0",
+      "packageFileName": "node_modules/prosemirror-markdown/node_modules/uc.micro",
+      "description": "Micro subset of unicode data files for markdown-it projects.",
+      "downloadLocation": "https://registry.npmjs.org/uc.micro/-/uc.micro-2.1.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/markdown-it/uc.micro#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/uc.micro@2.1.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "0110c99a986676f524e86970ef2f434366c590a047c101cb8b696c687e8f3e6cff29af6c14e06c065ba8ce10e5b569a7bfdbbf705e91b7cef39d14cf57eca9fc"
+        }
+      ]
+    },
+    {
+      "name": "prosemirror-model",
+      "SPDXID": "SPDXRef-Package-prosemirror-model-1.25.13",
+      "versionInfo": "1.25.13",
+      "packageFileName": "node_modules/prosemirror-model",
+      "description": "ProseMirror's document model",
+      "downloadLocation": "https://registry.npmjs.org/prosemirror-model/-/prosemirror-model-1.25.13.tgz",
+      "filesAnalyzed": false,
+      "homepage": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/prosemirror-model@1.25.13"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "3250cc5868d85da60e78288ed7b8dcc9b9ed08eccf9cdfbded4d3cd3d91ed90b203edc56de7e7fb03e992b224e35480cc3588ff77a216538de2a39d127b2fa91"
+        }
+      ]
+    },
+    {
+      "name": "prosemirror-schema-list",
+      "SPDXID": "SPDXRef-Package-prosemirror-schema-list-1.6.0",
+      "versionInfo": "1.6.0",
+      "packageFileName": "node_modules/prosemirror-schema-list",
+      "description": "List-related schema elements and commands for ProseMirror",
+      "downloadLocation": "https://registry.npmjs.org/prosemirror-schema-list/-/prosemirror-schema-list-1.6.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/prosemirror-schema-list@1.6.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "1b5b2b0ed6a7f95a969feaa9996163ffa8f462c679ccc53e6489465485b8d5ae491768c02378f37cc4569920019841f6428ab53e6006fe8da6b9c30c74b3ac2e"
+        }
+      ]
+    },
+    {
+      "name": "prosemirror-state",
+      "SPDXID": "SPDXRef-Package-prosemirror-state-1.4.4",
+      "versionInfo": "1.4.4",
+      "packageFileName": "node_modules/prosemirror-state",
+      "description": "ProseMirror editor state",
+      "downloadLocation": "https://registry.npmjs.org/prosemirror-state/-/prosemirror-state-1.4.4.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/prosemirror/prosemirror-state#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/prosemirror-state@1.4.4"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "ea38981c7d822066c27e7c5d1db5d9d7683248563f7f3fee959137df71ba6cfa8867817e4d7a3d89f891f3a9c01e95a77e836339bde8e444a2ec9f14cf58d71f"
+        }
+      ]
+    },
+    {
+      "name": "prosemirror-tables",
+      "SPDXID": "SPDXRef-Package-prosemirror-tables-1.8.5",
+      "versionInfo": "1.8.5",
+      "packageFileName": "node_modules/prosemirror-tables",
+      "description": "ProseMirror's rowspan/colspan tables component",
+      "downloadLocation": "https://registry.npmjs.org/prosemirror-tables/-/prosemirror-tables-1.8.5.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/ProseMirror/prosemirror-tables#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/prosemirror-tables@1.8.5"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "57fd1c0c2b072877bfb5f5a47829ad84d51c129d4854ede9eafc0df17b7013d3d940b01926281bc37428ada01d7c93e2af834a26d36f381f2860629197eb740f"
+        }
+      ]
+    },
+    {
+      "name": "prosemirror-transform",
+      "SPDXID": "SPDXRef-Package-prosemirror-transform-1.12.5",
+      "versionInfo": "1.12.5",
+      "packageFileName": "node_modules/prosemirror-transform",
+      "description": "ProseMirror document transformations",
+      "downloadLocation": "https://registry.npmjs.org/prosemirror-transform/-/prosemirror-transform-1.12.5.tgz",
+      "filesAnalyzed": false,
+      "homepage": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/prosemirror-transform@1.12.5"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "dc405764133887730ab96becf6c43b200d3fbfa8c2a82678c02d3c3c8bf36355524160cbf74284c9f8390b4131e765097ac7ff415a20c6fb81b1974a98b73735"
+        }
+      ]
+    },
+    {
+      "name": "prosemirror-view",
+      "SPDXID": "SPDXRef-Package-prosemirror-view-1.42.9",
+      "versionInfo": "1.42.9",
+      "packageFileName": "node_modules/prosemirror-view",
+      "description": "ProseMirror's view component",
+      "downloadLocation": "https://registry.npmjs.org/prosemirror-view/-/prosemirror-view-1.42.9.tgz",
+      "filesAnalyzed": false,
+      "homepage": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/prosemirror-view@1.42.9"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "6ca6dfcde2993aed87d89414d93689998bba101728af75671884788d1df571b12dd73b549df501e9b286575f9f27338976b55647eb51534db4f33337a10c78c0"
+        }
+      ]
+    },
+    {
+      "name": "punycode.js",
+      "SPDXID": "SPDXRef-Package-punycode.js-2.3.1",
+      "versionInfo": "2.3.1",
+      "packageFileName": "node_modules/punycode.js",
+      "description": "A robust Punycode converter that fully complies to RFC 3492 and RFC 5891, and works on nearly all JavaScript platforms.",
+      "downloadLocation": "https://registry.npmjs.org/punycode.js/-/punycode.js-2.3.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://mths.be/punycode",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/punycode.js@2.3.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "bb11481d4d189476210d0b55e11f49e9ae7648bc76f010a34fee227a1ec819b83054958efa49b8df5738c9195111402c026b7fb8c8d05324073443dfd0cdfd08"
+        }
+      ]
+    },
+    {
+      "name": "resedit",
+      "SPDXID": "SPDXRef-Package-resedit-2.0.3",
+      "versionInfo": "2.0.3",
+      "packageFileName": "node_modules/resedit",
+      "description": "Node.js library editing Windows Resource data",
+      "downloadLocation": "https://registry.npmjs.org/resedit/-/resedit-2.0.3.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/jet2jet/resedit-js",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/resedit@2.0.3"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "a1379e9b1c2832ec714d8c575308e4ace3df9e04d07a196fd3f1e8605364078bb3b0fd549f503d9c8f0940a18e164c69aa40bbaa432cd2552c1abbd495b2cd50"
+        }
+      ]
+    },
+    {
+      "name": "retry",
+      "SPDXID": "SPDXRef-Package-retry-0.12.0",
+      "versionInfo": "0.12.0",
+      "packageFileName": "node_modules/retry",
+      "description": "Abstraction for exponential and custom retry strategies for failed operations.",
+      "downloadLocation": "https://registry.npmjs.org/retry/-/retry-0.12.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/tim-kos/node-retry",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/retry@0.12.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "f4b9224f08d487aad3e79e43b44f6b4d7f81281c8f7eb333100b67944b5d130af73647dfc228a1a9ed9b5800e0f8e4118edf6097a20276607f6450c2180b52a3"
+        }
+      ]
+    },
+    {
+      "name": "rope-sequence",
+      "SPDXID": "SPDXRef-Package-rope-sequence-1.3.4",
+      "versionInfo": "1.3.4",
+      "packageFileName": "node_modules/rope-sequence",
+      "description": "Rope-based persistent sequence type",
+      "downloadLocation": "https://registry.npmjs.org/rope-sequence/-/rope-sequence-1.3.4.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/marijnh/rope-sequence#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/rope-sequence@1.3.4"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "513e440ded9cbb613fe8ee22814af93d216cdb79efbee9227161f1e869ce3e51c08a261bccdb824500ae89474725072a29a94b2a5ad82678d8d32486b173505d"
+        }
+      ]
+    },
+    {
+      "name": "semver",
+      "SPDXID": "SPDXRef-Package-semver-7.8.6",
+      "versionInfo": "7.8.6",
+      "packageFileName": "node_modules/semver",
+      "description": "The semantic version parser used by npm.",
+      "downloadLocation": "https://registry.npmjs.org/semver/-/semver-7.8.6.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/npm/node-semver#readme",
+      "licenseDeclared": "ISC",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/semver@7.8.6"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "f65a52494e0c972de6aedaeec0bb3578b2bafa0cdbcea78117044d8c88c4fbd2ee0e959d61cb6b4254377a3d489608bb8249e9b134673e82cff03a421ea1c827"
+        }
+      ]
+    },
+    {
+      "name": "shebang-command",
+      "SPDXID": "SPDXRef-Package-shebang-command-2.0.0",
+      "versionInfo": "2.0.0",
+      "packageFileName": "node_modules/shebang-command",
+      "description": "Get the command from a shebang",
+      "downloadLocation": "https://registry.npmjs.org/shebang-command/-/shebang-command-2.0.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/kevva/shebang-command#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/shebang-command@2.0.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "907c6bdb366962d766acdd6a0e3aeb5ff675ad1d641bc0f1fa09292b51b87979af5ecc26704d614d6056614ce5ada630d7fc99a7a62e0d8efb62dbdb3747660c"
+        }
+      ]
+    },
+    {
+      "name": "shebang-regex",
+      "SPDXID": "SPDXRef-Package-shebang-regex-3.0.0",
+      "versionInfo": "3.0.0",
+      "packageFileName": "node_modules/shebang-regex",
+      "description": "Regular expression for matching a shebang line",
+      "downloadLocation": "https://registry.npmjs.org/shebang-regex/-/shebang-regex-3.0.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/sindresorhus/shebang-regex#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/shebang-regex@3.0.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "efef9d161b5cc77df9dee05aabc0c347836ec417ad0730bb6503a19934089c711de9b4ab5dd884cb30af1b4ed9e3851874b4a1594c97b7933fca1cfc7a471bd4"
+        }
+      ]
+    },
+    {
+      "name": "sumchecker",
+      "SPDXID": "SPDXRef-Package-sumchecker-3.0.1",
+      "versionInfo": "3.0.1",
+      "packageFileName": "node_modules/sumchecker",
+      "description": "Checksum validator",
+      "downloadLocation": "https://registry.npmjs.org/sumchecker/-/sumchecker-3.0.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/malept/sumchecker#readme",
+      "licenseDeclared": "Apache-2.0",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/sumchecker@3.0.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "32f8d7ce4cff04e7f2543906d2814eb41c475f6bb780a6cc1c817f7576e566c803dc158e14b987a2f229658ec1ca425d02372a442062d5660135d102f7223bbe"
+        }
+      ]
+    },
+    {
+      "name": "temml",
+      "SPDXID": "SPDXRef-Package-temml-0.14.0",
+      "versionInfo": "0.14.0",
+      "packageFileName": "node_modules/temml",
+      "description": "TeX to MathML conversion in JavaScript.",
+      "downloadLocation": "https://registry.npmjs.org/temml/-/temml-0.14.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://temml.org",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/temml@0.14.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "b73d4b5bfe486694e12bc73b669753487fe7e7a7808fe4e18ab2e2784aed2b1602dc4282222078b0a75151e840807f9f426bc82aa31f3f782a4cb05d2e9cbdcf"
+        }
+      ]
+    },
+    {
+      "name": "uc.micro",
+      "SPDXID": "SPDXRef-Package-uc.micro-3.0.0",
+      "versionInfo": "3.0.0",
+      "packageFileName": "node_modules/uc.micro",
+      "description": "Micro subset of unicode data files for markdown-it projects.",
+      "downloadLocation": "https://registry.npmjs.org/uc.micro/-/uc.micro-3.0.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/markdown-it/uc.micro#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/uc.micro@3.0.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "5373e9a449257a84e721f8bc068cccc77ca3bb7a9cfcbe92c2a5a8d92c3ee783d7f8f5f4abd23eaf5526e470a6a83ee7f550d7e7fbf7bd01ff02303a75e0ddb7"
+        }
+      ]
+    },
+    {
+      "name": "undici",
+      "SPDXID": "SPDXRef-Package-undici-7.30.2",
+      "versionInfo": "7.30.2",
+      "packageFileName": "node_modules/undici",
+      "description": "An HTTP/1.1 client, written from scratch for Node.js",
+      "downloadLocation": "https://registry.npmjs.org/undici/-/undici-7.30.2.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://undici.nodejs.org",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/undici@7.30.2"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "98bc8f4271f053168cfeb89d7a82bff8a2fc0da0092d197868109f997e38e1a0922e721aa26a8f2ed3517b68dd09872c939c19cd7ac32100bc65e60d44063220"
+        }
+      ]
+    },
+    {
+      "name": "undici-types",
+      "SPDXID": "SPDXRef-Package-undici-types-8.9.0",
+      "versionInfo": "8.9.0",
+      "packageFileName": "node_modules/undici-types",
+      "description": "A stand-alone types package for Undici",
+      "downloadLocation": "https://registry.npmjs.org/undici-types/-/undici-types-8.9.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://undici.nodejs.org",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/undici-types@8.9.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "2930f2453617f2c5a629702290f1c74b273adc244f11331cb728ca16ea5c0ba3812d74f7c6c3747bd685ee6fa6217bad156a545ee79db68c06ee22cece9d2442"
+        }
+      ]
+    },
+    {
+      "name": "w3c-keyname",
+      "SPDXID": "SPDXRef-Package-w3c-keyname-2.2.8",
+      "versionInfo": "2.2.8",
+      "packageFileName": "node_modules/w3c-keyname",
+      "description": "Get a KeyboardEvent.key-style string from an event",
+      "downloadLocation": "https://registry.npmjs.org/w3c-keyname/-/w3c-keyname-2.2.8.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/marijnh/w3c-keyname#readme",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/w3c-keyname@2.2.8"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "769a2306136c08d37b4fcd939bb936e80e86f4c2f7364843b27c3d9ff7a8c52465541078084b4843f29308b2361707f76ad6925d1858164422dd29671703ef3d"
+        }
+      ]
+    },
+    {
+      "name": "which",
+      "SPDXID": "SPDXRef-Package-which-2.0.2",
+      "versionInfo": "2.0.2",
+      "packageFileName": "node_modules/which",
+      "description": "Like which(1) unix command. Find the first instance of an executable in the PATH.",
+      "downloadLocation": "https://registry.npmjs.org/which/-/which-2.0.2.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/isaacs/node-which#readme",
+      "licenseDeclared": "ISC",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/which@2.0.2"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "04b2374e5d535b73ef97bd25df2ab763ae22f9ac29c17aac181616924a8cb676d782b303fb28fbae15b492e103c7325a6171a3116e6881aa4a34c10a34c8e26c"
+        }
+      ]
+    },
+    {
+      "name": "xmlbuilder",
+      "SPDXID": "SPDXRef-Package-xmlbuilder-15.1.1",
+      "versionInfo": "15.1.1",
+      "packageFileName": "node_modules/xmlbuilder",
+      "description": "An XML builder for node.js",
+      "downloadLocation": "https://registry.npmjs.org/xmlbuilder/-/xmlbuilder-15.1.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "http://github.com/oozcitak/xmlbuilder-js",
+      "licenseDeclared": "MIT",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/xmlbuilder@15.1.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "c8ca8606ab57c9e3757b74c662f80d803559de3f385b873090e5d0b30821a25e803e065669f7fd9676ef37b3076093a25ecbc63d7b634d8244882f49db0bfd12"
+        }
+      ]
+    },
+    {
+      "name": "yaml",
+      "SPDXID": "SPDXRef-Package-yaml-2.9.1",
+      "versionInfo": "2.9.1",
+      "packageFileName": "node_modules/yaml",
+      "description": "JavaScript parser and stringifier for YAML",
+      "downloadLocation": "https://registry.npmjs.org/yaml/-/yaml-2.9.1.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://eemeli.org/yaml/",
+      "licenseDeclared": "ISC",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/yaml@2.9.1"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "dcdc4df3eefc39dcdb4fb0bf5a31acc9f3c0b4968ddc5343b16c6fed8ee6703b13fe83a6816f01a72410145067bd91378fd63649dcf550b14b7b32fb11bdb217"
+        }
+      ]
+    },
+    {
+      "name": "yargs-parser",
+      "SPDXID": "SPDXRef-Package-yargs-parser-22.0.0",
+      "versionInfo": "22.0.0",
+      "packageFileName": "node_modules/yargs-parser",
+      "description": "the mighty option parser used by yargs",
+      "downloadLocation": "https://registry.npmjs.org/yargs-parser/-/yargs-parser-22.0.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://github.com/yargs/yargs-parser#readme",
+      "licenseDeclared": "ISC",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/yargs-parser@22.0.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "af0bbf0a535d48ca644ab51bf9de8146c4a42d4ab57e67ec63a4cea58cd3c2fc24835fcd446f39281cb792afbe03c2ca4305fa96cbbe69669dfb6921bee5ebab"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DESCRIBES"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.alegreya-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.atkinson-hyperlegible-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.cinzel-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.cormorant-garamond-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.courier-prime-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.crimson-pro-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.eb-garamond-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.im-fell-english-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.inter-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.jetbrains-mono-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.lato-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.libre-baskerville-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.libre-caslon-text-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.literata-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.lora-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.merriweather-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.noto-serif-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.open-sans-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.opendyslexic-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.playfair-display-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.pt-serif-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.roboto-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.shippori-mincho-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.source-serif-4-5.3.1",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.spectral-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.stix-two-math-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.uncial-antiqua-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fontsource.unifrakturmaguntia-5.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-docx-9.15.3",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-dompurify-3.4.17",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fflate-0.8.3",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-highlight.js-11.12.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-markdown-it-15.0.3",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-commands-1.7.2",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-dropcursor-1.8.4",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-gapcursor-1.4.1",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-history-1.5.1",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-inputrules-1.5.1",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-keymap-1.2.3",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-markdown-1.13.9",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-model-1.25.13",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-schema-list-1.6.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-state-1.4.4",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-tables-1.8.5",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-transform-1.12.5",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-view-1.42.9",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-temml-0.14.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-yaml-2.9.1",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-electron.fuses-2.1.3",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEV_DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-electron.packager-20.3.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEV_DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-electron-45.2.3",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEV_DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-esbuild-0.28.2",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEV_DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-glob-14.0.4",
+      "relatedSpdxElement": "SPDXRef-Package-electron.asar-4.3.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-minimatch-11.0.5",
+      "relatedSpdxElement": "SPDXRef-Package-electron.asar-4.3.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-debug-4.4.3",
+      "relatedSpdxElement": "SPDXRef-Package-electron.get-5.1.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-env-paths-3.0.0",
+      "relatedSpdxElement": "SPDXRef-Package-electron.get-5.1.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-graceful-fs-4.2.11",
+      "relatedSpdxElement": "SPDXRef-Package-electron.get-5.1.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-progress-2.0.3",
+      "relatedSpdxElement": "SPDXRef-Package-electron.get-5.1.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-semver-7.8.6",
+      "relatedSpdxElement": "SPDXRef-Package-electron.get-5.1.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-sumchecker-3.0.1",
+      "relatedSpdxElement": "SPDXRef-Package-electron.get-5.1.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-undici-7.30.2",
+      "relatedSpdxElement": "SPDXRef-Package-electron.get-5.1.0",
+      "relationshipType": "OPTIONAL_DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-debug-4.4.3",
+      "relatedSpdxElement": "SPDXRef-Package-electron.notarize-3.1.2",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-promise-retry-2.0.1",
+      "relatedSpdxElement": "SPDXRef-Package-electron.notarize-3.1.2",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-debug-4.4.3",
+      "relatedSpdxElement": "SPDXRef-Package-electron.osx-sign-2.7.2",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-isbinaryfile-4.0.10",
+      "relatedSpdxElement": "SPDXRef-Package-electron.osx-sign-2.7.2",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-plist-3.1.1",
+      "relatedSpdxElement": "SPDXRef-Package-electron.osx-sign-2.7.2",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-semver-7.8.6",
+      "relatedSpdxElement": "SPDXRef-Package-electron.osx-sign-2.7.2",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-electron-internal.extract-zip-1.0.8",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-electron.asar-4.3.1",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-electron.get-5.1.0",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-electron.notarize-3.1.2",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-electron.osx-sign-2.7.2",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-electron.universal-3.0.6",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-electron.windows-sign-2.1.0",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-malept.cross-spawn-promise-2.0.0",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-debug-4.4.3",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-filenamify-6.0.0",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-galactus-2.0.2",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-graceful-fs-4.2.11",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-junk-4.0.1",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-plist-3.1.1",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-resedit-2.0.3",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-semver-7.8.6",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-yargs-parser-22.0.0",
+      "relatedSpdxElement": "SPDXRef-Package-electron.packager-20.3.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-electron.asar-4.3.1",
+      "relatedSpdxElement": "SPDXRef-Package-electron.universal-3.0.6",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-debug-4.4.3",
+      "relatedSpdxElement": "SPDXRef-Package-electron.universal-3.0.6",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-plist-3.1.1",
+      "relatedSpdxElement": "SPDXRef-Package-electron.universal-3.0.6",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-debug-4.4.3",
+      "relatedSpdxElement": "SPDXRef-Package-electron.windows-sign-2.1.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-graceful-fs-4.2.11",
+      "relatedSpdxElement": "SPDXRef-Package-electron.windows-sign-2.1.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-postject-1.0.0-alpha.6",
+      "relatedSpdxElement": "SPDXRef-Package-electron.windows-sign-2.1.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-cross-spawn-7.0.6",
+      "relatedSpdxElement": "SPDXRef-Package-malept.cross-spawn-promise-2.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-types.linkify-it-5.0.0",
+      "relatedSpdxElement": "SPDXRef-Package-types.markdown-it-14.2.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-types.mdurl-2.0.0",
+      "relatedSpdxElement": "SPDXRef-Package-types.markdown-it-14.2.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-undici-types-8.9.0",
+      "relatedSpdxElement": "SPDXRef-Package-types.node-26.6.6",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-balanced-match-4.0.4",
+      "relatedSpdxElement": "SPDXRef-Package-brace-expansion-5.0.12",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-path-key-3.1.1",
+      "relatedSpdxElement": "SPDXRef-Package-cross-spawn-7.0.6",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-shebang-command-2.0.0",
+      "relatedSpdxElement": "SPDXRef-Package-cross-spawn-7.0.6",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-which-2.0.2",
+      "relatedSpdxElement": "SPDXRef-Package-cross-spawn-7.0.6",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-ms-2.1.3",
+      "relatedSpdxElement": "SPDXRef-Package-debug-4.4.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-types.node-26.6.6",
+      "relatedSpdxElement": "SPDXRef-Package-docx-9.15.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fflate-0.8.3",
+      "relatedSpdxElement": "SPDXRef-Package-docx-9.15.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-nanoid-6.0.2",
+      "relatedSpdxElement": "SPDXRef-Package-docx-9.15.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-types.trusted-types-2.0.7",
+      "relatedSpdxElement": "SPDXRef-Package-dompurify-3.4.17",
+      "relationshipType": "OPTIONAL_DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-electron-internal.extract-zip-1.0.8",
+      "relatedSpdxElement": "SPDXRef-Package-electron-45.2.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-electron.get-5.1.0",
+      "relatedSpdxElement": "SPDXRef-Package-electron-45.2.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-types.node-24.19.2",
+      "relatedSpdxElement": "SPDXRef-Package-electron-45.2.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-undici-types-7.24.6",
+      "relatedSpdxElement": "SPDXRef-Package-types.node-24.19.2",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-esbuild.linux-x64-0.28.2",
+      "relatedSpdxElement": "SPDXRef-Package-esbuild-0.28.2",
+      "relationshipType": "OPTIONAL_DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-filename-reserved-regex-3.0.0",
+      "relatedSpdxElement": "SPDXRef-Package-filenamify-6.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-debug-4.4.3",
+      "relatedSpdxElement": "SPDXRef-Package-flora-colossus-3.0.2",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-debug-4.4.3",
+      "relatedSpdxElement": "SPDXRef-Package-galactus-2.0.2",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-flora-colossus-3.0.2",
+      "relatedSpdxElement": "SPDXRef-Package-galactus-2.0.2",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-minimatch-11.0.5",
+      "relatedSpdxElement": "SPDXRef-Package-glob-14.0.4",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-minipass-7.1.3",
+      "relatedSpdxElement": "SPDXRef-Package-glob-14.0.4",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-path-scurry-3.0.0",
+      "relatedSpdxElement": "SPDXRef-Package-glob-14.0.4",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-uc.micro-3.0.0",
+      "relatedSpdxElement": "SPDXRef-Package-linkify-it-6.1.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-argparse-3.0.4",
+      "relatedSpdxElement": "SPDXRef-Package-markdown-it-15.0.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-entities-8.1.0",
+      "relatedSpdxElement": "SPDXRef-Package-markdown-it-15.0.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-linkify-it-6.1.0",
+      "relatedSpdxElement": "SPDXRef-Package-markdown-it-15.0.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-mdurl-2.1.0",
+      "relatedSpdxElement": "SPDXRef-Package-markdown-it-15.0.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-punycode.js-2.3.1",
+      "relatedSpdxElement": "SPDXRef-Package-markdown-it-15.0.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-uc.micro-3.0.0",
+      "relatedSpdxElement": "SPDXRef-Package-markdown-it-15.0.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-isaacs.nonrecursive-glob-match-1.1.0",
+      "relatedSpdxElement": "SPDXRef-Package-minimatch-11.0.5",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-brace-expansion-5.0.12",
+      "relatedSpdxElement": "SPDXRef-Package-minimatch-11.0.5",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-lru-cache-11.5.3",
+      "relatedSpdxElement": "SPDXRef-Package-path-scurry-3.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-minipass-7.1.3",
+      "relatedSpdxElement": "SPDXRef-Package-path-scurry-3.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-xmldom.xmldom-0.9.12",
+      "relatedSpdxElement": "SPDXRef-Package-plist-3.1.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-base64-js-1.5.1",
+      "relatedSpdxElement": "SPDXRef-Package-plist-3.1.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-xmlbuilder-15.1.1",
+      "relatedSpdxElement": "SPDXRef-Package-plist-3.1.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-commander-9.5.0",
+      "relatedSpdxElement": "SPDXRef-Package-postject-1.0.0-alpha.6",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-err-code-2.0.3",
+      "relatedSpdxElement": "SPDXRef-Package-promise-retry-2.0.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-retry-0.12.0",
+      "relatedSpdxElement": "SPDXRef-Package-promise-retry-2.0.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-model-1.25.13",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-commands-1.7.2",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-transform-1.12.5",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-commands-1.7.2",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-state-1.4.4",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-commands-1.7.2",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-state-1.4.4",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-dropcursor-1.8.4",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-view-1.42.9",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-dropcursor-1.8.4",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-transform-1.12.5",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-dropcursor-1.8.4",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-keymap-1.2.3",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-gapcursor-1.4.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-model-1.25.13",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-gapcursor-1.4.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-state-1.4.4",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-gapcursor-1.4.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-view-1.42.9",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-gapcursor-1.4.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-state-1.4.4",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-history-1.5.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-transform-1.12.5",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-history-1.5.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-view-1.42.9",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-history-1.5.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-rope-sequence-1.3.4",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-history-1.5.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-state-1.4.4",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-inputrules-1.5.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-transform-1.12.5",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-inputrules-1.5.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-w3c-keyname-2.2.8",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-keymap-1.2.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-state-1.4.4",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-keymap-1.2.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-markdown-it-14.3.3",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-markdown-1.13.9",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-model-1.25.13",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-markdown-1.13.9",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-types.markdown-it-14.2.0",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-markdown-1.13.9",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-uc.micro-2.1.0",
+      "relatedSpdxElement": "SPDXRef-Package-linkify-it-5.0.2",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-argparse-2.0.1",
+      "relatedSpdxElement": "SPDXRef-Package-markdown-it-14.3.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-entities-4.5.0",
+      "relatedSpdxElement": "SPDXRef-Package-markdown-it-14.3.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-linkify-it-5.0.2",
+      "relatedSpdxElement": "SPDXRef-Package-markdown-it-14.3.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-mdurl-2.1.0",
+      "relatedSpdxElement": "SPDXRef-Package-markdown-it-14.3.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-punycode.js-2.3.1",
+      "relatedSpdxElement": "SPDXRef-Package-markdown-it-14.3.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-uc.micro-2.1.0",
+      "relatedSpdxElement": "SPDXRef-Package-markdown-it-14.3.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-orderedmap-2.1.1",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-model-1.25.13",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-model-1.25.13",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-schema-list-1.6.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-transform-1.12.5",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-schema-list-1.6.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-state-1.4.4",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-schema-list-1.6.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-model-1.25.13",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-state-1.4.4",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-transform-1.12.5",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-state-1.4.4",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-view-1.42.9",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-state-1.4.4",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-keymap-1.2.3",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-tables-1.8.5",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-model-1.25.13",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-tables-1.8.5",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-state-1.4.4",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-tables-1.8.5",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-transform-1.12.5",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-tables-1.8.5",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-view-1.42.9",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-tables-1.8.5",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-model-1.25.13",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-transform-1.12.5",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-model-1.25.13",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-view-1.42.9",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-state-1.4.4",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-view-1.42.9",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-prosemirror-transform-1.12.5",
+      "relatedSpdxElement": "SPDXRef-Package-prosemirror-view-1.42.9",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-pe-library-1.0.1",
+      "relatedSpdxElement": "SPDXRef-Package-resedit-2.0.3",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-shebang-regex-3.0.0",
+      "relatedSpdxElement": "SPDXRef-Package-shebang-command-2.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-debug-4.4.3",
+      "relatedSpdxElement": "SPDXRef-Package-sumchecker-3.0.1",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-isexe-2.0.0",
+      "relatedSpdxElement": "SPDXRef-Package-which-2.0.2",
+      "relationshipType": "DEPENDENCY_OF"
+    }
+  ]
+}
