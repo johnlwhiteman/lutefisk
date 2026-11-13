@@ -1,3 +1,0 @@
-*Light thinks it travels faster than anything but it is wrong. No matter how fast light travels, it finds the darkness has always got there first.*
-
-— A traveller’s proverb
