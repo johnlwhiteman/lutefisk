@@ -16,7 +16,6 @@ book.description = 'A lamplighter’s daughter walks the old mountain road to br
 book.keywords = ['fiction', 'fantasy', 'novella'];
 book.template = 'classic';
 book.cover = imgs ? 'assets/cover.jpg' : '';
-book.authorPhoto = imgs ? 'assets/author.jpg' : '';
 book.index = { terms: ['lantern', 'Hollow Mill', 'the Pass'] };
 book.bibliography = [
   { id: 'ref-1', kind: 'book', authors: [{ family: 'Bringhurst', given: 'Robert' }], title: 'The Elements of Typographic Style', publisher: 'Hartley & Marks', date: '2004', edition: '3rd', accessed: '2026-11-09' },
@@ -31,6 +30,31 @@ ch1.title = 'The Last Lamp';
 const ch2 = { id: 'cha-2b7d91e0', type: 'chapter', enabled: true, title: 'Hollow Mill' };
 const ch3 = { id: 'cha-3c8ea2f1', type: 'chapter', enabled: true, title: 'The Pass' };
 book.sections.splice(book.sections.indexOf(ch1) + 1, 0, ch2, ch3);
+
+// A small cast and a plot board, so Characters and Plot have something to show.
+const attrs = (o) => Object.entries(o).map(([k, v]) => ({ k, v }));
+book.characters = [
+  { id: 'ch-mara', name: 'Mara Quill', aliases: [], role: 'Protagonist', color: '#2a78d6', matchFirst: true, avatar: 'icon:long-hair', attrs: attrs({ Age: '17', Occupation: 'Lamplighter’s daughter', Goal: 'Bring light back to the valley', Fear: 'That the old stories are only stories', Flaw: 'Won’t ask for help' }), notes: 'Carries her father’s lantern even when it’s empty.' },
+  { id: 'ch-tamsin', name: 'Tamsin', aliases: ['the miller'], role: 'Mentor', color: '#1baf7a', matchFirst: true, avatar: 'icon:elder', attrs: attrs({ Age: '60s', Occupation: 'Miller of Hollow Mill', Goal: 'Be remembered', Strength: 'Patience' }), notes: 'Has kept the press clean for eleven years.' },
+  { id: 'ch-grandmother', name: 'Grandmother', aliases: [], role: 'Supporting', color: '#eda100', matchFirst: true, avatar: 'icon:wizard', attrs: attrs({ Occupation: 'Keeper of the family stories', Personality: 'Certain about everything' }), notes: '' },
+  { id: 'ch-patience', name: 'Patience', aliases: [], role: 'Sidekick', color: '#e87ba4', matchFirst: true, avatar: 'icon:dog', attrs: attrs({ Occupation: 'Mule', Personality: 'Has none (patience, that is)' }), notes: '' },
+];
+const colFor = (s) => ({ id: `pc-${s.id}`, link: s.id, title: s.title || 'Prologue' });
+const cols = [S('prologue'), ch1, ch2, ch3, S('epilogue')].map(colFor);
+book.plot = {
+  lines: [{ id: 'pl-main', title: 'The Journey', color: '#2a78d6' }, { id: 'pl-sub', title: 'The Valley', color: '#eb6834' }],
+  columns: cols, skip: [],
+  cards: [
+    { id: 'pk-1', when: 'Year 300, day 1, dawn', line: 'pl-main', col: cols[1].id, title: 'The lamps go out', text: 'Mara finds every lamp dark and the oil turned.', chars: ['ch-mara', 'ch-grandmother'] },
+    { id: 'pk-2', when: 'Year 300, day 2', line: 'pl-main', col: cols[2].id, title: 'Hollow Mill', text: 'Tamsin has been waiting eleven years.', chars: ['ch-mara', 'ch-tamsin'] },
+    { id: 'pk-3', when: 'Year 300, day 4', line: 'pl-main', col: cols[3].id, title: 'Over the Pass', text: 'Snow, three matches, and a white light.', chars: ['ch-mara', 'ch-tamsin', 'ch-patience'] },
+    { id: 'pk-4', when: 'Year 0', line: 'pl-sub', col: cols[0].id, title: 'The Great Dimming', text: 'The valley’s oldest story.', chars: ['ch-grandmother'] },
+    { id: 'pk-5', when: 'Year 300, day 1, noon', line: 'pl-sub', col: cols[1].id, title: 'The square argues', text: 'Everyone blames someone.', chars: [] },
+    { id: 'pk-6', when: 'Year 301, midwinter', line: 'pl-sub', col: cols[4].id, title: 'Lanterns on the Pass', text: 'Every year, the whole valley walks up.', chars: [] },
+    { id: 'pk-7', when: 'Year 289', line: 'pl-main', col: null, title: 'Tamsin leaves the valley', text: 'Eleven years before the lamps go out.', chars: ['ch-tamsin'] },
+    { id: 'pk-8', when: 'Year 290', line: 'pl-sub', col: cols[3].id, title: 'Grandmother hides the last flint', text: 'She tells no one where.', chars: ['ch-grandmother'] },
+  ],
+};
 
 const p = (...xs) => xs.join('\n\n');
 const contents = {};
@@ -76,6 +100,6 @@ contents[S('about-author').id] = 'Eliza Marrow grew up in a valley much like Mar
 mkdirSync(join(dir, 'chapters'), { recursive: true });
 mkdirSync(join(dir, 'assets'), { recursive: true });
 if (imgs) for (const f of ['cover.jpg', 'map.png', 'author.jpg']) if (existsSync(join(imgs, f))) copyFileSync(join(imgs, f), join(dir, 'assets', f));
-writeFileSync(join(dir, 'book.yaml'), serializeBook(book));
+writeFileSync(join(dir, 'lutefisk.yaml'), serializeBook(book));
 for (const s of book.sections) writeFileSync(join(dir, 'chapters', `${s.id}.md`), contents[s.id] ?? '');
 console.log('Sample book written to', dir);

@@ -1,5 +1,5 @@
 // Word-style comments: balloons in the right margin beside the text they refer
-// to, with replies, resolve and delete. Comment bodies live in book.yaml under
+// to, with replies, resolve and delete. Comment bodies live in lutefisk.yaml under
 // `comments`; the manuscript marks the commented range with CriticMarkup.
 import { h, icon, timeAgo, confirmDialog } from './ui.js';
 

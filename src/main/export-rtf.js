@@ -130,9 +130,9 @@ export async function buildRtf({ dir, book, contents, rasterize, toPng }) {
       }
       if (t === 'div' && hasClass(n, 'bk-pagebreak')) { out += '\\page\n'; ctx.first = true; continue; }
       if (t === 'div' && hasClass(n, 'bk-align')) {
-        const a = ['center', 'right', 'justify'].find((x) => hasClass(n, `bk-align-${x}`));
+        const a = ['center', 'right', 'justify', 'attribution'].find((x) => hasClass(n, `bk-align-${x}`));
         const prev = ctx.align, prevBlock = ctx.blockStyle;
-        ctx.align = a ? { center: 'c', right: 'r', justify: 'j' }[a] : 'l';
+        ctx.align = a ? { center: 'c', right: 'r', justify: 'j', attribution: 'r' }[a] : 'l';
         ctx.blockStyle = hasClass(n, 'bk-align-verse') ? 'verse' : hasClass(n, 'bk-align-hanging') ? 'hanging' : prevBlock;
         out += await blocks(n.children, ctx);
         ctx.align = prev;
@@ -209,7 +209,9 @@ export async function buildRtf({ dir, book, contents, rasterize, toPng }) {
           }
         };
         walkCode(n.children, '');
-        out += `\\pard\\plain\\ql\\li240\\ri240\\sb160\\sa160\\keep\\cbpat${colorIndex('F6F8FA')}\\brdrl\\brdrs\\brdrw30\\brdrcf${colorIndex('8C959F')}\\f3\\fs${Math.round(fs * 0.82)} ${body}\\par\n`;
+        const bw = Number(/\bborder-([1-3])\b/.exec(n.attrs?.class || '')?.[1] || 0);
+        const box = bw ? `\\li240\\ri240\\brdrt\\brdrs\\brdrw${bw * 15}\\brdrcf${colorIndex('8C959F')}\\brsp80\\brdrl\\brdrs\\brdrw${bw * 15}\\brdrcf${colorIndex('8C959F')}\\brsp80\\brdrb\\brdrs\\brdrw${bw * 15}\\brdrcf${colorIndex('8C959F')}\\brsp80\\brdrr\\brdrs\\brdrw${bw * 15}\\brdrcf${colorIndex('8C959F')}\\brsp80` : '';
+        out += `\\pard\\plain\\ql${box}\\sb160\\sa160\\keep\\f3\\fs${Math.round(fs * 0.82)} ${body}\\par\n`;
         ctx.first = true;
         continue;
       }

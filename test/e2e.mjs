@@ -8,6 +8,17 @@ import { join } from 'node:path';
 import os from 'node:os';
 
 const [bookDir, outDir] = process.argv.slice(2);
+// The test builds its own cast and plot board, so start the sample book without them.
+{
+  const { readFileSync } = await import('node:fs');
+  const YAML = (await import('yaml')).default;
+  const f = join(bookDir, 'lutefisk.yaml');
+  if (existsSync(f)) {
+    const b = YAML.parse(readFileSync(f, 'utf8'));
+    delete b.characters; delete b.plot;
+    writeFileSync(f, YAML.stringify(b, { lineWidth: 0 }));
+  }
+}
 mkdirSync(outDir, { recursive: true });
 const userData = join(os.homedir(), '.config', 'Lutefisk');
 mkdirSync(userData, { recursive: true });
@@ -83,10 +94,11 @@ await shot('01d-library-two');
 await click(`[...document.querySelectorAll('.lib-book')].find(b => b.textContent.includes('Lantern'))`);
 await evaluate(`window.__nav = (n) => {
   const row = (t) => [...document.querySelectorAll('.sb-row.nav .sb-name, .sb-name')].find((b) => b.textContent.trim().startsWith(t));
-  if (n === 'Book' || n === 'Goals') return [...document.querySelectorAll('.sb-side-btn')].find((b) => b.textContent.includes(n));
+  if (n === 'Book') return document.querySelector('.sb-cover-btn');
+  if (n === 'Goals') return [...document.querySelectorAll('.sb-side-btn')].find((b) => b.textContent.includes(n));
   if (n === 'Characters' || n === 'Plot') return [...document.querySelectorAll('.sb-row.nav .sb-name')].find((b) => b.textContent.includes(n));
   if (n === 'Focus') return document.querySelector('.ed-focus-btn');
-  if (n === 'Insights') return document.querySelector('.bb-btn[title^="Insights"]');
+  if (n === 'Insights') return [...document.querySelectorAll('.sb-side-btn')].find((b) => b.textContent.includes('Insights'));
   if (n === 'Templates') return { click: () => { [...document.querySelectorAll('.ts-btn')].find((b) => b.offsetParent).click(); document.querySelector('.ts-list .ts-foot .btn').click(); } };
   if (n === 'References') return row('Bibliography');
   return null;
@@ -189,13 +201,12 @@ results.printLatencyMs = plat;
 await shot('33-print-typing');
 await click(`document.querySelector('.pv-switch button[data-v="device"]')`);
 
-// Readability: focus mode + fit width, arrow keys, drop cap toggles.
+// Readability: focus mode (the book always fits), arrow keys, drop cap toggles.
 await click(`document.querySelector('.pv-switch button[data-v="print"]')`);
 await sleep(600);
 await click(`document.querySelector('.pv-switch .focus-btn')`);
-await click(`document.querySelector('.pv-switch .segmented button[data-v="width"]')`);
 await sleep(700);
-await shot('34-print-focus-width');
+await shot('34-print-focus');
 const lbl = () => evaluate(`document.querySelector('.pv-host:not([hidden]) .pg-label').textContent`);
 const before = await lbl();
 await evaluate(`document.querySelector('.pp-stage').dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }))`);
@@ -491,10 +502,17 @@ await sleep(1500);
 results.goals = { meter: await evaluate(`document.querySelector('.bb-today-g').textContent`) };
 await click(`window.__nav('Goals')`);
 await sleep(500);
-await evaluate(`(() => { const ins = [...document.querySelectorAll('.goal-fields input')]; const set = (i, v) => { ins[i].value = v; ins[i].dispatchEvent(new Event('input')); }; set(0, 40000); set(1, 220); set(3, 500); set(4, 1000); })()`);
+await evaluate(`(() => { const ins = [...document.querySelectorAll('.goal-fields input')]; const set = (i, v) => { ins[i].value = v; ins[i].dispatchEvent(new Event('input')); }; set(0, 40000); set(1, 220); set(3, 1000); const d = document.querySelector('.goal-daily-row input'); d.value = 500; d.dispatchEvent(new Event('input')); })()`);
 await evaluate(`(() => { const d = document.querySelector('.goal-fields input[type=date]'); d.value = '2027-06-30'; d.dispatchEvent(new Event('input')); })()`);
 await sleep(600);
 results.goals.today = await evaluate(`document.querySelector('.goals .tile .tile-v').textContent`);
+// Famous-author presets fill the daily goal (and leave it after)
+await evaluate(`(() => { const s = document.querySelector('.goal-preset'); s.value = 'trollope'; s.dispatchEvent(new Event('change')); })()`);
+await sleep(200);
+results.goals.preset = await evaluate(`({ n: document.querySelectorAll('.goal-preset option').length, fields: [...document.querySelectorAll('.goal-daily-row input')].map(i => i.value), note: !!document.querySelector('.goal-preset-note').textContent })`);
+results.goals.presetOk = results.goals.preset.n === 11 && results.goals.preset.fields.join() === ',3,10' && results.goals.preset.note;
+await evaluate(`(() => { const s = document.querySelector('.goal-preset'); s.value = ''; s.dispatchEvent(new Event('change')); const ins = document.querySelectorAll('.goal-daily-row input'); for (const [i, v] of [[0, '500'], [1, ''], [2, '']]) { ins[i].value = v; ins[i].dispatchEvent(new Event('input')); } })()`);
+await sleep(200);
 results.goals.progress = await evaluate(`[...document.querySelectorAll('.gprog-top span')].map(x => x.textContent)`);
 await shot('80-goals');
 await click(`[...document.querySelectorAll('.goal-scope button')].find(b => b.textContent.includes('All'))`);
@@ -523,7 +541,7 @@ results.session = { panel: await evaluate(`document.querySelector('.sc-panel')?.
 await shot('82b-session-popover');
 await evaluate(`document.body.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }))`);
 await sleep(200);
-await click(`document.querySelector('.bb-btn[title^="Insights"]')`);
+await click(`[...document.querySelectorAll('.sb-side-btn')].find((b) => b.textContent.includes('Insights'))`);
 await sleep(1200);
 results.history = {
   tiles: await evaluate(`[...document.querySelectorAll('.hx-tile')].map(t => t.querySelector('.hx-tile-l').textContent + ': ' + t.querySelector('.hx-tile-v').textContent)`),
@@ -785,6 +803,21 @@ await pop('Mara Lamplighter');
 await sleep(300);
 results.plot.filter = { lit: await evaluate(`document.querySelectorAll('.pb-card.lit').length`), dim: await evaluate(`document.querySelectorAll('.pb-card.dim').length`) };
 await shot('98-plot-board');
+// Timeline view: the same cards in story order, plus a timeline-only event
+await click(`[...document.querySelectorAll('.pb-views button')].find(b => b.textContent.includes('Timeline'))`);
+await sleep(300);
+results.plot.timeline = { items: await evaluate(`document.querySelectorAll('.tl-card').length`), cards: await evaluate(`document.querySelectorAll('.pb-card').length`) };
+await click(`document.querySelector('.tl-add')`);
+await sleep(300);
+await evaluate(`(() => { const t = document.querySelector('.pb-ed-title'); t.value = 'The mill burns'; t.dispatchEvent(new Event('change')); const w = document.querySelector('.pb-ed-when'); w.value = 'Year 1'; w.dispatchEvent(new Event('change')); })()`);
+await evaluate(`document.querySelectorAll('.popover').forEach(p => { p._cleanup?.(); p.remove(); })`);
+await click(`document.querySelector('.tl-sort')`);
+await sleep(300);
+results.plot.timeline.after = await evaluate(`[...document.querySelectorAll('.tl-card .pb-card-t')].map(x => x.textContent)`);
+results.plot.timeline.event = await evaluate(`!!document.querySelector('.tl-card.event')`);
+await shot('98b-plot-timeline');
+await click(`[...document.querySelectorAll('.pb-views button')].find(b => b.textContent.includes('Board'))`);
+await sleep(200);
 await evaluate(`document.querySelector('.plot').closest('.sheet').querySelector('.sheet-head .btn.primary').click()`);
 await sleep(300);
 
@@ -796,7 +829,7 @@ await sleep(1200);
   results.table.markdown = (md.match(/\| Lamp[^\n]*\n[^\n]*/) || [])[0];
   results.code.markdown = (md.match(/```yaml[\s\S]*?```/) || [])[0];
   results.comments.markdown = (md.match(/\{==[^=]+==\}\{>>#c-[^<]+<<\}/) || [])[0];
-  results.subtitleSaved = fsm.readFileSync(join(bookDir, 'book.yaml'), 'utf8').includes('In which the wheel stops turning');
+  results.subtitleSaved = fsm.readFileSync(join(bookDir, 'lutefisk.yaml'), 'utf8').includes('In which the wheel stops turning');
 }
 
 // ---- 50 templates
@@ -1047,7 +1080,7 @@ results.backup = JSON.parse(await evaluate(`window.lutefisk.backupProject({}).th
   const { unzipSync } = await import('fflate');
   const fsm = await import('node:fs');
   const zf = fsm.readdirSync(outDir).find((f) => f.endsWith('.zip') && f.includes('backup'));
-  if (zf) { const z = unzipSync(fsm.readFileSync(join(outDir, zf))); results.backup.entries = Object.keys(z).length; results.backup.hasYaml = Object.keys(z).some((k) => k.endsWith('/book.yaml')); }
+  if (zf) { const z = unzipSync(fsm.readFileSync(join(outDir, zf))); results.backup.entries = Object.keys(z).length; results.backup.hasYaml = Object.keys(z).some((k) => k.endsWith('/lutefisk.yaml')); }
 }
 
 // Security probes from inside the renderer.
@@ -1058,7 +1091,7 @@ results.security = await evaluate(`(async () => {
   try { await fetch('https://example.com'); out.fetch = 'ALLOWED'; } catch { out.fetch = 'blocked'; }
   out.bridge = Object.keys(window.lutefisk).sort().join(',');
   try { await window.lutefisk.openExternal('file:///etc/passwd'); out.fileOpen = 'ALLOWED'; } catch { out.fileOpen = 'blocked'; }
-  try { const r = await fetch('book://current/../book.yaml'); out.bookEscape = r.status; } catch { out.bookEscape = 'blocked'; }
+  try { const r = await fetch('book://current/../lutefisk.yaml'); out.bookEscape = r.status; } catch { out.bookEscape = 'blocked'; }
   return out;
 })()`);
 

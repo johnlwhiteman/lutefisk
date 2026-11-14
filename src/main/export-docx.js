@@ -227,6 +227,7 @@ export async function buildDocx({ dir, book, contents, rasterize }) {
     const alignOpt = () => {
       const a = [...stack].reverse().find((x) => x.kind === 'align')?.align;
       if (a === 'verse') return { alignment: AlignmentType.LEFT, indent: { left: 720, firstLine: 0 }, spacing: { after: 180 } };
+      if (a === 'attribution') return { alignment: AlignmentType.RIGHT, indent: { firstLine: 0 }, spacing: { before: 60, after: 240 } };
       if (a === 'hanging') return { alignment: AlignmentType.LEFT, indent: { left: 720, hanging: 720 }, spacing: { after: 90 } };
       return a && a !== 'left' ? { alignment: ALIGN[a] } : {};
     };
@@ -244,7 +245,7 @@ export async function buildDocx({ dir, book, contents, rasterize }) {
       else if (t.type === 'fence' || t.type === 'code_block') {
         const info = parseCodeInfo(t.type === 'fence' ? t.info : 'plaintext');
         const code = t.content.replace(/\n$/, '');
-        const html = highlightCode(code, info.lang, { enabled: book.codeHighlight !== false });
+        const html = highlightCode(code, info.lang, { enabled: info.colors && book.codeHighlight !== false });
         const runs = [];
         const size = Math.round(pt * 2 * 0.82);
         const lineCount = code.split('\n').length;
@@ -265,10 +266,9 @@ export async function buildDocx({ dir, book, contents, rasterize }) {
         };
         walkCode(parseHtml(html).children, '');
         paras.push(new Paragraph({
-          children: runs, alignment: AlignmentType.LEFT, indent: { firstLine: 0, left: 120, right: 120 },
+          children: runs, alignment: AlignmentType.LEFT, indent: { firstLine: 0, left: info.border ? 120 : 0, right: info.border ? 120 : 0 },
           spacing: { before: 160, after: 160, line: 252 }, keepLines: true,
-          shading: { type: ShadingType.CLEAR, color: 'auto', fill: 'F6F8FA' },
-          border: { left: { style: BorderStyle.SINGLE, size: 18, color: '8C959F', space: 6 }, top: { style: BorderStyle.SINGLE, size: 4, color: 'D0D7DE', space: 4 }, bottom: { style: BorderStyle.SINGLE, size: 4, color: 'D0D7DE', space: 4 }, right: { style: BorderStyle.SINGLE, size: 4, color: 'D0D7DE', space: 4 } },
+          ...(info.border ? { border: Object.fromEntries(['top', 'left', 'bottom', 'right'].map((k) => [k, { style: BorderStyle.SINGLE, size: info.border * 6, color: '8C959F', space: 6 }])) } : {}),
         }));
         afterBreak = true;
       } else if (t.type === 'table_open') {

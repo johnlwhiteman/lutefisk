@@ -3,9 +3,9 @@
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
   "name": "lutefisk@1.0.0",
-  "documentNamespace": "http://spdx.org/spdxdocs/lutefisk-1.0.0-7220be99-5118-49b4-a47c-9221e58179b1",
+  "documentNamespace": "http://spdx.org/spdxdocs/lutefisk-1.0.0-13ff14bb-e605-4235-ac5b-50b51225ef1b",
   "creationInfo": {
-    "created": "2026-11-14T01:56:21.456Z",
+    "created": "2026-11-14T06:35:58.629Z",
     "creators": [
       "Tool: npm/cli-10.9.9"
     ]
@@ -1690,6 +1690,30 @@
       ]
     },
     {
+      "name": "harper.js",
+      "SPDXID": "SPDXRef-Package-harper.js-3.2.0",
+      "versionInfo": "3.2.0",
+      "packageFileName": "node_modules/harper.js",
+      "description": "The grammar checker that respects your privacy.",
+      "downloadLocation": "https://registry.npmjs.org/harper.js/-/harper.js-3.2.0.tgz",
+      "filesAnalyzed": false,
+      "homepage": "https://writewithharper.com",
+      "licenseDeclared": "Apache-2.0",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/harper.js@3.2.0"
+        }
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA512",
+          "checksumValue": "4c3b2f1806afc351b4b43373024cc392fd90fd9d244525e00387097a97628aa27d0091f676bebc0f8d16ed6e6e2a2b246444bfbb79a37e021d3845d5642761b4"
+        }
+      ]
+    },
+    {
       "name": "highlight.js",
       "SPDXID": "SPDXRef-Package-highlight.js-11.12.0",
       "versionInfo": "11.12.0",
@@ -3172,6 +3196,11 @@
       "relationshipType": "DEPENDENCY_OF"
     },
     {
+      "spdxElementId": "SPDXRef-Package-harper.js-3.2.0",
+      "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
       "spdxElementId": "SPDXRef-Package-highlight.js-11.12.0",
       "relatedSpdxElement": "SPDXRef-Package-lutefisk-1.0.0",
       "relationshipType": "DEPENDENCY_OF"
@@ -3589,6 +3618,11 @@
     {
       "spdxElementId": "SPDXRef-Package-path-scurry-3.0.0",
       "relatedSpdxElement": "SPDXRef-Package-glob-14.0.4",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fflate-0.8.3",
+      "relatedSpdxElement": "SPDXRef-Package-harper.js-3.2.0",
       "relationshipType": "DEPENDENCY_OF"
     },
     {

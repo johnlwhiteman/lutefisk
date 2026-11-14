@@ -137,7 +137,7 @@ export function withCasePrefs(tpl, book = {}) {
   return t;
 }
 
-/* ---- custom templates: designed by the author, stored in book.yaml (and the user's library). */
+/* ---- custom templates: designed by the author, stored in lutefisk.yaml (and the user's library). */
 let CUSTOM = [];
 const num = (v, lo, hi, d) => (Number.isFinite(+v) ? Math.min(hi, Math.max(lo, +v)) : d);
 const pick = (v, list, d) => (list.includes(v) ? v : d);
@@ -275,6 +275,9 @@ ${s} .bk-align-justify>*{text-align:justify;}
 ${s} .bk-align-verse{margin:1em 0 1em 2.2em;}
 ${s} .bk-align-verse>p{text-align:left!important;text-indent:0!important;hyphens:manual;-webkit-hyphens:manual;margin:0 0 .9em!important;}
 ${s} .bk-align-verse>p:last-child{margin-bottom:0!important;}
+${s} .bk-align-attribution{margin:.35em 0 1.2em;}
+${s} .bk-align-attribution>p{text-align:right!important;text-indent:0!important;font-size:.92em;margin:0!important;}
+${s} blockquote+.bk-align-attribution,${s} .bk-epigraph .bk-align-attribution{margin-top:-.4em;}
 ${s} .bk-align-hanging>p{text-align:left!important;text-indent:-2em!important;padding-left:2em;margin:0 0 .45em!important;}
 ${s} u{text-decoration:underline;text-decoration-thickness:.06em;text-underline-offset:.15em;}
 ${s} sub,${s} sup{font-size:.72em;line-height:0;}

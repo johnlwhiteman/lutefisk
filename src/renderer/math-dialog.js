@@ -26,9 +26,9 @@ export function openMathDialog({ tex = '', display = false, isEdit = false } = {
     let mode = display ? 'display' : 'inline';
     const preview = h('div', { class: 'math-preview', 'aria-live': 'polite' });
     const err = h('div', { class: 'math-err', role: 'status' });
-    const seg = h('div', { class: 'segmented', role: 'radiogroup', 'aria-label': 'Layout' });
+    const seg = h('div', { class: 'segmented math-mode', role: 'radiogroup', 'aria-label': 'Inline or block' });
     const setMode = (v) => { mode = v; for (const b of seg.children) b.classList.toggle('on', b.dataset.v === v); draw(); };
-    for (const [v, label] of [['inline', 'Inline — in the sentence'], ['display', 'Display — on its own line']]) {
+    for (const [v, label] of [['inline', 'Inline — in the sentence'], ['display', 'Block — on its own line']]) {
       seg.append(h('button', { type: 'button', role: 'radio', 'data-v': v, class: v === mode ? 'on' : '', onclick: () => setMode(v) }, h('span', {}, label)));
     }
     const insert = (s, { select } = {}) => {
@@ -52,12 +52,12 @@ export function openMathDialog({ tex = '', display = false, isEdit = false } = {
     ta.addEventListener('input', draw);
 
     /* ---- right panel: symbols & reference */
-    let tab = 'symbols';
+    let tab = 'reference';
     const q = h('input', { type: 'search', class: 'ref-search', placeholder: 'Search symbols and how-tos: new line, matrix, arrow, alpha…', 'aria-label': 'Search LaTeX reference' });
     const tabs = h('div', { class: 'segmented ref-tabs', role: 'tablist' });
     const body = h('div', { class: 'ref-body' });
     const setTab = (t) => { tab = t; for (const b of tabs.children) b.classList.toggle('on', b.dataset.v === t); drawRef(); };
-    for (const [v, label] of [['symbols', 'Symbols'], ['reference', 'Reference']]) tabs.append(h('button', { type: 'button', role: 'tab', 'data-v': v, class: v === tab ? 'on' : '', onclick: () => setTab(v) }, label));
+    for (const [v, label] of [['reference', 'Reference'], ['symbols', 'Symbols']]) tabs.append(h('button', { type: 'button', role: 'tab', 'data-v': v, class: v === tab ? 'on' : '', onclick: () => setTab(v) }, label));
     const symBtn = (s) => {
       const b = h('button', { type: 'button', class: 'sym', title: `${s.name} — ${s.tex}`, onclick: () => insert(/\{[a-z]+\}/i.test(s.tex) ? s.tex : `${s.tex}${/^\\[a-zA-Z]+$/.test(s.tex) ? ' ' : ''}`, { select: true }) });
       setHtml(b, render(s.tex));
@@ -89,7 +89,8 @@ export function openMathDialog({ tex = '', display = false, isEdit = false } = {
     }
     q.addEventListener('input', () => {
       // Searching for how-to words jumps to the reference automatically.
-      if (tab === 'symbols' && q.value.trim() && !LATEX_SYMBOLS.some((c) => c.items.some((s) => `${s.name} ${s.tex} ${c.label}`.toLowerCase().includes(q.value.trim().toLowerCase())))) setTab('reference');
+      if (tab === 'reference' && q.value.trim() && !LATEX_REFERENCE.some((r) => `${r.title} ${r.desc} ${r.cat} ${r.keywords} ${r.code}`.toLowerCase().includes(q.value.trim().toLowerCase())) && LATEX_SYMBOLS.some((c) => c.items.some((x) => `${x.name} ${x.tex} ${c.label}`.toLowerCase().includes(q.value.trim().toLowerCase())))) setTab('symbols');
+      else if (tab === 'symbols' && q.value.trim() && !LATEX_SYMBOLS.some((c) => c.items.some((s) => `${s.name} ${s.tex} ${c.label}`.toLowerCase().includes(q.value.trim().toLowerCase())))) setTab('reference');
       else drawRef();
     });
 
@@ -101,10 +102,10 @@ export function openMathDialog({ tex = '', display = false, isEdit = false } = {
     };
     const removeBtn = isEdit ? h('button', { class: 'btn plain danger', onclick: () => close({ remove: true }) }, 'Remove') : null;
     const left = h('div', { class: 'math-left' },
+      h('div', { class: 'fld' }, h('span', {}, 'Layout'), seg),
       h('label', { class: 'fld' }, h('span', {}, 'LaTeX'), ta),
       h('div', { class: 'math-snips' }, SNIPPETS.map(([label, s]) => h('button', { type: 'button', class: 'chip', title: s, onclick: () => insert(s, { select: true }) }, label))),
       h('div', { class: 'fld' }, h('span', {}, 'Preview'), preview, err),
-      seg,
       h('details', { class: 'math-how' }, h('summary', {}, 'How equations reach each device'),
         h('ul', {},
           h('li', {}, h('b', {}, 'Preview, print and PDF: '), 'typeset sharply with the STIX Two Math font.'),
@@ -115,7 +116,8 @@ export function openMathDialog({ tex = '', display = false, isEdit = false } = {
       h('div', { class: 'btn-row' }, removeBtn, h('span', { class: 'spacer' }), h('button', { class: 'btn', onclick: () => close(null) }, 'Cancel'), okBtn));
     const right = h('div', { class: 'math-right' }, h('div', { class: 'ref-head' }, tabs, q), body);
     const dlg = h('div', { class: 'dlg math-dlg', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Equation' },
-      h('h2', {}, icon('sigma', 18), isEdit ? 'Edit Equation' : 'Insert Equation', h('span', { class: 'hint math-kbd' }, '⌘/Ctrl+Enter to insert · Esc to cancel')),
+      h('h2', {}, icon('sigma', 18), isEdit ? 'Edit Equation' : 'Insert Equation', h('span', { class: 'hint math-kbd' }, '⌘/Ctrl+Enter to insert · Esc to cancel'),
+        h('button', { type: 'button', class: 'dlg-x', title: 'Close (Esc)', 'aria-label': 'Close', onclick: () => close(null) }, icon('close', 16))),
       h('div', { class: 'math-cols' }, left, right));
     const overlay = h('div', { class: 'overlay' }, dlg);
     document.body.append(overlay);

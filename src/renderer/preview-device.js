@@ -118,6 +118,9 @@ export function templateStrip(app) {
   return el;
 }
 
+/** Kobo and Nook models read better with the brand: “Kobo Libra Color”, “Nook GlowLight 4”. */
+const fullName = (d) => (d.group === 'Kobo' || d.group === 'Nook' ? `${d.group} ${d.name}` : d.name);
+
 export function createDevicePreview(host, app) {
   const opts = () => app.book.preview;
   let page = 0, pages = 1, last = null, scale = 1;
@@ -147,11 +150,71 @@ export function createDevicePreview(host, app) {
   const syncDc = () => { const on = ebookDropCaps(app.book); dcBtn.classList.toggle('on', on); dcBtn.setAttribute('aria-pressed', String(on)); };
   // Row 1 (shared header): text size and zoom. Row 2: device, theme and templates.
   // Row 1 (shared header): text size, just left of Focus. Zoom is at the right of row 2.
+  // Device picker: a list you can arrow through — the device changes with each step.
+  // (The select stays, hidden, as the single source of the value.)
+  devSel.classList.add('visually-hidden');
+  devSel.tabIndex = -1;
+  const devName = h('span', { class: 'dp-name' });
+  const devBtn = h('button', { type: 'button', class: 'dp-btn', 'aria-haspopup': 'listbox', title: 'Device — the phone, tablet or e-reader the page is shown on. Click, then ↑ ↓ to try each one; Enter keeps it, Esc goes back.' }, devName, icon('chevronUpDown', 13));
+  const devPicker = h('div', { class: 'pv-ctl dp' }, devBtn, devSel);
+  const setDevice = (id, keep) => {
+    if (opts().device === id && !keep) return;
+    opts().device = id; devSel.value = id; build(); app.refreshPreview(true);
+    if (keep) app.markDirty();
+  };
+  const stepDevice = (dir) => {
+    const i = DEVICES.findIndex((d) => d.id === dev?.id);
+    const next = DEVICES[(i + dir + DEVICES.length) % DEVICES.length];
+    setDevice(next.id, true);
+  };
+  devBtn.addEventListener('keydown', (e) => {
+    if (document.querySelector('.dp-list')) return;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); stepDevice(e.key === 'ArrowDown' ? 1 : -1); }
+  });
+  devBtn.addEventListener('click', () => {
+    if (document.querySelector('.dp-list')) { document.querySelector('.dp-list').remove(); return; }
+    const start = dev.id;
+    let cur = start;
+    const box = h('div', { class: 'ts-items', role: 'listbox', 'aria-label': 'Devices' });
+    const items = [];
+    for (const g of DEVICE_GROUPS) {
+      box.append(h('div', { class: 'dp-group' }, g));
+      for (const d of DEVICES.filter((x) => x.group === g)) {
+        const it = h('div', { class: 'ts-item', role: 'option', 'data-id': d.id, onmousedown: (e) => e.preventDefault(), onclick: () => { setDevice(d.id, true); close(); } },
+          h('span', {}, d.name), h('small', {}, d.eink ? `E Ink${d.color ? ' · color' : ''}` : d.kind === 'phone' ? 'Phone' : 'Tablet'));
+        items.push(it); box.append(it);
+      }
+    }
+    const mark = (id) => {
+      cur = id;
+      for (const it of items) { const on = it.dataset.id === id; it.classList.toggle('on', on); it.setAttribute('aria-selected', String(on)); if (on) it.scrollIntoView({ block: 'nearest' }); }
+    };
+    const panel = h('div', { class: 'ts-list dp-list', tabindex: -1 }, box,
+      h('div', { class: 'ts-foot' }, h('span', { class: 'hint' }, '↑ ↓ try · Enter keep · Esc undo')));
+    const close = () => { panel.remove(); document.removeEventListener('mousedown', outside, true); devBtn.focus(); };
+    const outside = (e) => { if (!panel.contains(e.target) && e.target !== devBtn && !devBtn.contains(e.target)) { setDevice(cur, true); close(); } };
+    panel.addEventListener('keydown', (e) => {
+      const i = items.findIndex((x) => x.dataset.id === cur);
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        const n = items[(i + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length].dataset.id;
+        mark(n); setDevice(n, false);
+      } else if (e.key === 'Enter') { e.preventDefault(); setDevice(cur, true); close(); }
+      else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); setDevice(start, false); close(); }
+    });
+    document.body.append(panel);
+    const r = devBtn.getBoundingClientRect();
+    Object.assign(panel.style, { left: `${r.left}px`, top: `${r.bottom + 4}px`, width: '250px', maxHeight: `${Math.max(240, window.innerHeight - r.bottom - 20)}px` });
+    mark(start);
+    document.addEventListener('mousedown', outside, true);
+    panel.focus();
+  });
+
   const row1 = h('div', { class: 'pv-row1-items' },
     h('label', { class: 'pv-ctl size-ctl', title: 'Text size — how large a reader has set the type on this device (doesn’t change the book)' }, h('span', { class: 'small-a' }, 'A'), size, h('span', { class: 'big-a' }, 'A')));
   // Row 2: the device and its reading theme. The template strip sits under the device.
   const bar = h('div', { class: 'pv-bar' },
-    h('label', { class: 'pv-ctl', title: 'Device — the phone, tablet or e-reader the page is shown on' }, devSel),
+    devPicker,
     h('label', { class: 'pv-ctl theme-ctl', title: 'Reading theme — light, sepia or dark, as a reader would choose on a phone or tablet' }, themeSel));
   const tplStrip = templateStrip(app);
 
@@ -207,13 +270,14 @@ export function createDevicePreview(host, app) {
   function build() {
     dev = deviceById(opts().device);
     devSel.value = dev.id;
+    devName.textContent = fullName(dev);
     fontSel.value = opts().font || '';
     size.value = opts().fontSize || 100;
     themeSel.value = opts().theme || 'light';
     themeSel.parentElement.style.display = dev.eink ? 'none' : '';
     syncDc();
     stage.replaceChildren(frame(dev));
-    caption.textContent = `${dev.name} · ${dev.res[0] * (dev.eink ? 2 : dev.kind === 'phone' ? 3 : 2)}×${dev.res[1] * (dev.eink ? 2 : dev.kind === 'phone' ? 3 : 2)} · ${dev.eink ? 'E Ink' : 'LCD/OLED'}`;
+    caption.textContent = `${fullName(dev)} · ${dev.res[0] * (dev.eink ? 2 : dev.kind === 'phone' ? 3 : 2)}×${dev.res[1] * (dev.eink ? 2 : dev.kind === 'phone' ? 3 : 2)} · ${dev.eink ? (dev.color ? 'Color E Ink' : 'E Ink') : 'LCD/OLED'}`;
     restyle();
     fit();
   }
@@ -225,7 +289,7 @@ export function createDevicePreview(host, app) {
     const mm = (v) => `calc(${v} * var(--mm))`;
     const theme = d.eink ? EINK : THEMES[opts().theme || 'light'];
 
-    const scr = h('div', { class: `scr ui-${d.ui}${d.eink ? ' eink' : ''}`, style: { width: `${d.res[0]}px`, height: `${d.res[1]}px`, background: theme.bg, color: theme.fg, '--ui': theme.ui } });
+    const scr = h('div', { class: `scr ui-${d.ui}${d.eink ? ' eink' : ''}${d.color ? ' color' : ''}`, style: { width: `${d.res[0]}px`, height: `${d.res[1]}px`, background: theme.bg, color: theme.fg, '--ui': theme.ui } });
     const status = statusBar(d);
     const head = h('div', { class: 'scr-head' });
     const content = h('div', { class: 'scr-content' });

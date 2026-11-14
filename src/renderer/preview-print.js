@@ -7,7 +7,7 @@ import { baseCss, templateCss, templateById, withCasePrefs } from '../shared/tem
 import { FONTS, fontStack } from '../shared/fonts.js';
 import { toRoman, SECTION_TYPES, DISPLAY_TYPES, printDropCaps } from '../shared/sections.js';
 import { termRegex } from '../shared/bookhtml.js';
-import { h, icon, toast, magnifier, segmented, popover } from './ui.js';
+import { h, icon, toast, magnifier, popover, rangeBubble } from './ui.js';
 import { templateStrip } from './preview-device.js';
 
 const RECTO_TYPES = new Set(['title-page', 'dedication', 'epigraph', 'toc', 'foreword', 'preface', 'introduction', 'prologue', 'chapter', 'epilogue', 'acknowledgments', 'appendix', 'endnotes', 'bibliography', 'index', 'about-author']);
@@ -25,11 +25,12 @@ export function createPrintPreview(host, app) {
   const trimSel = h('select', { 'aria-label': 'Trim size' }, Object.entries(TRIMS).map(([k, t]) => h('option', { value: k }, t.label)));
   const fontSel = h('select', { 'aria-label': 'Print font' }, h('option', { value: '' }, 'Template font'),
     FONTS.filter((f) => !f.system && f.kind !== 'display' && f.kind !== 'mono').map((f) => h('option', { value: f.id }, f.family)));
-  const sizeSel = h('select', { 'aria-label': 'Font size' }, [9, 9.5, 10, 10.5, 11, 11.5, 12, 12.5, 13, 14].map((v) => h('option', { value: v }, `${v} pt`)));
+  // Body type size of the printed book: 9–14 pt in half points.
+  const sizeSel = h('input', { type: 'range', min: 9, max: 14, step: 0.5, 'aria-label': 'Font size', 'aria-valuetext': '', class: 'pv-size pp-size' });
+  const sayPt = () => sizeSel.setAttribute('aria-valuetext', `${sizeSel.value} points`);
+  sizeSel.addEventListener('input', sayPt);
+  rangeBubble(sizeSel, (v) => `${v} pt`, { hover: true });
   const mag = magnifier('lutefisk.printZoom', () => fit());
-  let fitMode = (() => { try { return localStorage.getItem('lutefisk.printFit') || 'page'; } catch { return 'page'; } })();
-  const fitSeg = segmented([{ value: 'page', icon: 'fitPage', title: 'Fit whole page' }, { value: 'width', icon: 'fitWidth', title: 'Fit width — larger, scroll down to read' }], fitMode,
-    (v) => { fitMode = v; try { localStorage.setItem('lutefisk.printFit', v); } catch { /* ignore */ } fit(); }, { label: 'Fit' });
   const dcBtn = h('button', { class: 'chip-toggle', title: 'Drop caps in print', onclick: () => {
     P().dropCaps = !printDropCaps(app.book); changed(); syncDc();
   } }, icon('dropcap', 15), h('span', {}, 'Drop caps'));
@@ -54,9 +55,19 @@ export function createPrintPreview(host, app) {
   const pager = h('div', { class: 'pager' }, tocBtn, prevBtn, h('div', { class: 'pg-mid' }, pageLbl, progress), nextBtn); // cover and back cover are in Contents (and Home / End)
   // Row 1 (shared header): text size and zoom. Row 2: page setup and templates.
   // Row 1 (shared header): page fit and type size, just left of Focus. Zoom is at the right of row 2.
-  const row1 = h('div', { class: 'pv-row1-items' }, fitSeg, h('label', { class: 'pv-ctl', title: 'Type size — the body text size of the printed book, in points' }, icon('textSize', 15), sizeSel));
+  const row1 = h('div', { class: 'pv-row1-items' }, h('label', { class: 'pv-ctl size-ctl pp-size-ctl' }, h('span', { class: 'small-a', title: 'Type size — the body text of the printed book, 9 to 14 pt' }, 'A'), sizeSel, h('span', { class: 'big-a', title: 'Type size — the body text of the printed book, 9 to 14 pt' }, 'A')));
+  // Paper: how the pages look in this preview only (the PDF itself has no background).
+  const PAPERS = [['cream', 'Cream'], ['white', 'Bright White'], ['ivory', 'Ivory'], ['natural', 'Natural'], ['recycled', 'Recycled'], ['laid', 'Laid'], ['linen', 'Linen'], ['parchment', 'Parchment'], ['antique', 'Antique'], ['gray', 'Newsprint']];
+  const paperSel = h('select', { 'aria-label': 'Paper (preview only)' }, PAPERS.map(([v, l]) => h('option', { value: v }, l)));
+  paperSel.value = (() => { try { return localStorage.getItem('lutefisk.printPaper') || 'cream'; } catch { return 'cream'; } })();
+  const setPaper = () => {
+    for (const [v] of PAPERS) stage.classList.toggle(`paper-${v}`, v === paperSel.value);
+    try { localStorage.setItem('lutefisk.printPaper', paperSel.value); } catch { /* ignore */ }
+  };
+  paperSel.addEventListener('change', setPaper);
   const bar = h('div', { class: 'pv-bar' },
-    h('label', { class: 'pv-ctl', title: 'Trim size — the page size of the printed book' }, trimSel));
+    h('label', { class: 'pv-ctl', title: 'Trim size — the page size of the printed book' }, trimSel),
+    h('label', { class: 'pv-ctl', title: 'Paper — the look of the pages in this preview (doesn’t change the PDF)' }, icon('doc', 15), paperSel));
   const tplStrip = templateStrip(app);
   const stage = h('div', { class: 'pp-stage', tabindex: 0, 'aria-label': 'Print preview' });
   const desk = h('div', { class: 'pp-desk' });
@@ -74,6 +85,7 @@ export function createPrintPreview(host, app) {
   const mflow = h('div', { class: 'pp-flow' });
   measure.append(mflow);
   stage.append(desk);
+  setPaper();
   const sideL = h('button', { class: 'dv-side-arrow left', title: 'Previous (←)', 'aria-label': 'Previous page', onclick: () => step(-1) }, icon('arrowLeft', 22));
   const sideR = h('button', { class: 'dv-side-arrow right', title: 'Next (→)', 'aria-label': 'Next page', onclick: () => step(1) }, icon('arrowRight', 22));
   stage.addEventListener('click', (e) => {
@@ -110,6 +122,7 @@ export function createPrintPreview(host, app) {
     trimSel.value = p.trim || '6x9';
     fontSel.value = p.font || '';
     sizeSel.value = String(p.fontSize || 11);
+    sayPt();
     syncDc();
   }
 
@@ -130,7 +143,8 @@ export function createPrintPreview(host, app) {
     return `
 ${baseCss(scope, 'print')}
 ${templateCss(tpl, scope, { ctx: 'print', bodyFont: P().font || null, dropCaps: printDropCaps(book), color: false })}
-.pp-flow{width:${m.W}px;height:${m.H}px;column-width:${m.W}px;column-gap:${G}px;column-fill:auto;font-size:${m.fontPx.toFixed(3)}px;color:#111;}
+/* The type size wins over the template's own scale: 11 pt here means 11 pt on paper. */
+.pp-body .pp-flow,.pp-measure .pp-flow{width:${m.W}px;height:${m.H}px;column-width:${m.W}px;column-gap:${G}px;column-fill:auto;font-size:${m.fontPx.toFixed(3)}px;color:#111;}
 .pp-flow img{max-height:${m.H - 20}px;object-fit:contain;filter:grayscale(1);}
 ${ff ? `${scope}, ${scope} .bk-body p{font-family:${ff};}` : ''}
 `;
@@ -288,8 +302,9 @@ ${ff ? `${scope}, ${scope} .bk-body p{font-family:${ff};}` : ''}
     const spread = true;
     const w = spread ? m.pw * 2 : m.pw;
     const z = mag.get();
-    stage.classList.toggle('zoomed', z > 1 || fitMode === 'width');
-    const base = fitMode === 'width' ? (r.width - 64) / w : Math.min((r.width - 48) / w, (r.height - 48) / m.ph);
+    stage.classList.toggle('zoomed', z > 1);
+    // The open book fills the view: as large as fits, whole, with a small margin.
+    const base = Math.min((r.width - 32) / w, (r.height - 32) / m.ph);
     const s = base * z;
     desk.style.setProperty('--s', String(Math.max(0.1, s)));
     desk.style.width = `${w * s}px`;

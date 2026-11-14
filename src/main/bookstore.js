@@ -1,7 +1,7 @@
 // Reading and writing book folders. A book is a plain folder:
 //
 //   My Book/
-//     book.yaml          ← metadata, settings, section order, bibliography
+//     lutefisk.yaml      ← marks a Lutefisk book; metadata, settings, section order, bibliography
 //     chapters/<id>.md   ← one Markdown file per section
 //     assets/            ← images (cover, author photo, inline images)
 //
@@ -11,7 +11,16 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import YAML from 'yaml';
 
-export const BOOK_FILE = 'book.yaml';
+export const BOOK_FILE = 'lutefisk.yaml';
+/** Books made before the rename kept their manifest in book.yaml; it's read, then replaced on the next save. */
+export const LEGACY_BOOK_FILE = 'book.yaml';
+/** The manifest file a folder actually has: lutefisk.yaml, or an older book.yaml. */
+export async function manifestPath(dir) {
+  for (const f of [BOOK_FILE, LEGACY_BOOK_FILE]) {
+    try { await fs.access(path.join(dir, f)); return path.join(dir, f); } catch { /* next */ }
+  }
+  return null;
+}
 const SECTION_FILE_RE = /^chapters\/[a-z]{1,4}-[a-z0-9]{4,32}\.md$/;
 const ASSET_RE = /^(assets|research)\/[A-Za-z0-9._ -]{1,120}$/;
 const NOTE_FILE_RE = /^research\/[a-z]{1,4}-[a-z0-9]{4,32}\.md$/;
@@ -45,13 +54,15 @@ async function atomicWrite(file, data) {
 }
 
 export async function isBookDir(dir) {
-  try { await fs.access(path.join(dir, BOOK_FILE)); return true; } catch { return false; }
+  return !!(await manifestPath(dir));
 }
 
 export async function loadBook(dir) {
-  const raw = await fs.readFile(path.join(dir, BOOK_FILE), 'utf8');
+  const file = await manifestPath(dir);
+  if (!file) throw new Error('That folder isn’t a Lutefisk book (no lutefisk.yaml inside).');
+  const raw = await fs.readFile(file, 'utf8');
   const book = YAML.parse(raw, { maxAliasCount: 50 }) || {};
-  if (typeof book !== 'object' || Array.isArray(book)) throw new Error('book.yaml is not a mapping');
+  if (typeof book !== 'object' || Array.isArray(book)) throw new Error(`${path.basename(file)} is not a mapping`);
   book.sections = Array.isArray(book.sections) ? book.sections : [];
   const contents = {};
   const fileTimes = {};
@@ -78,9 +89,10 @@ export async function loadBook(dir) {
 
 /** Lightweight info for the library grid. */
 export async function readSummary(dir) {
-  const raw = await fs.readFile(path.join(dir, BOOK_FILE), 'utf8');
+  const file = await manifestPath(dir);
+  const raw = await fs.readFile(file, 'utf8');
   const book = YAML.parse(raw, { maxAliasCount: 50 }) || {};
-  let modified = (await fs.stat(path.join(dir, BOOK_FILE))).mtime;
+  let modified = (await fs.stat(file)).mtime;
   let words = 0;
   for (const s of Array.isArray(book.sections) ? book.sections : []) {
     if (!s || s.enabled === false || typeof s.id !== 'string') continue;
@@ -111,6 +123,8 @@ export function serializeBook(book) {
 export async function saveBook(dir, book, files = {}, removed = [], notes = {}, removedNotes = []) {
   if (!book || typeof book !== 'object') throw new Error('Invalid book');
   await atomicWrite(path.join(dir, BOOK_FILE), serializeBook(book));
+  // An older book: its book.yaml has now been replaced by lutefisk.yaml.
+  await fs.rm(path.join(dir, LEGACY_BOOK_FILE), { force: true }).catch(() => {});
   for (const [id, text] of Object.entries(files)) {
     const rel = `chapters/${id}.md`;
     if (!isSectionFile(rel) || typeof text !== 'string' || text.length > MAX_FILE) continue;
@@ -224,7 +238,7 @@ export function mimeFor(file) {
   return ({
     '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp',
     '.svg': 'image/svg+xml', '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
-    '.css': 'text/css; charset=utf-8', '.woff2': 'font/woff2', '.json': 'application/json', '.map': 'application/json',
+    '.css': 'text/css; charset=utf-8', '.woff2': 'font/woff2', '.wasm': 'application/wasm', '.json': 'application/json', '.map': 'application/json',
     '.txt': 'text/plain; charset=utf-8', '.pdf': 'application/pdf', '.md': 'text/plain; charset=utf-8',
   })[path.extname(file).toLowerCase()] || 'application/octet-stream';
 }

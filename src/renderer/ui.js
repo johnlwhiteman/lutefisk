@@ -73,6 +73,7 @@ const ICON_PATHS = {
   minus: 'M6 12h12',
   more: 'M6 12h.01M12 12h.01M18 12h.01',
   chevron: 'M6 9l6 6 6-6',
+  chevronUpDown: 'M8 9.5l4-4 4 4M8 14.5l4 4 4-4',
   share: 'M12 3v12M8 7l4-4 4 4M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7',
   doc: 'M7 3h7l4 4v14H7zM14 3v4h4',
   textSize: 'M4 18l5-12 5 12M5.8 14h6.4M15 18l3-7 3 7M15.8 16h4.4',
@@ -111,8 +112,8 @@ const ICON_PATHS = {
   code: 'M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16',
   table: 'M3 5h18v14H3zM3 10h18M3 15h18M9 5v14M15 5v14',
   pen: 'M4 20l4-1 11-11a2.1 2.1 0 0 0-3-3L5 16l-1 4zM14 7l3 3',
-  comment: 'M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z',
-  commentOff: 'M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12zM3 3l18 18',
+  comment: 'M5.5 4h13A2.5 2.5 0 0 1 21 6.5v8a2.5 2.5 0 0 1-2.5 2.5H11l-4.5 3.5V17h-1A2.5 2.5 0 0 1 3 14.5v-8A2.5 2.5 0 0 1 5.5 4zM7.5 9h9M7.5 12.5h6',
+  commentOff: 'M5.5 4h13A2.5 2.5 0 0 1 21 6.5v8a2.5 2.5 0 0 1-2.5 2.5H11l-4.5 3.5V17h-1A2.5 2.5 0 0 1 3 14.5v-8A2.5 2.5 0 0 1 5.5 4zM7.5 9h9M7.5 12.5h6M2.5 2.5l19 19',
   omega: 'M5 19h4v-2a6.5 6.5 0 1 1 6 0v2h4',
   clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2',
   stopwatch: 'M12 22a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM12 10v4.5M10 2.5h4M12 2.5V6M18.5 6.5l1.5-1.5',
@@ -124,11 +125,17 @@ const ICON_PATHS = {
   calendar: 'M4 6h16v15H4zM4 10h16M8 3v5M16 3v5M8 14h2M12 14h2M16 14h.01M8 17.5h2M12 17.5h2',
   stop: 'M7 7h10v10H7z',
   pagebreak: 'M5 3v5h14V3M5 21v-5h14v5M3 12h2M8 12h2M13 12h2M18 12h3',
-  snippet: 'M7 4h10v16l-5-3.5L7 20zM10 8.5h4M10 11.5h4',
-  snippetOff: 'M7 4h10v16l-5-3.5L7 20zM10 8.5h4M10 11.5h4M3 3l18 18',
+  snippet: 'M6 3h12v15.5l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5-2 1.5zM9 7.5h6M9 11h6M9 14.5h3.5',
+  globe: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9s1.3-6.4 3.8-9z',
+  spell: 'M2.5 13 6 4l3.5 9M3.8 10.2h4.4M12 4v9h3.3a2.3 2.3 0 0 0 0-4.6H12M12 8.4h2.8a2.2 2.2 0 0 0 0-4.4H12M10.5 18l2.8 2.8 6.7-7',
+  spellOff: 'M2.5 13 6 4l3.5 9M3.8 10.2h4.4M12 4v9h3.3a2.3 2.3 0 0 0 0-4.6H12M12 8.4h2.8a2.2 2.2 0 0 0 0-4.4H12M10.5 18l2.8 2.8 6.7-7M2.5 2.5l19 19',
+  snippetOff: 'M6 3h12v15.5l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5-2 1.5zM9 7.5h6M9 11h6M9 14.5h3.5M2.5 2.5l19 19',
   thought: 'M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3zM9.5 19h5M10.5 21.5h3',
   logline: 'M4 7h16M4 12h11M4 17h7M18 15l2 2-4 4h-2v-2z',
   keyboard: 'M3 7h18v11H3zM7 11h.01M11 11h.01M15 11h.01M7 14.5h10',
+  lightbulb: 'M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z',
+  binder: 'M5 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5zM9 4v16M5 8h2M5 12h2M5 16h2',
+  home: 'M4 11l8-7 8 7M6 9.5V20h4.5v-5.5h3V20H18V9.5',
   lock: 'M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3',
   star: 'M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z',
   splitV: 'M4 4h16v16H4zM4 12h16',
@@ -157,6 +164,7 @@ const ICON_PATHS = {
   present: 'M3 4h18v12H3zM12 16v4M8 20h8M10 7.5l5 2.5-5 2.5z',
   checklist: 'M4 6.5l1.5 1.5L8 5.5M4 12.5l1.5 1.5L8 11.5M4 18.5l1.5 1.5L8 17.5M11 7h9M11 13h9M11 19h9',
   grip: 'M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01',
+  highlighter: 'M14.5 4.5l5 5-8 8H8.5v-3zM8.5 14.5l-3 3v1.5h4l2-2M13 6l5 5',
   eraser: 'M8 20h12M5.5 14.5l8-8a2 2 0 0 1 2.8 0l2.2 2.2a2 2 0 0 1 0 2.8L12 18H8.5l-3-3a.4.4 0 0 1 0-.5zM9 11l5 5',
   fullscreen: 'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5',
   textSizeUp: 'M3 18l5-12 5 12M4.8 14h6.4M17 8v8M13 12h8',
@@ -246,7 +254,7 @@ export function segmented(options, value, onChange, { label } = {}) {
  * A slider's value as a small bubble over its thumb, shown only while it changes.
  * Returns show(); call it after setting the value from elsewhere (keys, buttons).
  */
-export function rangeBubble(range, fmt = (v) => `${v}%`) {
+export function rangeBubble(range, fmt = (v) => `${v}%`, { hover = false } = {}) {
   const tip = h('span', { class: 'range-bubble', 'aria-hidden': 'true' });
   let timer = 0;
   const show = () => {
@@ -263,6 +271,12 @@ export function rangeBubble(range, fmt = (v) => `${v}%`) {
   };
   range.addEventListener('input', show);
   range.addEventListener('pointerdown', show);
+  // Optionally also while the pointer rests on the slider.
+  if (hover) {
+    range.addEventListener('pointerenter', show);
+    range.addEventListener('pointermove', show);
+    range.addEventListener('focus', show);
+  }
   return show;
 }
 
@@ -299,12 +313,12 @@ export function magnifier(key, onChange) {
 
 /** Deterministic generated cover (used when a book has no cover image). */
 const COVER_TONES = [['#1f3a5f', '#f3e9d2'], ['#5b2333', '#f7e8d8'], ['#2f4f3e', '#efe6cf'], ['#3d3a4b', '#f2e7d5'], ['#7a4b22', '#fbf1df'], ['#22313f', '#e9d8b4'], ['#4a1f4f', '#f1e1ee'], ['#283d3b', '#edddd4']];
-export function generatedCover(title, author, fontFamily = "'Literata', serif") {
+export function generatedCover(title, author, fontFamily = "'Literata', serif", subtitle = '') {
   let hsh = 0;
   for (const c of String(title)) hsh = (hsh * 31 + c.codePointAt(0)) >>> 0;
   const [bg, fg] = COVER_TONES[hsh % COVER_TONES.length];
   return h('div', { class: 'gen-cover', style: { background: `linear-gradient(160deg, ${bg} 0%, color-mix(in srgb, ${bg} 70%, black) 100%)`, color: fg, fontFamily } },
-    h('div', { class: 'gc-rule' }), h('div', { class: 'gc-title' }, title || 'Untitled'), h('div', { class: 'gc-rule' }), h('div', { class: 'gc-author' }, author || ''));
+    h('div', { class: 'gc-rule' }), h('div', { class: 'gc-title' }, title || 'Untitled'), h('div', { class: 'gc-rule' }), subtitle ? h('div', { class: 'gc-sub' }, subtitle) : null, h('div', { class: 'gc-author' }, author || ''));
 }
 
 export function timeAgo(iso) {

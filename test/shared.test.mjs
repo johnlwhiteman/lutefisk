@@ -271,8 +271,8 @@ test('titles are checked against the citation style unless you choose another (A
 test('code blocks: info string, line numbers and more languages', async () => {
   const { parseCodeInfo, codeInfo, numberLines, normalizeLang } = await import('../src/shared/code.js');
   const { renderMarkdown } = await import('../src/shared/markdown.js');
-  assert.deepEqual(parseCodeInfo('python linenums'), { lang: 'python', lineNumbers: true });
-  assert.deepEqual(parseCodeInfo('linenums'), { lang: '', lineNumbers: true });
+  assert.deepEqual(parseCodeInfo('python linenums'), { lang: 'python', lineNumbers: true, colors: true, border: 0 });
+  assert.deepEqual(parseCodeInfo('linenums'), { lang: '', lineNumbers: true, colors: true, border: 0 });
   assert.equal(codeInfo('', true), 'auto linenums');
   assert.equal(codeInfo('yaml', false), 'yaml');
   assert.equal(normalizeLang('auto linenums'), '');
@@ -285,4 +285,97 @@ test('code blocks: info string, line numbers and more languages', async () => {
   assert.match(out, /class="bk-code lang-javascript linenums"/);
   assert.equal((out.match(/bk-lnum/g) || []).length, 2);
   assert.doesNotMatch(renderMarkdown('```js\nconst a = 1;\n```').html, /bk-lnum/);
+});
+
+test('a book folder is marked by lutefisk.yaml; older book.yaml folders migrate on save', async () => {
+  const { mkdtempSync, writeFileSync, existsSync, readFileSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+  const { isBookDir, loadBook, saveBook, serializeBook, BOOK_FILE } = await import('../src/main/bookstore.js');
+  assert.equal(BOOK_FILE, 'lutefisk.yaml');
+  const dir = mkdtempSync(join(tmpdir(), 'lf-'));
+  try {
+    assert.equal(await isBookDir(dir), false);
+    const book = defaultBook({ title: 'Old Book' });
+    writeFileSync(join(dir, 'book.yaml'), serializeBook(book));
+    assert.equal(await isBookDir(dir), true);
+    const loaded = await loadBook(dir);
+    assert.equal(loaded.book.title, 'Old Book');
+    await saveBook(dir, loaded.book, {}, []);
+    assert.ok(existsSync(join(dir, 'lutefisk.yaml')));
+    assert.ok(!existsSync(join(dir, 'book.yaml')));
+    assert.match(readFileSync(join(dir, 'lutefisk.yaml'), 'utf8'), /title: Old Book/);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+import { whenKey, cmpWhen, chronology, flashbacks } from '../src/shared/timeline.js';
+import { t, setLanguage } from '../src/shared/i18n.js';
+
+test('timeline: when labels sort as dates, years and numbers', () => {
+  assert.deepEqual(whenKey('Year 300, day 2'), [300, 2]);
+  assert.deepEqual(whenKey('March 3, 1922'), [1922, 3, 3]);
+  assert.deepEqual(whenKey('1922-03-04'), [1922, 3, 4]);
+  assert.deepEqual(whenKey('300 BC'), [-300]);
+  assert.equal(whenKey('long ago'), null);
+  const labels = ['Year 300, day 2', 'Year 289', 'Year 300, day 1', '400 BC'];
+  assert.deepEqual(labels.map((l) => [l, whenKey(l)]).sort((a, b) => cmpWhen(a[1], b[1])).map((x) => x[0]), ['400 BC', 'Year 289', 'Year 300, day 1', 'Year 300, day 2']);
+});
+
+test('timeline: story order and flashbacks', () => {
+  const plot = { columns: [{ id: 'c1' }, { id: 'c2' }, { id: 'c3' }], cards: [{ id: 'a', col: 'c1' }, { id: 'b', col: 'c2' }, { id: 'c', col: 'c3' }, { id: 'e', col: null }], chrono: [] };
+  assert.deepEqual(chronology(plot).map((c) => c.id), ['a', 'b', 'c', 'e']);
+  plot.chrono = ['e', 'c', 'a', 'b']; // c (told in chapter 3) happens before a and b
+  assert.deepEqual([...flashbacks(plot)], ['c']);
+});
+
+test('i18n: interface strings, counts and fallbacks', () => {
+  setLanguage('de');
+  assert.equal(t('Settings'), 'Einstellungen');
+  assert.equal(t('843 words'), '843 Wörter');
+  assert.equal(t('843 words · ~3 pages'), '843 Wörter · ~3 Seiten');
+  assert.equal(t('Some text nobody translated'), 'Some text nobody translated');
+  setLanguage('en-GB');
+  assert.equal(t('Highlighter colors'), 'Highlighter colours');
+  setLanguage('xx');
+  assert.equal(t('Settings'), 'Settings');
+  setLanguage('en-US');
+});
+
+import { parseCodeInfo, codeInfo } from '../src/shared/code.js';
+test('code: colors and line numbers flags round-trip, and colors can be off', () => {
+  assert.deepEqual(parseCodeInfo('python linenums nocolor'), { lang: 'python', lineNumbers: true, colors: false, border: 0 });
+  assert.deepEqual(parseCodeInfo('js'), { lang: 'js', lineNumbers: false, colors: true, border: 0 });
+  assert.equal(codeInfo('python', false, false), 'python nocolor');
+  assert.equal(codeInfo('', true, false), 'auto linenums nocolor');
+  assert.equal(codeInfo('ruby', false, true), 'ruby');
+  const on = renderMarkdown('```python\ndef f(): pass\n```').html;
+  const off = renderMarkdown('```python nocolor\ndef f(): pass\n```').html;
+  assert.match(on, /hljs-keyword/);
+  assert.doesNotMatch(off, /hljs-/);
+});
+
+test('code: no border by default; thin, medium or thick on request', () => {
+  assert.equal(parseCodeInfo('python').border, 0);
+  assert.equal(parseCodeInfo('python border2 linenums').border, 2);
+  assert.equal(parseCodeInfo('python border2 linenums').lang, 'python');
+  assert.equal(codeInfo('python', false, true, 3), 'python border3');
+  assert.doesNotMatch(renderMarkdown('```js\nx\n```').html, /border-/);
+  assert.match(renderMarkdown('```js border1\nx\n```').html, /class="bk-code lang-javascript border-1"/);
+});
+
+import { GOAL_PRESETS, describeGoal, goalProgress } from '../src/shared/goal-presets.js';
+test('goal presets: ten authors, each with words, hours and/or pages', () => {
+  assert.equal(GOAL_PRESETS.length, 10);
+  assert.equal(new Set(GOAL_PRESETS.map((p) => p.id)).size, 10);
+  for (const p of GOAL_PRESETS) { assert.ok(p.words || p.minutes || p.pages, p.id); assert.ok(p.note.length > 20, p.id); }
+  assert.equal(describeGoal({ words: 2000 }), '2,000 words');
+  assert.equal(describeGoal({ pages: 10, minutes: 180 }), '10 pages + 3 h');
+  assert.equal(describeGoal({ minutes: 270 }), '4 h 30 min');
+});
+test('goal progress: every part must be met; pct is the least-complete part', () => {
+  const g = { words: 1600, minutes: 300 };
+  assert.deepEqual([goalProgress({ words: 1600, minutes: 150 }, g).met, goalProgress({ words: 1600, minutes: 150 }, g).pct], [false, 0.5]);
+  assert.equal(goalProgress({ words: 2000, minutes: 310 }, g).met, true);
+  assert.equal(goalProgress({ words: 2750, minutes: 0 }, { pages: 10 }).met, true);
+  assert.equal(goalProgress({ words: 100 }, {}).met, false);
 });

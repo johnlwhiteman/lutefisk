@@ -13,10 +13,11 @@ import { gapCursor } from 'prosemirror-gapcursor';
 import { MarkdownParser, MarkdownSerializer, defaultMarkdownSerializer } from 'prosemirror-markdown';
 import { tableNodes, tableEditing, goToNextCell, addRowAfter, addRowBefore, addColumnAfter, addColumnBefore, deleteRow, deleteColumn, deleteTable, isInTable, setCellAttr, selectedRect } from 'prosemirror-tables';
 import { createMarkdown, extractFootnotes, safeAssetPath, cleanBullet } from '../shared/markdown.js';
-import { h, icon, dialog, assetUrl, popover, setHtml, bumpAsset, toast, closePopovers } from './ui.js';
+import { h, icon, dialog, assetUrl, popover, setHtml, bumpAsset, toast, closePopovers, segmented } from './ui.js';
 import { openDrawingEditor } from './drawing-editor.js';
 import { texToMathml } from '../shared/math.js';
-import { highlightRanges, CODE_LANGUAGES, normalizeLang, parseCodeInfo, codeInfo, CODE_CSS } from '../shared/code.js';
+import { harperPlugin, lintAt, lintsIn, wasChecked, ignoreLint, recheck as harperRecheck } from './spellcheck.js';
+import { highlightRanges, CODE_LANGUAGES, CODE_BORDERS, normalizeLang, parseCodeInfo, codeInfo, CODE_CSS } from '../shared/code.js';
 import { openMathDialog } from './math-dialog.js';
 import { openSymbolPicker } from './symbol-picker.js';
 
@@ -56,9 +57,9 @@ export const schema = new Schema({
     text: { group: 'inline' },
     code_block: {
       content: 'text*', marks: '', group: 'block', code: true, defining: true,
-      attrs: { params: { default: '' }, lineNumbers: { default: false } },
-      parseDOM: [{ tag: 'pre', preserveWhitespace: 'full', getAttrs: (d) => ({ params: d.getAttribute('data-lang') || '', lineNumbers: d.hasAttribute('data-linenums') }) }],
-      toDOM: (n) => ['pre', { class: 'pm-code', 'data-lang': n.attrs.params, ...(n.attrs.lineNumbers ? { 'data-linenums': '' } : {}) }, ['code', 0]],
+      attrs: { params: { default: '' }, lineNumbers: { default: false }, colors: { default: true }, border: { default: 0 } },
+      parseDOM: [{ tag: 'pre', preserveWhitespace: 'full', getAttrs: (d) => ({ params: d.getAttribute('data-lang') || '', lineNumbers: d.hasAttribute('data-linenums'), colors: !d.hasAttribute('data-nocolor'), border: Math.min(3, Number(d.getAttribute('data-border')) || 0) }) }],
+      toDOM: (n) => ['pre', { class: 'pm-code', 'data-lang': n.attrs.params, ...(n.attrs.lineNumbers ? { 'data-linenums': '' } : {}), ...(n.attrs.colors === false ? { 'data-nocolor': '' } : {}), ...(n.attrs.border ? { 'data-border': String(n.attrs.border) } : {}) }, ['code', 0]],
     },
     image: {
       inline: true, group: 'inline', draggable: true,
@@ -137,7 +138,7 @@ const parser = new MarkdownParser(schema, tokenizer, {
   align: { block: 'align', getAttrs: (tok) => ({ align: tok.meta?.align || 'center' }) },
   hl: { mark: 'highlight', getAttrs: (tok) => ({ color: tok.meta?.color || 'yellow', size: tok.meta?.size || 'full' }) },
   code_block: { block: 'code_block', noCloseToken: true },
-  fence: { block: 'code_block', getAttrs: (tok) => { const i = parseCodeInfo(tok.info); return { params: i.lang === 'auto' ? '' : i.lang, lineNumbers: i.lineNumbers }; }, noCloseToken: true },
+  fence: { block: 'code_block', getAttrs: (tok) => { const i = parseCodeInfo(tok.info); return { params: i.lang === 'auto' ? '' : i.lang, lineNumbers: i.lineNumbers, colors: i.colors, border: i.border }; }, noCloseToken: true },
   hr: { node: 'horizontal_rule' },
   pagebreak: { node: 'page_break' },
   image: {
@@ -196,7 +197,7 @@ const serializer = new MarkdownSerializer({
     // ```lang linenums — a longer fence when the code itself contains ```.
     const ticks = node.textContent.match(/`{3,}/gm);
     const fence = ticks ? `${ticks.sort().slice(-1)[0]}\`` : '```';
-    state.write(`${fence}${codeInfo(node.attrs.params, node.attrs.lineNumbers)}\n`);
+    state.write(`${fence}${codeInfo(node.attrs.params, node.attrs.lineNumbers, node.attrs.colors, node.attrs.border)}\n`);
     state.text(node.textContent, false);
     state.ensureNewLine();
     state.write(fence);
@@ -515,7 +516,7 @@ function codeDecorations(doc) {
   doc.descendants((node, pos) => {
     if (node.type !== schema.nodes.code_block) return true;
     const text = node.textContent;
-    if (text && text.length < 50000) for (const r of highlightRanges(text, node.attrs.params)) decos.push(Decoration.inline(pos + 1 + r.from, pos + 1 + r.to, { class: r.cls }));
+    if (text && text.length < 50000 && node.attrs.colors !== false) for (const r of highlightRanges(text, node.attrs.params)) decos.push(Decoration.inline(pos + 1 + r.from, pos + 1 + r.to, { class: r.cls }));
     return false;
   });
   return DecorationSet.create(doc, decos);
@@ -544,13 +545,20 @@ class CodeBlockView {
     this.ln = h('input', { type: 'checkbox', checked: !!node.attrs.lineNumbers, 'aria-label': 'Show line numbers' });
     this.ln.addEventListener('change', () => set({ lineNumbers: this.ln.checked }));
     const lnLabel = h('label', { class: 'pm-code-ln', title: 'Show line numbers in the book' }, this.ln, h('span', {}, 'Line numbers'));
-    for (const el of [this.sel, lnLabel]) el.addEventListener('mousedown', (e) => e.stopPropagation());
-    this.bar = h('div', { class: 'pm-code-bar', contenteditable: 'false' }, icon('code', 13), this.sel, h('span', { class: 'spacer' }), lnLabel);
+    this.col = h('input', { type: 'checkbox', checked: node.attrs.colors !== false, 'aria-label': 'Color the code' });
+    this.col.addEventListener('change', () => set({ colors: this.col.checked }));
+    const colLabel = h('label', { class: 'pm-code-ln', title: 'Syntax colors — turn off to show the code in plain text color, in the editor and the book' }, this.col, h('span', {}, 'Colors'));
+    this.bd = h('select', { class: 'pm-code-border', 'aria-label': 'Border', title: 'Border around the code — none, or thin, medium or thick' }, CODE_BORDERS.map(([v, l]) => h('option', { value: String(v) }, l)));
+    this.bd.value = String(node.attrs.border || 0);
+    this.bd.addEventListener('change', () => set({ border: Number(this.bd.value) }));
+    for (const el of [this.sel, lnLabel, colLabel, this.bd]) el.addEventListener('mousedown', (e) => e.stopPropagation());
+    this.bar = h('div', { class: 'pm-code-bar', contenteditable: 'false' }, icon('code', 13), this.sel, h('span', { class: 'spacer' }), this.bd, colLabel, lnLabel);
     this.gutter = h('div', { class: 'pm-code-gutter', contenteditable: 'false', 'aria-hidden': 'true' });
     this.code = h('code');
     this.pre = h('pre', { class: 'pm-code' }, this.code);
     this.dom = h('div', { class: 'pm-code-wrap' }, this.bar, h('div', { class: 'pm-code-body' }, this.gutter, this.pre));
     this.contentDOM = this.code;
+    this.dom.dataset.border = String(node.attrs.border || 0);
     this.drawNumbers();
   }
   drawNumbers() {
@@ -567,6 +575,9 @@ class CodeBlockView {
     const v = normalizeLang(node.attrs.params);
     if (this.sel.value !== v) this.sel.value = v;
     this.ln.checked = !!node.attrs.lineNumbers;
+    this.col.checked = node.attrs.colors !== false;
+    this.bd.value = String(node.attrs.border || 0);
+    this.dom.dataset.border = String(node.attrs.border || 0);
     this.drawNumbers();
     return true;
   }
@@ -675,6 +686,11 @@ export function createEditor(mount, ctx) {
     'Shift-Enter': chainCommands(exitCode, (state, dispatch) => { dispatch?.(state.tr.replaceSelectionWith(schema.nodes.hard_break.create()).scrollIntoView()); return true; }),
     Enter: chainCommands(verseEnter, splitListItem(schema.nodes.list_item)), 'Mod-[': liftListItem(schema.nodes.list_item), 'Mod-]': sinkListItem(schema.nodes.list_item),
     'Mod-Alt-f': () => { footnoteCmd(); return true; },
+    'Mod-Shift-h': () => { applyHighlight(hlPen); return true; },
+    // Spelling and grammar: F7 checks now and goes to the first problem; ⌥F7 / ⇧⌥F7 step through them.
+    F7: () => { if (!spell.enabled()) { ctx.spellOff?.(); return true; } harperRecheck(view); ctx.spellNow?.(); return true; },
+    'Alt-F7': () => { if (!nextLint(1)) ctx.spellNone?.(); return true; },
+    'Shift-Alt-F7': () => { if (!nextLint(-1)) ctx.spellNone?.(); return true; },
     'Mod-Alt-c': () => { citeCmd(); return true; },
     'Mod-Alt-e': () => { mathCmd(); return true; },
     'Mod-Alt-i': () => { symbolCmd(); return true; },
@@ -692,12 +708,16 @@ export function createEditor(mount, ctx) {
     'Mod-Enter': (state, dispatch) => (inCode(state) ? exitCode(state, dispatch) : false),
     'Shift-Enter': (state, dispatch) => (inCode(state) ? exitCode(state, dispatch) : false),
   });
-  const plugins = [tableEditing(), tableKeys, codeKeys, codeHighlight, buildInputRules(), keymap(keys), keymap(baseKeymap), dropCursor(), gapCursor(), history(), currentBlock, searchPlugin];
+  // Spelling and grammar (Harper, on this computer). The browser's own checker is
+  // switched off while it runs, so words aren't underlined twice.
+  const spell = ctx.spell || { enabled: () => false, dialect: () => 'american', kinds: () => new Set() };
+  const plugins = [tableEditing(), tableKeys, codeKeys, codeHighlight, buildInputRules(), keymap(keys), keymap(baseKeymap), dropCursor(), gapCursor(), history(), currentBlock, searchPlugin, harperPlugin(spell)];
   const mkState = (doc) => EditorState.create({ doc, plugins });
+  const spellKeyName = plugins.at(-1).spec.key;
 
   const view = new EditorView(area, {
     state: mkState(parseMarkdownDoc('')),
-    attributes: { class: 'ql-editor book-editor', spellcheck: 'true', 'aria-label': 'Chapter text' },
+    attributes: () => ({ class: 'ql-editor book-editor', spellcheck: spell.enabled() ? 'false' : 'true', 'aria-label': 'Chapter text' }),
     nodeViews: {
       image: (n, v, p) => new ImageView(n, v, p, api),
       footnote: (n, v, p) => new FootnoteView(n, v, p, api),
@@ -710,6 +730,7 @@ export function createEditor(mount, ctx) {
       view.updateState(newState);
       refreshToolbar();
       ctx.onChange?.(tr, newState);
+      if (tr.docChanged || tr.getMeta(spellKeyName)) spell.onState?.();
     },
     handleDOMEvents: {
       drop: (_v, e) => {
@@ -737,7 +758,7 @@ export function createEditor(mount, ctx) {
     return b;
   };
   /* ---- block styles: paragraph, headings, blockquote, verse, hanging indent */
-  const BLOCK_STYLES = [['p', 'Paragraph'], ...[1, 2, 3, 4, 5, 6].map((l) => [`h${l}`, `Heading ${l}`]), ['quote', 'Blockquote'], ['verse', 'Verse'], ['hanging', 'Hanging Indent']];
+  const BLOCK_STYLES = [['p', 'Paragraph'], ...[1, 2, 3, 4, 5, 6].map((l) => [`h${l}`, `Heading ${l}`]), ['quote', 'Blockquote'], ['verse', 'Verse'], ['hanging', 'Hanging Indent'], ['attribution', 'Attribution']];
   const styleSel = h('select', { class: 'ql-header', title: 'Paragraph style', 'aria-label': 'Paragraph style' },
     BLOCK_STYLES.map(([v, l]) => h('option', { value: v }, l)));
   /** The wrapper that gives the cursor its style: a blockquote, or a verse/hanging block. */
@@ -746,7 +767,7 @@ export function createEditor(mount, ctx) {
     for (let d = $from.depth; d > 0; d--) {
       const n = $from.node(d);
       if (n.type === schema.nodes.blockquote) return 'quote';
-      if (n.type === schema.nodes.align && (n.attrs.align === 'verse' || n.attrs.align === 'hanging')) return n.attrs.align;
+      if (n.type === schema.nodes.align && ['verse', 'hanging', 'attribution'].includes(n.attrs.align)) return n.attrs.align;
     }
     return null;
   }
@@ -761,7 +782,7 @@ export function createEditor(mount, ctx) {
     if (/^h[1-6]$/.test(v)) setBlockType(schema.nodes.heading, { level: Number(v.slice(1)) })(view.state, view.dispatch);
     else setBlockType(schema.nodes.paragraph)(view.state, view.dispatch);
     if (v === 'quote') wrapIn(schema.nodes.blockquote)(view.state, view.dispatch);
-    if (v === 'verse' || v === 'hanging') wrapIn(schema.nodes.align, { align: v })(view.state, view.dispatch);
+    if (v === 'verse' || v === 'hanging' || v === 'attribution') wrapIn(schema.nodes.align, { align: v })(view.state, view.dispatch);
     view.focus();
   }
   styleSel.addEventListener('change', () => setBlockStyle(styleSel.value));
@@ -958,10 +979,17 @@ export function createEditor(mount, ctx) {
     view.focus();
   }
 
-  /** Insert Code…: pick a language (remembered), optionally paste the code, and choose line numbers (off by default). */
+  /**
+   * Insert Code…: Block (a code block with a language, line numbers and
+   * colors) or Inline (code in the sentence). The language and layout are remembered.
+   */
   async function insertCodeCmd() {
     const { $from } = view.state.selection;
-    if ($from.parent.type === schema.nodes.code_block) { toast('You’re in a code block — change its language and line numbers in the bar above it', 'info', 2600); return; }
+    if ($from.parent.type === schema.nodes.code_block) { toast('You’re in a code block — change its language, colors and line numbers in the bar above it', 'info', 2600); return; }
+    const selText = view.state.selection.empty ? '' : view.state.doc.textBetween(view.state.selection.from, view.state.selection.to, '\n');
+    let layout = 'block';
+    try { layout = localStorage.getItem('lutefisk.codeLayout') === 'inline' ? 'inline' : 'block'; } catch { /* ignore */ }
+    if (selText && !selText.includes('\n') && selText.length < 120) layout = 'inline';
     let last = '';
     try { last = localStorage.getItem('lutefisk.codeLang') || ''; } catch { /* ignore */ }
     const lang = h('select', { class: 'code-lang-sel', 'aria-label': 'Language' });
@@ -972,21 +1000,55 @@ export function createEditor(mount, ctx) {
     }
     lang.value = normalizeLang(last) || '';
     const lines = h('input', { type: 'checkbox', 'aria-label': 'Show line numbers' });
+    const colors = h('input', { type: 'checkbox', checked: true, 'aria-label': 'Color the code' });
+    const border = h('select', { 'aria-label': 'Border' }, CODE_BORDERS.map(([v, l]) => h('option', { value: String(v) }, l)));
+    try { border.value = localStorage.getItem('lutefisk.codeBorder') || '0'; } catch { border.value = '0'; }
+    if (!border.value) border.value = '0';
     const code = h('textarea', { class: 'code-paste', rows: 10, spellcheck: 'false', placeholder: 'Paste or type code here (optional — you can also type in the block afterwards)', 'aria-label': 'Code' });
+    code.value = selText;
     code.addEventListener('keydown', (e) => {
       if (e.key === 'Tab' && !e.shiftKey) { e.preventDefault(); const a = code.selectionStart; code.setRangeText('  ', a, code.selectionEnd, 'end'); }
     });
-    const body = h('div', { class: 'code-dlg' },
+    const blockOnly = h('div', { class: 'code-block-opts' },
       h('label', { class: 'fld' }, h('span', {}, 'Language'), lang),
-      h('label', { class: 'code-ln-row' }, lines, h('span', {}, 'Show line numbers')),
+      h('div', { class: 'code-ln-row' },
+        h('label', {}, lines, h('span', {}, 'Line numbers')),
+        h('label', { title: 'Syntax colors — turn off for plain text color' }, colors, h('span', {}, 'Colors')),
+        h('label', { class: 'code-border-row', title: 'Border around the code' }, border)));
+    const hint = h('small', { class: 'hint' });
+    const setLayout = (v) => {
+      layout = v;
+      blockOnly.hidden = v === 'inline';
+      code.rows = v === 'inline' ? 2 : 10;
+      code.placeholder = v === 'inline' ? 'Type the code for the sentence, e.g. print()' : 'Paste or type code here (optional — you can also type in the block afterwards)';
+      hint.textContent = v === 'inline'
+        ? 'Inline code sits in the sentence in a monospaced font. Tip: type `code` between backticks.'
+        : 'Highlighted the same way in the editor, the preview and every export. Tip: type ``` and a language name, then a space, to start a code block from the keyboard.';
+    };
+    const seg = segmented([{ value: 'block', label: 'Block', title: 'A code block on its own lines' }, { value: 'inline', label: 'Inline', title: 'Code inside the sentence' }], layout, setLayout, { label: 'Layout' });
+    seg.classList.add('code-layout');
+    setLayout(layout);
+    const body = h('div', { class: 'code-dlg' },
+      h('div', { class: 'fld' }, h('span', {}, 'Layout'), seg),
+      blockOnly,
       h('label', { class: 'fld' }, h('span', {}, 'Code'), code),
-      h('small', { class: 'hint' }, 'Highlighted the same way in the editor, the preview and every export. Tip: type ``` and a language name, then a space, to start a code block from the keyboard.'));
+      hint);
     requestAnimationFrame(() => code.focus());
     const res = await dialog({ title: 'Insert code', body, ok: 'Insert', cancel: 'Cancel', wide: true });
     if (!res) { view.focus(); return; }
-    try { localStorage.setItem('lutefisk.codeLang', lang.value); } catch { /* ignore */ }
+    try { localStorage.setItem('lutefisk.codeLang', lang.value); localStorage.setItem('lutefisk.codeLayout', layout); localStorage.setItem('lutefisk.codeBorder', border.value); } catch { /* ignore */ }
+    if (layout === 'inline') {
+      const t = code.value.replace(/\s*\n\s*/g, ' ').trim();
+      if (!t) { view.focus(); return; }
+      const { from, to } = view.state.selection;
+      const tr = view.state.tr.replaceWith(from, to, schema.text(t, [schema.marks.code.create()]));
+      tr.setStoredMarks([]);
+      view.dispatch(tr.scrollIntoView());
+      view.focus();
+      return;
+    }
     const text = code.value.replace(/\r\n?/g, '\n').replace(/\n+$/, '');
-    const node = schema.nodes.code_block.create({ params: lang.value, lineNumbers: lines.checked }, text ? schema.text(text) : null);
+    const node = schema.nodes.code_block.create({ params: lang.value, lineNumbers: lines.checked, colors: colors.checked, border: Number(border.value) }, text ? schema.text(text) : null);
     const { state } = view;
     const sel = state.selection;
     let tr;
@@ -1011,6 +1073,54 @@ export function createEditor(mount, ctx) {
     view.focus();
   }
 
+  /* ---- spelling and grammar suggestions for one problem */
+  function lintMenu(lint, after) {
+    const fix = (sug) => {
+      const { from, to } = lint;
+      const tr = sug.kind === 1 ? view.state.tr.delete(from, to)
+        : sug.kind === 2 ? view.state.tr.insertText(sug.text, to)
+          : view.state.tr.insertText(sug.text, from, to);
+      view.dispatch(tr); view.focus();
+      after?.();
+    };
+    return [
+      { header: `${lint.pretty}: ${lint.message}`.slice(0, 120) },
+      ...lint.suggestions.map((sug) => ({ label: sug.kind === 1 ? `Remove “${lint.problem}”` : sug.kind === 2 ? `Add “${sug.text}”` : sug.text || '(nothing)', icon: 'check', onClick: () => fix(sug) })),
+      ...(lint.cls === 'spell' ? [{ label: `Add “${lint.problem}” to Dictionary`, icon: 'plus', onClick: () => { ctx.addWord?.(lint.problem); after?.(); } }] : []),
+      { label: 'Ignore', icon: 'eyeOff', onClick: () => { ignoreLint(lint); dropLint(lint); harperRecheck(view); after?.(); } },
+    ];
+  }
+  /** Take one problem's underline away now (ignored, or its word added to the dictionary). */
+  function dropLint(lint) {
+    const same = lintsIn(view.state).filter((l) => l.problem === lint.problem && l.message === lint.message);
+    const st = spellKeyName.getState(view.state);
+    if (!st || !same.length) return;
+    let decos = st.decos;
+    for (const l of same) decos = decos.remove(decos.find(l.from, l.to));
+    view.dispatch(view.state.tr.setMeta(spellKeyName, { ...st, decos }));
+  }
+  /** Go to the next (dir 1) or previous (-1) problem after the cursor and show its suggestions. */
+  function nextLint(dir = 1, { menu = true } = {}) {
+    const all = lintsIn(view.state);
+    if (!all.length) return null;
+    const at = dir > 0 ? view.state.selection.to : view.state.selection.from;
+    const lint = dir > 0 ? (all.find((l) => l.from >= at && !(l.from === view.state.selection.from && l.to === view.state.selection.to)) || all[0])
+      : ([...all].reverse().find((l) => l.to <= at && !(l.from === view.state.selection.from && l.to === view.state.selection.to)) || all.at(-1));
+    view.dispatch(view.state.tr.setSelection(TextSelection.create(view.state.doc, lint.from, lint.to)).scrollIntoView());
+    view.focus();
+    if (menu) {
+      requestAnimationFrame(() => {
+        const c = view.coordsAtPos(lint.from);
+        const anchor = h('span', { class: 'ctx-anchor', style: { left: `${c.left}px`, top: `${c.bottom + 2}px` } });
+        document.body.append(anchor);
+        popover(anchor, [...lintMenu(lint, () => setTimeout(() => nextLint(1), 60)), '-',
+          { label: 'Next Problem', icon: 'next', hint: '⌥F7', onClick: () => setTimeout(() => nextLint(1), 0) }], { width: 260 });
+        setTimeout(() => anchor.remove(), 0);
+      });
+    }
+    return lint;
+  }
+
   /* ---- right-click menu */
   function contextMenu(e) {
     const inTable = isInTable(view.state);
@@ -1018,7 +1128,12 @@ export function createEditor(mount, ctx) {
     const hasSel = !view.state.selection.empty;
     const anchor = h('span', { class: 'ctx-anchor', style: { left: `${e.clientX}px`, top: `${e.clientY}px` } });
     document.body.append(anchor);
+    // A spelling or grammar problem under the pointer: its suggestions come first.
+    const at = view.posAtCoords({ left: e.clientX, top: e.clientY });
+    const lint = at ? lintAt(view.state, at.pos) : null;
+    const lintItems = lint ? [...lintMenu(lint), '-'] : [];
     const items = [
+      ...lintItems,
       { label: 'Cut', icon: 'clear', hint: '⌘X', disabled: !hasSel, onClick: () => { view.focus(); document.execCommand('cut'); } },
       { label: 'Copy', icon: 'doc', hint: '⌘C', disabled: !hasSel, onClick: () => { view.focus(); document.execCommand('copy'); } },
       { label: 'Paste', icon: 'export', hint: '⌘V', onClick: () => { view.focus(); window.lutefisk.paste?.(); } },
@@ -1192,6 +1307,56 @@ export function createEditor(mount, ctx) {
     { label: 'Footnote…', hint: '⌥⌘F', icon: 'footnote', onClick: () => footnoteCmd() },
     ...(ctx.citationStyles ? ['-', { header: 'Citation style — whole book' }, ...ctx.citationStyles().map((st) => ({ label: `${st.on ? '✓ ' : ''}${st.label}`, onClick: () => ctx.setCitationStyle(st.id) }))] : []),
   ]);
+  /* ---- highlighter: soft, see-through colors for marking up your own text (not printed in the book) */
+  const HL_COLORS = [['yellow', 'Yellow'], ['bright', 'Bright Yellow'], ['green', 'Green'], ['blue', 'Blue'], ['pink', 'Pink'], ['orange', 'Orange'], ['purple', 'Purple']];
+  const HL_SIZES = [['full', 'Full'], ['medium', 'Half'], ['thin', 'Underline']];
+  let hlPen = (() => { try { return JSON.parse(localStorage.getItem('lutefisk.hlPen')) || { color: 'yellow', size: 'full' }; } catch { return { color: 'yellow', size: 'full' }; } })();
+  const hlActive = (st) => { const { from, to, empty, $from } = st.selection; const m = schema.marks.highlight; return empty ? !!m.isInSet(st.storedMarks || $from.marks()) : st.doc.rangeHasMark(from, to, m); };
+  const applyHighlight = (pen) => {
+    hlPen = pen;
+    try { localStorage.setItem('lutefisk.hlPen', JSON.stringify(pen)); } catch { /* ignore */ }
+    drawHlBtn();
+    const { state } = view;
+    const { from, to, empty } = state.selection;
+    if (empty) { toast('Select some text to highlight', 'info', 1400); view.focus(); return; }
+    view.dispatch(state.tr.removeMark(from, to, schema.marks.highlight).addMark(from, to, schema.marks.highlight.create(pen)));
+    view.focus();
+  };
+  const removeHighlight = () => {
+    const { state } = view;
+    const { from, to, empty, $from } = state.selection;
+    let a = from, b = to;
+    if (empty) {
+      // In a highlight with nothing selected: remove that whole highlight.
+      const m = schema.marks.highlight.isInSet($from.marks());
+      if (!m) return;
+      const par = $from.parent, start = $from.start();
+      let pos = start;
+      par.forEach((n, off) => { const s0 = start + off, e0 = s0 + n.nodeSize; if (m.isInSet(n.marks) && s0 <= from && from <= e0) { a = Math.min(a, s0); b = Math.max(b, e0); } pos = e0; });
+    }
+    view.dispatch(state.tr.removeMark(a, b, schema.marks.highlight));
+    view.focus();
+  };
+  const hlBtn = h('button', { type: 'button', class: 'ql-highlighter ql-split-main', title: 'Highlight the selected text', 'aria-label': 'Highlight', onmousedown: (e) => e.preventDefault(), onclick: () => (hlActive(view.state) && view.state.selection.empty ? removeHighlight() : applyHighlight(hlPen)) });
+  const hlMore = h('button', { type: 'button', class: 'ql-split-more', title: 'Highlighter colors', 'aria-label': 'Highlighter colors', onmousedown: (e) => e.preventDefault(), onclick: () => {
+    const swatches = h('div', { class: 'hl-pick' },
+      h('div', { class: 'hl-row' }, HL_COLORS.map(([c, name]) => h('button', { type: 'button', class: `hl-sw hl-demo hl-${c}${hlPen.color === c ? ' on' : ''}`, title: name, 'aria-label': `${name} highlighter`, onmousedown: (e) => e.preventDefault(), onclick: () => { closePopovers(); applyHighlight({ ...hlPen, color: c }); } }))),
+      h('div', { class: 'hl-row hl-sizes' }, HL_SIZES.map(([z, name]) => h('button', { type: 'button', class: `hl-size${hlPen.size === z ? ' on' : ''}`, title: `${name} highlight`, onmousedown: (e) => e.preventDefault(), onclick: () => { closePopovers(); applyHighlight({ ...hlPen, size: z }); } },
+        h('span', { class: `hl-demo hl-${hlPen.color} hl-${z}` }, 'Text'), h('small', {}, name)))));
+    popover(hlMore, [
+      { header: 'Highlighter — for you; not printed in the book' },
+      { node: swatches },
+      '-',
+      { label: 'Remove Highlight', icon: 'eraser', disabled: !hlActive(view.state), onClick: removeHighlight },
+    ], { width: 240 });
+  } }, icon('chevron', 9));
+  function drawHlBtn() {
+    hlBtn.replaceChildren(icon('highlighter', 18), h('span', { class: `hl-bar hl-demo hl-${hlPen.color}` }));
+  }
+  drawHlBtn();
+  hlBtn._active = hlActive;
+  const hlGroup = h('span', { class: 'ql-split' }, hlBtn, hlMore);
+
   const fxBtn = tb('sigma', 'Insert equation — LaTeX (⌥⌘E)', () => mathCmd(), null, 'ql-fx');
   fxBtn.replaceChildren(h('span', { class: 'fx-glyph', 'aria-hidden': 'true' }, h('i', {}, 'f'), '(', h('i', {}, 'x'), ')'));
 
@@ -1200,7 +1365,7 @@ export function createEditor(mount, ctx) {
     [tb('bold', 'Bold (⌘B)', run(toggleMark(schema.marks.strong)), (s) => markActive(s, schema.marks.strong)),
       tb('italic', 'Italic (⌘I)', run(toggleMark(schema.marks.em)), (s) => markActive(s, schema.marks.em)),
       tb('underline', 'Underline (⌘U)', run(toggleMark(schema.marks.underline)), (s) => markActive(s, schema.marks.underline)),
-      textMenu],
+      textMenu, hlGroup],
     [listMenu, breakMenu],
     [tb('link', 'Link — name and web address (⌘K)', () => linkCmd(), (s) => markActive(s, schema.marks.link))]],
     [[tb('image', 'Insert image', () => imageCmd()),
@@ -1242,6 +1407,7 @@ export function createEditor(mount, ctx) {
       if (!st) { st = mkState(parseMarkdownDoc(markdown)); states.set(id, st); }
       view.updateState(st);
       refreshToolbar();
+      spell.onState?.();
     },
     /** Re-draw node views (citations pick up a new citation style). */
     /** Insert Markdown at a document position (a dropped snippet): one paragraph goes inline; more go between paragraphs. */
@@ -1290,6 +1456,15 @@ export function createEditor(mount, ctx) {
       return true;
     },
     redraw() { view.setProps({ nodeViews: { ...view.props.nodeViews } }); },
+    /** Spelling and grammar settings changed: check again (or clear). */
+    recheckSpelling() { view.setProps({}); harperRecheck(view); },
+    /** Check spelling and grammar now (on-demand mode, or to refresh). */
+    checkSpellingNow() { harperRecheck(view); },
+    /** Problems underlined right now, and whether this text has been checked. */
+    spellProblems() { return lintsIn(view.state); },
+    spellChecked() { return wasChecked(view.state); },
+    /** Select the next (1) or previous (-1) problem and show its suggestions. */
+    nextSpellProblem(dir = 1, opts) { return nextLint(dir, opts); },
     /** Highlight all matches of `re`; select and scroll to match number `index` (if given). */
     search(re, index = -1) {
       const ms = findMatches(view.state.doc, re);

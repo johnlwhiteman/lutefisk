@@ -20,7 +20,8 @@ import { openCharacters, suggestNames } from './characters.js';
 import { openPlot } from './plot.js';
 import { createSearch } from './search.js';
 import { replaceInMarkdown } from './editor.js';
-import { loadSettings, settings, autosaver, openSettings, backupProject, backupDialog, themeButton } from './settings.js';
+import { loadSettings, settings, autosaver, openSettings, backupProject, backupDialog, themeButton, onSettings, addDictionaryWord } from './settings.js';
+import { setDictionary, warmUp } from './spellcheck.js';
 import { countMentions } from '../shared/characters.js';
 import { createCommentRail } from './comments.js';
 import {
@@ -109,7 +110,7 @@ async function showLibrary() {
   grid.append(h('button', { class: 'lib-new', onclick: () => newBookSheet(data) },
     h('div', { class: 'lib-new-cover' }, icon('plus', 34)), h('div', { class: 'lib-meta' }, h('b', {}, 'New Book'), h('span', {}, 'Start writing'))));
   for (const b of data.books) {
-    const cover = b.cover ? h('img', { src: b.cover, alt: '' }) : generatedCover(b.title, b.author, fontStack(templateById(b.template).head));
+    const cover = b.cover ? h('img', { src: b.cover, alt: '' }) : generatedCover(b.title, b.author, fontStack(templateById(b.template).head), b.subtitle);
     const more = h('button', { class: 'lib-more', title: 'More', 'aria-label': `More options for ${b.title}`, onclick: (e) => {
       e.stopPropagation();
       popover(more, [
@@ -265,7 +266,7 @@ async function openRecent(dir) {
   try { loadBookData(await B.openRecent(dir)); } catch (err) { toast(clean(err), 'error', 6000); }
 }
 
-// Drag a book folder (or its book.yaml) onto the window to open it.
+// Drag a book folder (or its lutefisk.yaml) onto the window to open it.
 let dragDepth = 0;
 window.addEventListener('dragenter', (e) => { if (e.dataTransfer?.types.includes('Files')) { dragDepth++; document.body.classList.add('dropping'); } });
 window.addEventListener('dragleave', () => { if (--dragDepth <= 0) { dragDepth = 0; document.body.classList.remove('dropping'); } });
@@ -315,6 +316,8 @@ function buildShell() {
   els.secSub.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); app.editor.focus(); } });
   els.commentsBtn = h('button', { class: 'sb-tool ed-icon-btn comments-btn', onclick: () => setCommentsHidden(!commentsHidden_()) });
   els.snipBtn = h('button', { class: 'sb-tool ed-icon-btn snippets-btn', onclick: () => setSnippetsShown(!snippetsShown) });
+  // Check spelling and grammar now (same as F7): checks, then opens the first problem.
+  els.spellBtn = h('button', { class: 'sb-tool ed-icon-btn spell-now-btn', title: 'Check Spelling and Grammar Now (F7)', 'aria-label': 'Check spelling and grammar now', onclick: () => checkSpellingNow() }, icon('spell', 18));
   els.snipRail = snippetRail(app, {
     onNew: () => openSnippets(app, sheet, { targets: snippetTargets, insert: insertSnippetInto }, refreshSidebar, { fresh: true }),
     onEdit: (sn) => openSnippets(app, sheet, { targets: snippetTargets, insert: insertSnippetInto }, refreshSidebar, { edit: sn.id }),
@@ -349,12 +352,9 @@ function buildShell() {
   els.bbArrow = h('span', { class: 'bb-arrow' });
   els.bbSession = h('button', { class: 'bb-session', onclick: () => app.openInsights(), oncontextmenu: (e) => { e.preventDefault(); sessionPopover(els.bbSession, app.goals, { onNew: () => { app.sessionStart = null; drawBookBar(); } }); } },
     els.bbArrow, h('span', { class: 'bb-delta-txt' }, els.bbDeltaW, els.bbDeltaP), h('span', { class: 'bb-tag' }, 'this session'));
-  const barBtn = (ic, label, title, onclick) => h('button', { class: 'bb-btn', title, onclick }, icon(ic, 15), h('span', {}, label));
   const insights = () => app.openInsights();
   // Bottom of the editor: the numbers. Click any of them for Insights; the stopwatch sits at the right.
   els.bookBar = h('div', { class: 'book-bar', role: 'status', 'aria-live': 'off' },
-    barBtn('chart', 'Insights', 'Insights — writing history, daily charts and analysis of your text', insights),
-    h('span', { class: 'bb-div tall' }),
     h('button', { class: 'bb-group bb-book', title: 'The whole book, updated as you type — click for Insights', onclick: insights }, els.bbWords.el, h('span', { class: 'bb-div' }), els.bbPages.el),
     els.bbSession,
     h('button', { class: 'bb-group bb-today-g', title: 'Words today — click for Insights', onclick: insights }, els.bbToday.el),
@@ -375,7 +375,7 @@ function buildShell() {
   // Editor focus — the same chip as the preview's.
   els.edFocusBtn = h('button', { class: 'chip-toggle focus-btn ed-focus-btn', title: 'Focus on writing — hide everything else (⇧⌘F)', 'aria-label': 'Focus on writing', onclick: () => toggleWritingFocus() }, icon('expand', 15), h('span', {}, 'Focus'));
   els.edTop = h('div', { class: 'ed-top' },
-    h('div', { class: 'sec-opts' }, els.chaptersBtn, els.sceneBtn, els.commentsBtn, els.snipBtn, els.headTools = h('span', { class: 'sec-tools' })),
+    h('div', { class: 'sec-opts' }, els.chaptersBtn, els.sceneBtn, els.spellBtn, els.commentsBtn, els.snipBtn, els.headTools = h('span', { class: 'sec-tools' })),
     h('span', { class: 'spacer' }),
     zoomCtl, els.edFocusBtn,
     h('button', { class: 'sb-tool', title: 'Hide the editor', 'aria-label': 'Hide the editor', onclick: () => setPane('editor', false) }, icon('panelHide', 16)));
@@ -428,7 +428,29 @@ function buildShell() {
 
   let railFrame = 0;
   const railSoon = () => { cancelAnimationFrame(railFrame); railFrame = requestAnimationFrame(() => { app.comments?.selectionChanged(); app.comments?.update(); }); };
+  // Spelling and grammar: Harper, on this computer.
+  const spellKinds = () => new Set(['spell', ...(settings.spellGrammar !== false ? ['grammar'] : []), ...(settings.spellStyle !== false ? ['style'] : [])]);
+  let spellSig = '';
+  const spellChanged = () => {
+    const sig = JSON.stringify([settings.spellOn, settings.spellDialect, settings.spellGrammar, settings.spellStyle, settings.dictionary]);
+    if (sig === spellSig) return;
+    spellSig = sig;
+    setDictionary(settings.dictionary || []).finally(() => app.editor?.recheckSpelling?.());
+  };
+  onSettings(spellChanged);
+  spellChanged();
+  if (settings.spellOn !== false) setTimeout(() => warmUp(settings.spellDialect || 'american'), 1500);
   app.editor = createEditor(els.editorMount, {
+    spell: {
+      enabled: () => settings.spellOn !== false, dialect: () => settings.spellDialect || 'american', kinds: spellKinds,
+      auto: () => settings.spellMode !== 'manual',
+      onBusy: (on) => els.spellBtn?.classList.toggle('busy', on),
+      onResult: () => { els.spellBtn?.classList.remove('busy'); if (spellJump) { spellJump = false; requestAnimationFrame(() => { if (!app.editor.nextSpellProblem(1)) toast('No spelling or grammar problems found', 'ok', 1600); }); } },
+    },
+    spellOff: () => toast('Spelling and grammar checking is off — turn it on in Settings › Spelling & Grammar', 'info', 2600),
+    spellNow: () => { spellJump = true; },
+    spellNone: () => toast(app.editor.spellChecked() || settings.spellMode !== 'manual' ? 'No spelling or grammar problems here' : 'Press F7 to check this text first', 'info', 1600),
+    addWord: (w) => addDictionaryWord(w).then(() => toast(`Added “${w}” to your dictionary`, 'ok', 1600)),
     onChange(tr) {
       if (tr.docChanged || tr.selectionSet) railSoon();
       if (tr.docChanged) { pendingSerialize = true; app.goals.activity(); trackActivity(app.currentId); }
@@ -693,6 +715,7 @@ function storyCtx(extra = {}) {
     book: app.book, kind: 'book', unitWord: 'chapter',
     markDirty: () => app.markDirty(),
     jump: (id) => { ctx.close?.(); selectSection(id); },
+    help: (topic) => openHelp(app, { topic }),
     ...extra,
   };
   return ctx;
@@ -701,8 +724,9 @@ function openCast(select) {
   if (!app.book) return;
   openCharacters(storyCtx({ units: storyUnits, suggest: () => suggestNames(storyUnits().map((u) => u.text).join('\n')) }), sheet, { select });
 }
-function openPlotBoard() {
+function openPlotBoard(view) {
   if (!app.book) return;
+  if (view) { try { localStorage.setItem('lutefisk.plotView', view); } catch { /* ignore */ } }
   openPlot(storyCtx({
     sources: () => {
       flushSerialize();
@@ -723,6 +747,7 @@ function openPlotBoard() {
 let snippetsShown = (() => { try { return localStorage.getItem('lutefisk.snippetsShown') === '1'; } catch { return false; } })();
 function setSnippetsShown(v) {
   snippetsShown = !!v;
+  if (snippetsShown && !commentsHidden_()) setCommentsHidden(true);
   try { localStorage.setItem('lutefisk.snippetsShown', snippetsShown ? '1' : '0'); } catch { /* ignore */ }
   drawSnippetsBtn();
 }
@@ -736,6 +761,7 @@ function drawSnippetsBtn() {
   els.snipBtn.title = `Snippets — ${show ? 'hide' : 'show'} your snippets beside the text, ready to drag in${n ? ` (${n})` : ''}`;
   els.snipBtn.setAttribute('aria-label', show ? 'Hide snippets' : 'Show snippets');
   els.snipBtn.replaceChildren(icon(show ? 'snippet' : 'snippetOff', 17), n ? h('span', { class: 'snip-btn-n' }, String(n)) : '');
+  if (show && app.comments && !commentsHidden_()) { app.comments.setHidden(true); drawCommentsBtn(); }
   els.snipRail.hidden = !show;
   els.editorMount.classList.toggle('with-snippets', show);
   if (show) els.snipRail.draw();
@@ -755,7 +781,22 @@ function dropSnippet(id, pos) {
 /* ---- comments: show or hide the highlights and the margin of balloons */
 let commentCount = { open: 0, all: 0 };
 const commentsHidden_ = () => !!app.comments?.hidden;
-function setCommentsHidden(v) { app.comments?.setHidden(v); drawCommentsBtn(); toast(v ? 'Comments hidden' : 'Comments shown', 'info', 1400); }
+// Comments and Snippets share the right side: opening one closes the other.
+function setCommentsHidden(v) {
+  app.comments?.setHidden(v);
+  if (!v && snippetsShown) setSnippetsShown(false);
+  drawCommentsBtn();
+}
+/* ---- spelling and grammar: F7 (or the ABC button) checks now and goes to the first problem */
+let spellJump = false;
+function checkSpellingNow() {
+  if (!app.editor) return;
+  if (settings.spellOn === false) { toast('Spelling and grammar checking is off — turn it on in Settings › Spelling & Grammar', 'info', 2600); return; }
+  spellJump = true;
+  els.spellBtn?.classList.add('busy');
+  app.editor.checkSpellingNow();
+}
+
 function drawCommentsBtn() {
   if (!els.commentsBtn) return;
   const hiddenNow = commentsHidden_();
@@ -799,7 +840,8 @@ function drawBookBar() {
   const goal = app.goals.dailyTarget('book');
   els.bbToday.num.textContent = `${today > 0 ? '+' : ''}${today.toLocaleString()}`;
   els.bbToday.unit.textContent = goal ? `of ${goal.toLocaleString()} today` : 'today';
-  els.bbToday.el.classList.toggle('met', goal > 0 && today >= goal);
+  const pr = app.goals.progress('book');
+  els.bbToday.el.classList.toggle('met', pr.has ? pr.met : goal > 0 && today >= goal);
 }
 
 
@@ -847,24 +889,23 @@ function refreshSidebar() {
     return n?.displayTitle || s.title || SECTION_TYPES[s.type]?.label;
   };
   sb.replaceChildren(els.sidebarRail);
-  const filterOn = binderFilter.labels.size + binderFilter.statuses.size > 0;
+  const filterOn = filterActive();
   const filterBtn = h('button', { class: `sb-tool${filterOn ? ' on' : ''}`, title: 'Filter by label or status', 'aria-label': 'Filter by label or status', onclick: () => filterMenu(filterBtn) }, icon('filter', 15));
   sb.append(h('div', { class: 'pane-head sb-top' }, h('span', { class: 'pane-title' }, 'Binder'), filterBtn,
     h('button', { class: 'sb-tool', title: 'Hide the binder', 'aria-label': 'Hide the binder', onclick: () => setPane('binder', false) }, icon('binderHide', 16))));
   if (filterOn) sb.append(h('div', { class: 'sb-filterbar' }, icon('filter', 12),
-    h('span', {}, [...binderFilter.labels].map((id) => labelById(id)?.name).concat([...binderFilter.statuses]).filter(Boolean).join(', ')),
-    h('button', { title: 'Clear filter', 'aria-label': 'Clear filter', onclick: () => { binderFilter.labels.clear(); binderFilter.statuses.clear(); refreshSidebar(); } }, icon('close', 11))));
-  const today = app.goals?.today?.('book') || 0;
-  const daily = app.goals?.dailyTarget?.('book') || 0;
-  // The book: its cover, and beside it Book and Goals, one above the other.
-  const coverBtn = h('button', { class: 'sb-cover-btn', onclick: () => openBookSettings(app, 'cover'), title: `${book.title || 'Untitled'}${book.author ? ` — ${book.author}` : ''}\nBook details & cover` },
-    h('div', { class: 'sb-cover' }, book.cover ? h('img', { src: assetUrl(book.cover), alt: '' }) : generatedCover(book.title, book.author, fontStack(templateById(book.template).head)), h('div', { class: 'lib-spine' })));
+    h('span', {}, [...binderFilter.labels].map((id) => labelById(id)?.name).concat([...binderFilter.statuses], binderFilter.excluded ? ['Excluded'] : []).filter(Boolean).join(', ')),
+    h('button', { title: 'Clear filter', 'aria-label': 'Clear filter', onclick: clearFilter }, icon('close', 11))));
+  const goalPr = app.goals?.progress?.('book');
+  // The book: its cover (click for Book settings), and beside it Goals and Insights.
+  const coverBtn = h('button', { class: 'sb-cover-btn', onclick: () => openBookSettings(app, 'general'), title: `${book.title || 'Untitled'}${book.author ? ` — ${book.author}` : ''}\nBook settings — details, cover, chapters, print`, 'aria-label': 'Book settings' },
+    h('div', { class: 'sb-cover' }, book.cover ? h('img', { src: assetUrl(book.cover), alt: '' }) : generatedCover(book.title, book.author, fontStack(templateById(book.template).head), book.subtitle), h('div', { class: 'lib-spine' })));
   const sideBtn = (ic, text, sub, onclick, title) => h('button', { class: 'sb-side-btn', onclick, title }, icon(ic, 15), h('span', { class: 'sb-label' }, text), sub ? h('span', { class: 'sb-count' }, sub) : null);
   sb.append(h('div', { class: 'sb-book' }, coverBtn,
     h('div', { class: 'sb-book-side' },
-      h('div', { class: 'sb-book-title', title: book.title || 'Untitled' }, book.title || 'Untitled'),
-      sideBtn('gear', 'Book', '', () => openBookSettings(app), 'Book settings — details, cover, chapters, print'),
-      sideBtn('target', 'Goals', daily ? `${Math.min(100, Math.floor((Math.max(0, today) / daily) * 100))}%` : '', () => openGoals(app, app.goals, sheet), 'Writing goals and deadline'))),
+      h('button', { class: 'sb-book-title', title: `${book.title || 'Untitled'} — Book settings`, onclick: () => openBookSettings(app, 'general') }, book.title || 'Untitled'),
+      sideBtn('target', 'Goals', goalPr?.has ? `${Math.floor(goalPr.pct * 100)}%` : '', () => openGoals(app, app.goals, sheet), 'Writing goals and deadline'),
+      sideBtn('chart', 'Insights', '', () => app.openInsights(), 'Insights — the whole book: writing history, daily charts and analysis of your text'))),
     app.search.bar);
 
   const scroller = h('div', { class: 'sb-scroll' });
@@ -920,10 +961,14 @@ function refreshSidebar() {
     scroller.append(h('section', { class: 'sb-group' }, h('div', { class: 'sb-head' }, h('span', {}, g.label), addBtn), ul));
   }
   const nChars = (book.characters || []).length;
-  const nCards = (book.plot?.cards || []).length;
-  scroller.append(h('section', { class: 'sb-group nav-group story' }, h('div', { class: 'sb-head' }, h('span', {}, 'Planning')), h('ul', { class: 'sb-list' },
+  const nCards = (book.plot?.cards || []).filter((c) => c.col !== null).length;
+  const nEvents = (book.plot?.cards || []).length;
+  scroller.append(h('section', { class: 'sb-group nav-group story' }, h('div', { class: 'sb-head' }, h('span', {}, 'Tools')), h('ul', { class: 'sb-list sb-notebook' },
     navRow('people', 'Characters', nChars ? String(nChars) : '', () => openCast()),
-    navRow('plot', 'Plot', nCards ? `${nCards} card${nCards === 1 ? '' : 's'}` : '', () => openPlotBoard()))));
+    navRow('plot', 'Plot', nCards ? `${nCards} card${nCards === 1 ? '' : 's'}` : '', () => openPlotBoard('board')),
+    navRow('clock', 'Timeline', nEvents ? `${nEvents} event${nEvents === 1 ? '' : 's'}` : '', () => openPlotBoard('timeline')),
+    snippetsRow(),
+    todoRow())));
   scroller.append(researchGroup());
   scroller.append(binRow());
   sb.append(scroller, app.search.panel);
@@ -941,20 +986,35 @@ app.refreshSidebar = refreshSidebar;
    are used until you add your own. */
 const DEFAULT_LABELS = [['red', 'Red', '#e5484d'], ['orange', 'Orange', '#f76b15'], ['yellow', 'Yellow', '#e2b203'], ['green', 'Green', '#30a46c'], ['blue', 'Blue', '#0090ff']].map(([id, name, color]) => ({ id, name, color }));
 const LABEL_PALETTE = ['#e5484d', '#f76b15', '#e2b203', '#30a46c', '#0090ff', '#8e4ec6', '#d6409f', '#12a594', '#8d8d86', '#a18072'];
-const DEFAULT_STATUSES = ['To Do', 'In Progress', 'First Draft', 'Needs Review', 'Revised', 'Finished'];
-const STATUS_ICON = { 'To Do': 'status', 'In Progress': 'clock', 'First Draft': 'pen', 'Needs Review': 'comment', Revised: 'rotate', Finished: 'check' };
+const DEFAULT_STATUSES = ['To Do', 'In Progress', 'First Draft', 'Needs Review', 'Reviewed', 'Revised', 'Finished'];
+const STATUS_ICON = { 'To Do': 'status', 'In Progress': 'clock', 'First Draft': 'pen', 'Needs Review': 'comment', Reviewed: 'eye', Revised: 'rotate', Finished: 'check' };
+/** A chapter or scene can have several statuses (older books stored one, as status). */
+const statusesOf = (x) => (Array.isArray(x?.statuses) ? x.statuses : x?.status ? [x.status] : []);
+function setStatuses(x, list) {
+  delete x.status;
+  if (list.length) x.statuses = [...new Set(list)]; else delete x.statuses;
+}
 const bookLabels = () => (Array.isArray(app.book?.labels) && app.book.labels.length ? app.book.labels : DEFAULT_LABELS);
-const bookStatuses = () => (Array.isArray(app.book?.statuses) && app.book.statuses.length ? app.book.statuses : DEFAULT_STATUSES);
+const bookStatuses = () => {
+  const list = Array.isArray(app.book?.statuses) && app.book.statuses.length ? app.book.statuses : DEFAULT_STATUSES;
+  if (list.includes('Reviewed')) return list;
+  // Books with their own list get Reviewed too, after Needs Review.
+  const i = list.indexOf('Needs Review');
+  return i >= 0 ? [...list.slice(0, i + 1), 'Reviewed', ...list.slice(i + 1)] : [...list, 'Reviewed'];
+};
 const labelById = (id) => bookLabels().find((l) => l.id === id);
-const binderFilter = { labels: new Set(), statuses: new Set() };
-const filterActive = () => binderFilter.labels.size + binderFilter.statuses.size > 0;
-const matchesFilter = (x) => (!binderFilter.labels.size || binderFilter.labels.has(x.label)) && (!binderFilter.statuses.size || binderFilter.statuses.has(x.status));
+const binderFilter = { labels: new Set(), statuses: new Set(), excluded: false };
+const filterActive = () => binderFilter.labels.size + binderFilter.statuses.size > 0 || binderFilter.excluded;
+const clearFilter = () => { binderFilter.labels.clear(); binderFilter.statuses.clear(); binderFilter.excluded = false; refreshSidebar(); };
+const matchesFilter = (x) => (!binderFilter.labels.size || binderFilter.labels.has(x.label))
+  && (!binderFilter.statuses.size || statusesOf(x).some((st) => binderFilter.statuses.has(st)))
+  && (!binderFilter.excluded || !!x.exclude);
 
 function rowDecor(x) {
   const lb = x.label && labelById(x.label);
   return [
     lb ? h('span', { class: 'sb-dot', style: { background: lb.color }, title: lb.name }) : null,
-    x.status ? h('span', { class: `sb-status${x.status === 'Finished' ? ' done' : ''}`, title: x.status }, icon(STATUS_ICON[x.status] || 'tag', 12)) : null,
+    ...statusesOf(x).slice(0, 3).map((st) => h('span', { class: `sb-status${st === 'Finished' ? ' done' : ''}`, title: st }, icon(STATUS_ICON[st] || 'tag', 12))),
   ];
 }
 
@@ -989,17 +1049,34 @@ async function newStatus(target) {
   if (!name) return;
   if (!Array.isArray(app.book.statuses) || !app.book.statuses.length) app.book.statuses = [...DEFAULT_STATUSES];
   if (!app.book.statuses.some((x) => x.toLowerCase() === name.toLowerCase())) app.book.statuses.push(name);
-  if (target) target.status = app.book.statuses.find((x) => x.toLowerCase() === name.toLowerCase());
+  if (!app.book.statuses.includes('Reviewed')) app.book.statuses = bookStatuses();
+  if (target) setStatuses(target, [...statusesOf(target), app.book.statuses.find((x) => x.toLowerCase() === name.toLowerCase())]);
   app.markDirty(); refreshSidebar();
 }
+/** An invisible stand-in at a rectangle, for reopening a menu whose button was redrawn. */
+function ghostAnchor(r) {
+  const g = h('span', { 'aria-hidden': 'true', style: { position: 'fixed', left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px`, pointerEvents: 'none' } });
+  document.body.append(g);
+  return g;
+}
+/** Statuses: pick as many as apply; the menu stays open so you can tick several. */
 function statusMenu(anchor, target, after) {
+  const cur = statusesOf(target);
+  const toggle = (st) => {
+    // Remember where the menu was: the binder redraws, so reopen it at the same spot.
+    const r = anchor.getBoundingClientRect();
+    setStatuses(target, cur.includes(st) ? cur.filter((x) => x !== st) : [...cur, st]);
+    app.markDirty(); refreshSidebar(); after?.();
+    const at = anchor.isConnected ? anchor : ghostAnchor(r);
+    setTimeout(() => { statusMenu(at, target, after); if (at !== anchor) at.remove(); });
+  };
   popover(anchor, [
-    { header: 'Status' },
-    ...bookStatuses().map((st) => ({ label: st, icon: target.status === st ? 'check' : STATUS_ICON[st] || 'tag', onClick: () => { target.status = st; app.markDirty(); refreshSidebar(); after?.(); } })),
+    { header: 'Status — choose any that apply' },
+    ...bookStatuses().map((st) => ({ label: st, icon: cur.includes(st) ? 'check' : STATUS_ICON[st] || 'tag', onClick: () => toggle(st) })),
     '-',
     { label: 'New Status…', icon: 'plus', onClick: () => newStatus(target).then(() => after?.()) },
-    target.status ? { label: 'Clear Status', icon: 'close', onClick: () => { delete target.status; app.markDirty(); refreshSidebar(); after?.(); } } : null,
-  ].filter(Boolean), { width: 220 });
+    cur.length ? { label: 'Clear Statuses', icon: 'close', onClick: () => { setStatuses(target, []); app.markDirty(); refreshSidebar(); after?.(); } } : null,
+  ].filter(Boolean), { width: 240 });
 }
 function filterMenu(anchor) {
   const toggle = (set, v) => { if (set.has(v)) set.delete(v); else set.add(v); refreshSidebar(); };
@@ -1008,7 +1085,9 @@ function filterMenu(anchor) {
     ...bookLabels().map((l) => ({ label: l.name, swatch: l.color, icon: binderFilter.labels.has(l.id) ? 'check' : null, onClick: () => toggle(binderFilter.labels, l.id) })),
     '-', { header: 'Show only — status' },
     ...bookStatuses().map((st) => ({ label: st, icon: binderFilter.statuses.has(st) ? 'check' : STATUS_ICON[st] || 'tag', onClick: () => toggle(binderFilter.statuses, st) })),
-    ...(filterActive() ? ['-', { label: 'Clear Filter', icon: 'close', onClick: () => { binderFilter.labels.clear(); binderFilter.statuses.clear(); refreshSidebar(); } }] : []),
+    '-', { header: 'Show only — export' },
+    { label: 'Excluded from Export & Print', icon: binderFilter.excluded ? 'check' : 'eyeOff', onClick: () => { binderFilter.excluded = !binderFilter.excluded; refreshSidebar(); } },
+    ...(filterActive() ? ['-', { label: 'Clear Filter', icon: 'close', onClick: clearFilter }] : []),
   ], { width: 230 });
 }
 /** The shared part of the chapter/scene context menu. */
@@ -1016,7 +1095,7 @@ function organizeItems(anchor, target, onExport) {
   const lb = target.label && labelById(target.label);
   return [
     { label: 'Label', icon: 'tag', hint: lb ? lb.name : '', onClick: () => setTimeout(() => labelMenu(anchor, target)) },
-    { label: 'Status', icon: 'status', hint: target.status || '', onClick: () => setTimeout(() => statusMenu(anchor, target)) },
+    { label: 'Status', icon: 'status', hint: statusesOf(target).join(', '), onClick: () => setTimeout(() => statusMenu(anchor, target)) },
     exportItem(target, onExport),
   ];
 }
@@ -1235,7 +1314,7 @@ function ensureScenes(chapter, split) {
 }
 
 /* ---- per-chapter / per-scene activity: created, updated, time spent, words per day.
-   Stored in book.yaml next to each section so it travels with the book. */
+   Stored in lutefisk.yaml next to each section so it travels with the book. */
 const ACTIVE_GAP = 90000;
 const lastEdit = new Map();
 const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
@@ -1281,6 +1360,7 @@ function showNotesButton(node) {
   delete node.synopsis;
   drawCommentsBtn();
   drawSnippetsBtn();
+  if (els.spellBtn) els.spellBtn.hidden = !app.book;
 }
 
 /** The scenes popover in the editor header. */
@@ -1427,7 +1507,7 @@ function combineScenes(chapter) {
 
 function resetHeaderControls() {
   els.dcRow.hidden = true; els.headRow.hidden = true; els.secTitle.hidden = false; els.sceneBtn.hidden = true;
-  els.secSub.hidden = true; els.commentsBtn.hidden = true; els.snipBtn.hidden = true; els.snipRail.hidden = true;
+  els.secSub.hidden = true; els.commentsBtn.hidden = true; els.snipBtn.hidden = true; els.snipRail.hidden = true; els.spellBtn.hidden = true;
   els.secExtra.replaceChildren();
 }
 
@@ -1519,7 +1599,7 @@ function organizeTools(target, { kind, compact = false, onChange, insights }) {
   return h('div', { class: `ch-tools${compact ? ' sc-tools' : ''}`, onmousedown: (e) => e.stopPropagation(), draggable: compact ? 'false' : null, ondragstart: compact ? (e) => { e.preventDefault(); e.stopPropagation(); } : null },
     chip(icon('chart', compact ? 13 : 15), compact ? '' : 'Insights', `Insights — analyze just this ${kind}`, () => insights()),
     chip(lb ? h('span', { class: 'sb-dot', style: { background: lb.color } }) : icon('tag', compact ? 13 : 15), lb ? lb.name : compact ? '' : 'Label', lb ? `Label: ${lb.name}` : `Label this ${kind}`, (e) => labelMenu(e.currentTarget, target, onChange), lb ? 'on' : ''),
-    chip(icon(STATUS_ICON[target.status] || 'status', compact ? 13 : 15), target.status || (compact ? '' : 'Status'), target.status ? `Status: ${target.status}` : `Set the ${kind}’s status`, (e) => statusMenu(e.currentTarget, target, onChange), target.status ? 'on' : ''),
+    chip(icon(STATUS_ICON[statusesOf(target)[0]] || 'status', compact ? 13 : 15), statusesOf(target).join(', ') || (compact ? '' : 'Status'), statusesOf(target).length ? `Status: ${statusesOf(target).join(', ')}` : `Set the ${kind}’s statuses`, (e) => statusMenu(e.currentTarget, target, onChange), statusesOf(target).length ? 'on' : ''),
     h('label', { class: 'ch-exclude', title: `Leave this ${kind} out of the preview and every export`, onclick: (e) => e.stopPropagation() }, sw, h('span', {}, compact ? 'Exclude' : 'Exclude from export')));
 }
 
@@ -1547,8 +1627,6 @@ function researchGroup() {
   const addBtn = h('button', { class: 'sb-add', title: 'Add research', 'aria-label': 'Add research' }, icon('plus', 15));
   addBtn.addEventListener('click', () => popover(addBtn, [
     { label: 'Note', icon: 'doc', onClick: () => addResearch('note') },
-    { label: 'Snippet', icon: 'snippet', onClick: () => openSnippetsSheet() },
-    { label: 'To-Do', icon: 'checklist', onClick: () => openTodos(app, sheet, refreshSidebar) },
     '-',
     { label: 'Import Files…', icon: 'folder', hint: 'Images, PDFs, docs', onClick: () => importResearch() },
   ], { width: 230 }));
@@ -1572,15 +1650,16 @@ function researchGroup() {
     });
     ul.append(li);
   }
-  const nSnips = (app.book.snippets || []).length;
-  const nb = (ic, text, n, onclick, title) => h('li', { class: 'sb-row nav' }, h('button', { class: 'sb-name', title, onclick }, icon(ic, 15), h('span', { class: 'sb-label' }, text), n ? h('span', { class: 'sb-count' }, String(n)) : null));
-  const notebook = h('ul', { class: 'sb-list sb-notebook' },
-    nb('snippet', 'Snippets', nSnips, () => openSnippetsSheet(), 'Snippets — passages saved to insert into a chapter or scene later'),
-    todoRow());
-  return h('section', { class: 'sb-group research' }, h('div', { class: 'sb-head' }, h('span', {}, 'Research'), addBtn), notebook, ul);
+  return h('section', { class: 'sb-group research' }, h('div', { class: 'sb-head' }, h('span', {}, 'Research'), addBtn), ul);
 }
 
-/** Research › To-Do: open count, and a red badge with the number overdue. */
+/** Tools › Snippets: the number saved. */
+function snippetsRow() {
+  const n = (app.book.snippets || []).length;
+  return h('li', { class: 'sb-row nav' }, h('button', { class: 'sb-name', title: 'Snippets — passages saved to insert into a chapter or scene later', onclick: () => openSnippetsSheet() },
+    icon('snippet', 15), h('span', { class: 'sb-label' }, 'Snippets'), n ? h('span', { class: 'sb-count' }, String(n)) : null));
+}
+/** Tools › To-Do: open count, and a red badge with the number overdue. */
 function todoRow() {
   const list = Array.isArray(app.book.todos) ? app.book.todos : [];
   const open = list.filter((t) => !t.done).length;
@@ -2255,6 +2334,9 @@ B.onMenu(async (cmd) => {
     case 'toggle-preview': return app.book && toggleFocus();
     case 'open-characters': return app.book && openCast();
     case 'open-plot': return app.book && openPlotBoard();
+    case 'spell-check': checkSpellingNow(); return;
+    case 'open-plot-board': return app.book && openPlotBoard('board');
+    case 'open-timeline': return app.book && openPlotBoard('timeline');
     case 'open-history': return app.book && openInsights(app, app.goals, sheet);
     case 'content-search': return app.book && focusSearch();
     case 'find-replace': if (app.book) { focusSearch(); app.search.replace(); } return undefined;

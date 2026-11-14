@@ -37,6 +37,7 @@ await build({
   entryNames: '[name]', chunkNames: 'chunks/[name]-[hash]',
   splitting: true,
   platform: 'browser', format: 'esm', target: 'chrome140',
+  external: ['fs'], // harper.js reads its WebAssembly with fs only under Node; in the app it's fetched
 });
 
 cpSync(join(root, 'src/renderer/index.html'), join(dist, 'renderer', 'index.html'));
@@ -67,6 +68,9 @@ for (const f of FONTS.filter((f) => f.pkg)) {
 {
   const name = 'stix-two-math-latin-400-normal.woff2';
   copyFileSync(join(root, 'node_modules', '@fontsource', 'stix-two-math', 'files', name), join(dist, 'renderer', 'fonts', name));
+  // Harper, the local spelling and grammar checker (WebAssembly; runs entirely on this computer).
+  mkdirSync(join(dist, 'renderer', 'harper'), { recursive: true });
+  copyFileSync(join(root, 'node_modules', 'harper.js', 'dist', 'harper_wasm_bg.wasm'), join(dist, 'renderer', 'harper', 'harper.wasm'));
   css += `@font-face{font-family:'STIX Two Math';font-style:normal;font-weight:400;font-display:block;src:url('../fonts/${name}') format('woff2')}\n`;
 }
 writeFileSync(join(dist, 'renderer', 'styles', 'fonts.css'), css);

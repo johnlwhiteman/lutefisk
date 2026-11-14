@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:be3c27c0-16c7-4423-9073-2494fc83f046",
+  "serialNumber": "urn:uuid:2b223ac1-24d2-410a-99f4-aecd0b0132c0",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-11-14T01:56:20.227Z",
+    "timestamp": "2026-11-14T06:35:57.557Z",
     "lifecycles": [
       {
         "phase": "build"
@@ -1826,6 +1826,53 @@
       ]
     },
     {
+      "bom-ref": "harper.js@3.2.0",
+      "type": "library",
+      "name": "harper.js",
+      "version": "3.2.0",
+      "scope": "required",
+      "author": "Elijah Potter",
+      "description": "The grammar checker that respects your privacy.",
+      "purl": "pkg:npm/harper.js@3.2.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:path",
+          "value": "node_modules/harper.js"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/harper.js/-/harper.js-3.2.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "git+https://github.com/automattic/harper.git"
+        },
+        {
+          "type": "website",
+          "url": "https://writewithharper.com"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/automattic/harper/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "4c3b2f1806afc351b4b43373024cc392fd90fd9d244525e00387097a97628aa27d0091f676bebc0f8d16ed6e6e2a2b246444bfbb79a37e021d3845d5642761b4"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ]
+    },
+    {
       "bom-ref": "highlight.js@11.12.0",
       "type": "library",
       "name": "highlight.js",
@@ -3231,6 +3278,7 @@
         "docx@9.15.3",
         "dompurify@3.4.17",
         "fflate@0.8.3",
+        "harper.js@3.2.0",
         "highlight.js@11.12.0",
         "markdown-it@15.0.3",
         "prosemirror-commands@1.7.2",
@@ -3412,6 +3460,12 @@
     {
       "ref": "fflate@0.8.3",
       "dependsOn": []
+    },
+    {
+      "ref": "harper.js@3.2.0",
+      "dependsOn": [
+        "fflate@0.8.3"
+      ]
     },
     {
       "ref": "highlight.js@11.12.0",

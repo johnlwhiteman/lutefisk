@@ -3,6 +3,7 @@
 // progress toward daily, manuscript and deadline goals.
 import { h, icon, toast, segmented, popover, confirmDialog } from './ui.js';
 import { proseText } from '../shared/scenes.js';
+import { GOAL_PRESETS, describeGoal, goalProgress, WORDS_PER_PAGE } from '../shared/goal-presets.js';
 
 const DAY = 86400000;
 const pad = (n) => String(n).padStart(2, '0');
@@ -173,10 +174,26 @@ export function createGoals(app) {
     return days > 0 ? Math.ceil(left / days) : left;
   }
 
+  /** Today's whole goal: words (the daily word target), writing minutes and pages. */
+  function dailyGoal(scope) {
+    const words = dailyTarget(scope);
+    if (scope === 'all') return { words, minutes: 0, pages: 0 };
+    const g = app.book.goals || {};
+    return { words, minutes: Number(g.dailyMinutes) || 0, pages: Number(g.dailyPages) || 0 };
+  }
+  const hasGoal = (goal) => goal.words > 0 || goal.minutes > 0 || goal.pages > 0;
+  /** A day's numbers for goals: net words, and writing minutes (typing time, or the stopwatch if more). */
+  const dayStats = (v) => ({ words: v?.words || 0, minutes: Math.max(v?.secs || 0, v?.sw || 0) / 60 });
+  /** Progress on a day (default today) toward the whole daily goal. */
+  function progress(scope, key = dayKey(Date.now())) {
+    const goal = dailyGoal(scope);
+    return { goal, has: hasGoal(goal), ...goalProgress(dayStats(byDay(scope).get(key)), goal) };
+  }
+
   function streak(scope) {
     const m = byDay(scope);
-    const target = dailyTarget(scope);
-    const hit = (k) => (m.get(k)?.words || 0) >= Math.max(1, target);
+    const goal = dailyGoal(scope);
+    const hit = (k) => (hasGoal(goal) ? goalProgress(dayStats(m.get(k)), goal).met : (m.get(k)?.words || 0) >= 1);
     let s = 0;
     let d = Date.now();
     if (!hit(dayKey(d))) d -= DAY; // today still in progress
@@ -204,7 +221,7 @@ export function createGoals(app) {
     resetHistory,
     session, pauseSession, newSession, sessionLog, archiveSession,
     stopwatch, stopwatchStart, stopwatchStop, stopwatchReset,
-    load, activity, measured, flush, today, dailyTarget, streak, byDay, events, bookWords, deadlinePace,
+    load, activity, measured, flush, today, dailyTarget, dailyGoal, progress, dayStats, streak, byDay, events, bookWords, deadlinePace,
     set onUpdate(fn) { onUpdate = fn; },
   };
 }
@@ -218,11 +235,12 @@ export function goalMeter(app, goals, open) {
   const draw = () => {
     if (!app.book) return;
     const t = goals.today('book');
-    const target = goals.dailyTarget('book');
-    const pct = target ? Math.min(1, t / target) : 0;
-    ring.style.setProperty('--p', String(pct));
-    ring.classList.toggle('done', target > 0 && t >= target);
-    txt.textContent = target ? `${n0(t)} / ${n0(target)} today` : `${n0(t)} today`;
+    const pr = goals.progress('book');
+    const onlyWords = pr.goal.words > 0 && !pr.goal.minutes && !pr.goal.pages;
+    ring.style.setProperty('--p', String(pr.has ? pr.pct : 0));
+    ring.classList.toggle('done', pr.has && pr.met);
+    txt.textContent = onlyWords ? `${n0(t)} / ${n0(pr.goal.words)} today` : pr.has ? `${Math.floor(pr.pct * 100)}% of today’s goal` : `${n0(t)} today`;
+    el.title = pr.has ? `Writing goals — today: ${pr.parts.map((p) => `${p.kind === 'minutes' ? dur(p.cur * 60000) : n0(p.cur)} of ${p.kind === 'minutes' ? dur(p.target * 60000) : n0(p.target)} ${p.kind === 'minutes' ? '' : p.kind}`.trim()).join(', ')}` : 'Writing goals';
   };
   return { el, draw };
 }
@@ -235,7 +253,7 @@ export function applyGoalReset(book) {
   try { at = Number(localStorage.getItem('lutefisk.goalsResetAt')) || 0; } catch { /* ignore */ }
   const g = book.goals || {};
   if (!at || (g.resetSeen || 0) >= at) return false;
-  for (const k of ['targetWords', 'targetPages', 'deadline', 'dailyWords']) delete g[k];
+  for (const k of ['targetWords', 'targetPages', 'deadline', 'dailyWords', 'dailyMinutes', 'dailyPages', 'dailyPreset']) delete g[k];
   g.resetSeen = at;
   book.goals = g;
   return true;
@@ -260,14 +278,33 @@ export function openGoals(app, goals, sheet) {
 
   const fWords = num(g.targetWords, (v) => { g.targetWords = v; save(); }, { step: 1000, placeholder: 'e.g. 80000' });
   const fPages = num(g.targetPages, (v) => { g.targetPages = v; save(); }, { step: 10, placeholder: 'e.g. 300' });
-  const fDaily = num(g.dailyWords, (v) => { g.dailyWords = v; save(); }, { step: 50, placeholder: 'Auto from deadline' });
+  const custom = () => { if (g.dailyPreset) { delete g.dailyPreset; presetSel.value = ''; presetNote.textContent = ''; } };
+  const fDaily = num(g.dailyWords, (v) => { g.dailyWords = v; custom(); save(); }, { step: 50, placeholder: 'Auto from deadline' });
+  const fHours = num(g.dailyMinutes ? g.dailyMinutes / 60 : 0, (v) => { g.dailyMinutes = Math.round(v * 60); custom(); save(); }, { step: 0.5, placeholder: 'e.g. 2' });
+  const fDailyPages = num(g.dailyPages, (v) => { g.dailyPages = v; custom(); save(); }, { step: 1, placeholder: 'e.g. 5' });
+  // Write like…: famous authors' daily habits as one-click goals.
+  const presetSel = h('select', { class: 'goal-preset', 'aria-label': 'Daily goal preset' },
+    h('option', { value: '' }, 'Custom'),
+    GOAL_PRESETS.map((p) => h('option', { value: p.id }, `${p.name} — ${describeGoal(p)}`)));
+  presetSel.value = GOAL_PRESETS.some((p) => p.id === g.dailyPreset) ? g.dailyPreset : '';
+  const presetNote = h('small', { class: 'hint goal-preset-note' }, GOAL_PRESETS.find((p) => p.id === g.dailyPreset)?.note || '');
+  presetSel.addEventListener('change', () => {
+    const p = GOAL_PRESETS.find((x) => x.id === presetSel.value);
+    if (!p) { delete g.dailyPreset; presetNote.textContent = ''; save(); return; }
+    g.dailyPreset = p.id;
+    g.dailyWords = p.words || 0; g.dailyMinutes = p.minutes || 0; g.dailyPages = p.pages || 0;
+    fDaily.value = g.dailyWords || ''; fHours.value = g.dailyMinutes ? String(g.dailyMinutes / 60) : ''; fDailyPages.value = g.dailyPages || '';
+    presetNote.textContent = p.note;
+    save();
+    toast(`Daily goal: ${describeGoal(p)}, like ${p.name}`, 'ok', 1800);
+  });
   const fGlobal = num(globalGoal(), (v) => { setGlobalGoal(v); draw(); }, { step: 50, placeholder: 'e.g. 1000' });
   const clearBook = () => {
-    for (const k of ['targetWords', 'targetPages', 'deadline', 'dailyWords']) delete g[k];
-    fWords.value = ''; fPages.value = ''; fDaily.value = ''; date.value = '';
+    for (const k of ['targetWords', 'targetPages', 'deadline', 'dailyWords', 'dailyMinutes', 'dailyPages', 'dailyPreset']) delete g[k];
+    fWords.value = ''; fPages.value = ''; fDaily.value = ''; fHours.value = ''; fDailyPages.value = ''; date.value = ''; presetSel.value = ''; presetNote.textContent = '';
   };
   const resetBook = async () => {
-    if (!(await confirmDialog('Reset this book’s goals?', 'Clears the manuscript length, print length, deadline and daily goal for this book. Your writing history is kept.', 'Reset Goals'))) return;
+    if (!(await confirmDialog('Reset this book’s goals?', 'Clears the manuscript length, print length, deadline and daily goals for this book. Your writing history is kept.', 'Reset Goals'))) return;
     clearBook(); save(); toast('Goals for this book reset', 'ok', 1800);
   };
   const resetAll = async () => {
@@ -283,8 +320,15 @@ export function openGoals(app, goals, sheet) {
       h('label', { class: 'fld' }, h('span', {}, 'Manuscript length (words)'), fWords),
       h('label', { class: 'fld' }, h('span', {}, 'Print length (pages)'), fPages),
       h('label', { class: 'fld' }, h('span', {}, 'Deadline'), date),
-      h('label', { class: 'fld' }, h('span', {}, 'Daily goal for this book'), fDaily),
-      h('label', { class: 'fld' }, h('span', {}, 'Daily goal, all books'), fGlobal)),
+      h('label', { class: 'fld' }, h('span', {}, 'Daily goal, all books (words)'), fGlobal)),
+    h('div', { class: 'goal-daily' },
+      h('div', { class: 'goal-daily-head' }, h('b', {}, 'Daily goal for this book'), h('small', { class: 'hint' }, 'Set any mix — a day is met when every part you set is met.')),
+      h('div', { class: 'goal-daily-row' },
+        h('label', { class: 'fld goal-preset-fld' }, h('span', {}, 'Write like…'), presetSel),
+        h('label', { class: 'fld' }, h('span', {}, 'Words'), fDaily),
+        h('label', { class: 'fld' }, h('span', {}, 'Hours'), fHours),
+        h('label', { class: 'fld' }, h('span', {}, 'Pages'), fDailyPages)),
+      presetNote),
     h('div', { class: 'goal-reset' }, icon('reset', 14), h('span', {}, 'Reset goals'),
       h('button', { type: 'button', class: 'btn small', title: 'Reset goals for this book — clears its length goals, deadline and daily goal', onclick: resetBook }, 'This Book'),
       h('button', { type: 'button', class: 'btn small', title: 'Reset goals for all books — clears the all-books daily goal and every book’s goals', onclick: resetAll }, 'All Books')));
@@ -300,6 +344,7 @@ export function openGoals(app, goals, sheet) {
     const todayW = goals.today(scope);
     const target = goals.dailyTarget(scope);
     const ev = goals.events(scope);
+    const pr = goals.progress(scope);
 
     // Last 30 days
     const last30 = [];
@@ -354,7 +399,7 @@ export function openGoals(app, goals, sheet) {
         h('td', {}, new Date(`${k}T12:00`).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })),
         h('td', { class: 'num' }, n0(v.words)), h('td', { class: 'num' }, v.secs ? `${Math.max(1, Math.round(v.secs / 60))} min` : '—'),
         h('td', { class: 'num' }, v.secs > 300 ? n0(v.words / (v.secs / 3600)) : '—'),
-        h('td', {}, target ? (v.words >= target ? '✓ Met' : `${Math.floor((Math.max(0, v.words) / target) * 100)}%`) : '—'))) : [h('tr', {}, h('td', { colspan: 5, class: 'hint' }, 'Your writing days will appear here as you write.'))]));
+        h('td', {}, (() => { if (!pr.has) return '—'; const d = goalProgress(goals.dayStats(v), pr.goal); return d.met ? '✓ Met' : `${Math.floor(d.pct * 100)}%`; })()))) : [h('tr', {}, h('td', { colspan: 5, class: 'hint' }, 'Your writing days will appear here as you write.'))]));
 
     // Per-book breakdown (all books scope)
     let books = null;
@@ -374,10 +419,10 @@ export function openGoals(app, goals, sheet) {
 
     content.replaceChildren(
       h('div', { class: 'tiles' },
-        tile('Today', n0(todayW), target ? `${Math.floor(Math.min(1, todayW / target) * 100)}% of ${n0(target)}` : 'no daily goal'),
+        tile('Today', n0(todayW), pr.has ? `${Math.floor(pr.pct * 100)}% of ${describeGoal(pr.goal)}${pr.met ? ' ✓' : ''}` : 'no daily goal'),
         tile('This week', n0(week), 'last 7 days'),
         tile('Last 30 days', n0(month), `${active.length} writing ${active.length === 1 ? 'day' : 'days'}`),
-        tile('Streak', `${goals.streak(scope)} ${goals.streak(scope) === 1 ? 'day' : 'days'}`, target ? 'daily goal met' : 'days with writing'),
+        tile('Streak', `${goals.streak(scope)} ${goals.streak(scope) === 1 ? 'day' : 'days'}`, pr.has ? 'daily goal met' : 'days with writing'),
         tile('Writing time', secs < 3600 ? `${Math.round(secs / 60)} min` : `${Math.round(secs / 3600 * 10) / 10} h`, wph ? `${n0(wph)} words / hour` : 'last 30 days'),
         tile('Best time', ev.some((e) => e.d > 0) ? hourLabel(bestHour) : '—', 'most words written')),
       scope === 'book' ? h('section', { class: 'gprogs' },
@@ -395,7 +440,7 @@ export function openGoals(app, goals, sheet) {
   goals.flush().then(draw);
   draw();
   sheet('Writing Goals', body, { wide: true });
-  void toast; void icon;
+  void icon; void WORDS_PER_PAGE;
 }
 
 /* ---------------------------------------------------------- session clock */

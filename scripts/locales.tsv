@@ -1,0 +1,287 @@
+en	de	fr	it	ru	uk	pl	ja	zh	id	es	ko	ms	vi
+File	Datei	Fichier	File	Файл	Файл	Plik	ファイル	文件	Berkas	Archivo	파일	Fail	Tệp
+Edit	Bearbeiten	Édition	Modifica	Правка	Редагування	Edycja	編集	编辑	Edit	Editar	편집	Sunting	Sửa
+View	Ansicht	Affichage	Vista	Вид	Вигляд	Widok	表示	视图	Tampilan	Ver	보기	Paparan	Xem
+Window	Fenster	Fenêtre	Finestra	Окно	Вікно	Okno	ウインドウ	窗口	Jendela	Ventana	윈도우	Tetingkap	Cửa sổ
+Help	Hilfe	Aide	Aiuto	Справка	Довідка	Pomoc	ヘルプ	帮助	Bantuan	Ayuda	도움말	Bantuan	Trợ giúp
+Settings…	Einstellungen…	Réglages…	Impostazioni…	Настройки…	Налаштування…	Ustawienia…	設定…	设置…	Pengaturan…	Ajustes…	설정…	Tetapan…	Cài đặt…
+Settings	Einstellungen	Réglages	Impostazioni	Настройки	Налаштування	Ustawienia	設定	设置	Pengaturan	Ajustes	설정	Tetapan	Cài đặt
+New Book…	Neues Buch…	Nouveau livre…	Nuovo libro…	Новая книга…	Нова книга…	Nowa książka…	新しいブック…	新建书籍…	Buku Baru…	Libro nuevo…	새 책…	Buku Baharu…	Sách mới…
+New Book	Neues Buch	Nouveau livre	Nuovo libro	Новая книга	Нова книга	Nowa książka	新しいブック	新建书籍	Buku Baru	Libro nuevo	새 책	Buku Baharu	Sách mới
+Open…	Öffnen…	Ouvrir…	Apri…	Открыть…	Відкрити…	Otwórz…	開く…	打开…	Buka…	Abrir…	열기…	Buka…	Mở…
+Open	Öffnen	Ouvrir	Apri	Открыть	Відкрити	Otwórz	開く	打开	Buka	Abrir	열기	Buka	Mở
+Library	Bibliothek	Bibliothèque	Libreria	Библиотека	Бібліотека	Biblioteka	ライブラリ	书库	Perpustakaan	Biblioteca	서재	Perpustakaan	Thư viện
+Save	Speichern	Enregistrer	Salva	Сохранить	Зберегти	Zapisz	保存	保存	Simpan	Guardar	저장	Simpan	Lưu
+Back Up Book…	Buch sichern…	Sauvegarder le livre…	Backup del libro…	Резервная копия книги…	Резервна копія книги…	Kopia zapasowa książki…	ブックをバックアップ…	备份书籍…	Cadangkan Buku…	Copia de seguridad del libro…	책 백업…	Sandarkan Buku…	Sao lưu sách…
+Back Up	Sichern	Sauvegarder	Backup	Резервная копия	Резервна копія	Kopia zapasowa	バックアップ	备份	Cadangkan	Copia de seguridad	백업	Sandarkan	Sao lưu
+New Chapter	Neues Kapitel	Nouveau chapitre	Nuovo capitolo	Новая глава	Новий розділ	Nowy rozdział	新しい章	新建章节	Bab Baru	Capítulo nuevo	새 장	Bab Baharu	Chương mới
+New Scene	Neue Szene	Nouvelle scène	Nuova scena	Новая сцена	Нова сцена	Nowa scena	新しいシーン	新建场景	Adegan Baru	Escena nueva	새 장면	Babak Baharu	Cảnh mới
+Split Scene at Cursor	Szene am Cursor teilen	Scinder la scène au curseur	Dividi la scena al cursore	Разделить сцену у курсора	Розділити сцену біля курсора	Podziel scenę przy kursorze	カーソル位置でシーンを分割	在光标处拆分场景	Pisahkan Adegan di Kursor	Dividir la escena en el cursor	커서 위치에서 장면 나누기	Pisahkan Babak di Kursor	Tách cảnh tại con trỏ
+Export	Exportieren	Exporter	Esporta	Экспорт	Експорт	Eksportuj	書き出す	导出	Ekspor	Exportar	내보내기	Eksport	Xuất
+Export EPUB…	EPUB exportieren…	Exporter en EPUB…	Esporta EPUB…	Экспорт в EPUB…	Експорт в EPUB…	Eksportuj EPUB…	EPUBを書き出す…	导出 EPUB…	Ekspor EPUB…	Exportar EPUB…	EPUB 내보내기…	Eksport EPUB…	Xuất EPUB…
+Export Markdown…	Markdown exportieren…	Exporter en Markdown…	Esporta Markdown…	Экспорт в Markdown…	Експорт в Markdown…	Eksportuj Markdown…	Markdownを書き出す…	导出 Markdown…	Ekspor Markdown…	Exportar Markdown…	Markdown 내보내기…	Eksport Markdown…	Xuất Markdown…
+Export MOBI (older Kindles)…	MOBI exportieren (ältere Kindles)…	Exporter en MOBI (anciens Kindle)…	Esporta MOBI (Kindle meno recenti)…	Экспорт в MOBI (старые Kindle)…	Експорт в MOBI (старі Kindle)…	Eksportuj MOBI (starsze Kindle)…	MOBIを書き出す（旧Kindle）…	导出 MOBI（旧款 Kindle）…	Ekspor MOBI (Kindle lama)…	Exportar MOBI (Kindle antiguos)…	MOBI 내보내기(구형 Kindle)…	Eksport MOBI (Kindle lama)…	Xuất MOBI (Kindle cũ)…
+Export PDF (Print)…	PDF exportieren (Druck)…	Exporter en PDF (impression)…	Esporta PDF (stampa)…	Экспорт в PDF (печать)…	Експорт в PDF (друк)…	Eksportuj PDF (druk)…	PDFを書き出す（印刷）…	导出 PDF（印刷）…	Ekspor PDF (Cetak)…	Exportar PDF (impresión)…	PDF 내보내기(인쇄)…	Eksport PDF (Cetak)…	Xuất PDF (In)…
+Export RTF…	RTF exportieren…	Exporter en RTF…	Esporta RTF…	Экспорт в RTF…	Експорт в RTF…	Eksportuj RTF…	RTFを書き出す…	导出 RTF…	Ekspor RTF…	Exportar RTF…	RTF 내보내기…	Eksport RTF…	Xuất RTF…
+Export Plain Text…	Reinen Text exportieren…	Exporter en texte brut…	Esporta testo semplice…	Экспорт в обычный текст…	Експорт у звичайний текст…	Eksportuj zwykły tekst…	プレーンテキストを書き出す…	导出纯文本…	Ekspor Teks Biasa…	Exportar texto sin formato…	일반 텍스트 내보내기…	Eksport Teks Biasa…	Xuất văn bản thuần…
+Export Word…	Word exportieren…	Exporter en Word…	Esporta Word…	Экспорт в Word…	Експорт у Word…	Eksportuj Word…	Wordを書き出す…	导出 Word…	Ekspor Word…	Exportar Word…	Word 내보내기…	Eksport Word…	Xuất Word…
+Show Book Folder	Buchordner zeigen	Afficher le dossier du livre	Mostra la cartella del libro	Показать папку книги	Показати теку книги	Pokaż folder książki	ブックのフォルダを表示	显示书籍文件夹	Tampilkan Folder Buku	Mostrar la carpeta del libro	책 폴더 보기	Tunjukkan Folder Buku	Hiện thư mục sách
+Device Preview	Gerätevorschau	Aperçu sur appareil	Anteprima dispositivo	Просмотр на устройстве	Перегляд на пристрої	Podgląd na urządzeniu	デバイスプレビュー	设备预览	Pratinjau Perangkat	Vista previa en dispositivo	기기 미리보기	Pratonton Peranti	Xem trước trên thiết bị
+Print Preview	Druckvorschau	Aperçu avant impression	Anteprima di stampa	Предпросмотр печати	Попередній перегляд друку	Podgląd wydruku	印刷プレビュー	打印预览	Pratinjau Cetak	Vista previa de impresión	인쇄 미리보기	Pratonton Cetak	Xem trước bản in
+Insights	Einblicke	Analyses	Statistiche	Аналитика	Аналітика	Statystyki	インサイト	洞察	Wawasan	Estadísticas	인사이트	Wawasan	Thống kê
+Zoom In Text	Text vergrößern	Agrandir le texte	Ingrandisci il testo	Увеличить текст	Збільшити текст	Powiększ tekst	テキストを拡大	放大文字	Perbesar Teks	Ampliar texto	텍스트 확대	Besarkan Teks	Phóng to chữ
+Zoom Out Text	Text verkleinern	Réduire le texte	Riduci il testo	Уменьшить текст	Зменшити текст	Pomniejsz tekst	テキストを縮小	缩小文字	Perkecil Teks	Reducir texto	텍스트 축소	Kecilkan Teks	Thu nhỏ chữ
+Actual Text Size	Originalgröße	Taille réelle du texte	Dimensioni reali	Реальный размер текста	Реальний розмір тексту	Rzeczywisty rozmiar tekstu	実際のサイズ	实际大小	Ukuran Teks Asli	Tamaño real	실제 크기	Saiz Teks Sebenar	Cỡ chữ thực
+Larger Interface	Größere Oberfläche	Interface plus grande	Interfaccia più grande	Крупнее интерфейс	Більший інтерфейс	Większy interfejs	インターフェイスを大きく	放大界面	Antarmuka Lebih Besar	Interfaz más grande	인터페이스 크게	Antara Muka Lebih Besar	Giao diện lớn hơn
+Smaller Interface	Kleinere Oberfläche	Interface plus petite	Interfaccia più piccola	Мельче интерфейс	Менший інтерфейс	Mniejszy interfejs	インターフェイスを小さく	缩小界面	Antarmuka Lebih Kecil	Interfaz más pequeña	인터페이스 작게	Antara Muka Lebih Kecil	Giao diện nhỏ hơn
+Default Interface Size	Standardgröße der Oberfläche	Taille d’interface par défaut	Dimensioni predefinite	Стандартный размер интерфейса	Стандартний розмір інтерфейсу	Domyślny rozmiar interfejsu	標準のインターフェイスサイズ	默认界面大小	Ukuran Antarmuka Bawaan	Tamaño predeterminado	기본 인터페이스 크기	Saiz Antara Muka Lalai	Cỡ giao diện mặc định
+Focus on Writing	Fokus auf das Schreiben	Concentration sur l’écriture	Concentrati sulla scrittura	Сосредоточиться на тексте	Зосередитися на тексті	Skupienie na pisaniu	執筆に集中	专注写作	Fokus Menulis	Concentrarse en la escritura	글쓰기에 집중	Fokus Menulis	Tập trung viết
+Focus on Preview	Fokus auf die Vorschau	Concentration sur l’aperçu	Concentrati sull’anteprima	Сосредоточиться на просмотре	Зосередитися на перегляді	Skupienie na podglądzie	プレビューに集中	专注预览	Fokus Pratinjau	Concentrarse en la vista previa	미리보기에 집중	Fokus Pratonton	Tập trung xem trước
+Characters	Figuren	Personnages	Personaggi	Персонажи	Персонажі	Postacie	登場人物	人物	Tokoh	Personajes	등장인물	Watak	Nhân vật
+Character	Figur	Personnage	Personaggio	Персонаж	Персонаж	Postać	登場人物	人物	Tokoh	Personaje	등장인물	Watak	Nhân vật
+New Character	Neue Figur	Nouveau personnage	Nuovo personaggio	Новый персонаж	Новий персонаж	Nowa postać	新しい登場人物	新建人物	Tokoh Baru	Personaje nuevo	새 등장인물	Watak Baharu	Nhân vật mới
+Plot	Handlung	Intrigue	Trama	Сюжет	Сюжет	Fabuła	プロット	情节	Alur	Trama	플롯	Plot	Cốt truyện
+Plot Board	Handlungstafel	Tableau de l’intrigue	Tabellone della trama	Доска сюжета	Дошка сюжету	Tablica fabuły	プロットボード	情节看板	Papan Alur	Tablero de la trama	플롯 보드	Papan Plot	Bảng cốt truyện
+Story Timeline	Zeitleiste der Geschichte	Chronologie de l’histoire	Cronologia della storia	Хронология истории	Хронологія історії	Oś czasu historii	ストーリーの年表	故事时间线	Lini Masa Cerita	Cronología de la historia	이야기 타임라인	Garis Masa Cerita	Dòng thời gian câu chuyện
+Timeline	Zeitleiste	Chronologie	Cronologia	Хронология	Хронологія	Oś czasu	年表	时间线	Lini Masa	Cronología	타임라인	Garis Masa	Dòng thời gian
+Board	Tafel	Tableau	Tabellone	Доска	Дошка	Tablica	ボード	看板	Papan	Tablero	보드	Papan	Bảng
+Event	Ereignis	Événement	Evento	Событие	Подія	Wydarzenie	出来事	事件	Peristiwa	Evento	사건	Peristiwa	Sự kiện
+Add Event	Ereignis hinzufügen	Ajouter un événement	Aggiungi evento	Добавить событие	Додати подію	Dodaj wydarzenie	出来事を追加	添加事件	Tambah Peristiwa	Añadir evento	사건 추가	Tambah Peristiwa	Thêm sự kiện
+Sort by When	Nach Zeitpunkt sortieren	Trier par date	Ordina per quando	Сортировать по времени	Сортувати за часом	Sortuj według czasu	時期順に並べ替え	按时间排序	Urutkan menurut Waktu	Ordenar por cuándo	시점순 정렬	Isih mengikut Masa	Sắp xếp theo thời điểm
+When	Wann	Quand	Quando	Когда	Коли	Kiedy	いつ	时间	Kapan	Cuándo	언제	Bila	Khi nào
+Backstory	Vorgeschichte	Passé du récit	Antefatto	Предыстория	Передісторія	Przeszłość postaci	背景	背景故事	Latar Belakang	Trasfondo	배경 이야기	Latar Cerita	Tiền sử
+Flashback	Rückblende	Retour en arrière	Flashback	Флешбэк	Флешбек	Retrospekcja	回想	倒叙	Kilas Balik	Analepsis	회상	Imbas Kembali	Hồi tưởng
+Plotline	Handlungsstrang	Fil narratif	Linea narrativa	Сюжетная линия	Сюжетна лінія	Wątek	プロットライン	情节线	Alur Cerita	Línea argumental	플롯라인	Jalan Cerita	Tuyến truyện
+Plotlines	Handlungsstränge	Fils narratifs	Linee narrative	Сюжетные линии	Сюжетні лінії	Wątki	プロットライン	情节线	Alur Cerita	Líneas argumentales	플롯라인	Jalan Cerita	Tuyến truyện
+Add Plotline	Handlungsstrang hinzufügen	Ajouter un fil narratif	Aggiungi linea narrativa	Добавить сюжетную линию	Додати сюжетну лінію	Dodaj wątek	プロットラインを追加	添加情节线	Tambah Alur Cerita	Añadir línea argumental	플롯라인 추가	Tambah Jalan Cerita	Thêm tuyến truyện
+Column	Spalte	Colonne	Colonna	Столбец	Стовпець	Kolumna	列	列	Kolom	Columna	열	Lajur	Cột
+Add from Chapters	Aus Kapiteln hinzufügen	Ajouter depuis les chapitres	Aggiungi dai capitoli	Добавить из глав	Додати з розділів	Dodaj z rozdziałów	章から追加	从章节添加	Tambah dari Bab	Añadir desde capítulos	장에서 추가	Tambah daripada Bab	Thêm từ các chương
+Main Plot	Haupthandlung	Intrigue principale	Trama principale	Основной сюжет	Основний сюжет	Główny wątek	メインプロット	主线	Alur Utama	Trama principal	주요 플롯	Plot Utama	Cốt truyện chính
+Subplot	Nebenhandlung	Intrigue secondaire	Sottotrama	Побочная линия	Побічна лінія	Wątek poboczny	サブプロット	支线	Subalur	Subtrama	서브플롯	Subplot	Tuyến phụ
+All Characters	Alle Figuren	Tous les personnages	Tutti i personaggi	Все персонажи	Усі персонажі	Wszystkie postacie	すべての登場人物	所有人物	Semua Tokoh	Todos los personajes	모든 등장인물	Semua Watak	Tất cả nhân vật
+Writing History	Schreibverlauf	Historique d’écriture	Cronologia di scrittura	История работы	Історія роботи	Historia pisania	執筆履歴	写作记录	Riwayat Menulis	Historial de escritura	집필 기록	Sejarah Penulisan	Lịch sử viết
+Search Book	Buch durchsuchen	Rechercher dans le livre	Cerca nel libro	Поиск по книге	Пошук у книзі	Szukaj w książce	ブック内を検索	搜索书籍	Cari di Buku	Buscar en el libro	책 검색	Cari dalam Buku	Tìm trong sách
+Search the book	Buch durchsuchen	Rechercher dans le livre	Cerca nel libro	Поиск по книге	Пошук у книзі	Szukaj w książce	ブック内を検索	搜索书籍	Cari di buku	Buscar en el libro	책 검색	Cari dalam buku	Tìm trong sách
+Find and Replace	Suchen und Ersetzen	Rechercher et remplacer	Trova e sostituisci	Найти и заменить	Знайти й замінити	Znajdź i zamień	検索と置換	查找和替换	Cari dan Ganti	Buscar y reemplazar	찾기 및 바꾸기	Cari dan Ganti	Tìm và thay thế
+Check Spelling and Grammar (F7)	Rechtschreibung und Grammatik prüfen (F7)	Vérifier l’orthographe et la grammaire (F7)	Controlla ortografia e grammatica (F7)	Проверить орфографию и грамматику (F7)	Перевірити правопис і граматику (F7)	Sprawdź pisownię i gramatykę (F7)	スペルと文法をチェック（F7）	检查拼写和语法（F7）	Periksa Ejaan dan Tata Bahasa (F7)	Revisar ortografía y gramática (F7)	맞춤법 및 문법 검사(F7)	Semak Ejaan dan Tatabahasa (F7)	Kiểm tra chính tả và ngữ pháp (F7)
+Show / Hide Comments	Kommentare ein-/ausblenden	Afficher/masquer les commentaires	Mostra/nascondi commenti	Показать/скрыть комментарии	Показати/сховати коментарі	Pokaż/ukryj komentarze	コメントの表示／非表示	显示/隐藏批注	Tampilkan/Sembunyikan Komentar	Mostrar/ocultar comentarios	댓글 보기/가리기	Tunjuk/Sembunyi Komen	Hiện/ẩn bình luận
+Toggle Sidebar	Seitenleiste umschalten	Afficher/masquer la barre latérale	Mostra/nascondi barra laterale	Показать/скрыть боковую панель	Показати/сховати бічну панель	Pokaż/ukryj panel boczny	サイドバーの切り替え	切换侧边栏	Alihkan Bilah Sisi	Mostrar/ocultar barra lateral	사이드바 전환	Togol Bar Sisi	Bật/tắt thanh bên
+Lutefisk Help	Lutefisk-Hilfe	Aide de Lutefisk	Guida di Lutefisk	Справка Lutefisk	Довідка Lutefisk	Pomoc Lutefisk	Lutefisk ヘルプ	Lutefisk 帮助	Bantuan Lutefisk	Ayuda de Lutefisk	Lutefisk 도움말	Bantuan Lutefisk	Trợ giúp Lutefisk
+Guided Tour	Geführte Tour	Visite guidée	Tour guidato	Обзорная экскурсия	Ознайомлювальний тур	Przewodnik	ガイドツアー	引导教程	Tur Terpandu	Recorrido guiado	둘러보기	Lawatan Berpandu	Tham quan có hướng dẫn
+Take the Guided Tour	Geführte Tour starten	Faire la visite guidée	Fai il tour guidato	Пройти экскурсию	Пройти тур	Rozpocznij przewodnik	ガイドツアーを始める	开始引导教程	Ikuti Tur Terpandu	Hacer el recorrido guiado	둘러보기 시작	Ikuti Lawatan Berpandu	Bắt đầu tham quan
+About Lutefisk	Über Lutefisk	À propos de Lutefisk	Informazioni su Lutefisk	О программе Lutefisk	Про Lutefisk	O Lutefisk	Lutefisk について	关于 Lutefisk	Tentang Lutefisk	Acerca de Lutefisk	Lutefisk 정보	Perihal Lutefisk	Giới thiệu Lutefisk
+Binder	Ordner	Classeur	Raccoglitore	Структура	Структура	Segregator	バインダー	大纲	Binder	Carpeta	바인더	Pengikat	Bìa hồ sơ
+Logline	Logline	Pitch	Logline	Логлайн	Логлайн	Logline	ログライン	一句话梗概	Logline	Logline	로그라인	Logline	Logline
+Front Matter	Titelei	Pages liminaires	Pagine iniziali	Начальные страницы	Початкові сторінки	Strony początkowe	前付け	前置部分	Bagian Depan	Páginas preliminares	앞부분	Bahagian Hadapan	Phần đầu sách
+Body	Hauptteil	Corps du texte	Corpo del testo	Основной текст	Основний текст	Treść	本文	正文	Isi	Cuerpo	본문	Isi	Phần chính
+Back Matter	Anhang	Pages finales	Pagine finali	Конечные страницы	Кінцеві сторінки	Strony końcowe	後付け	后置部分	Bagian Belakang	Páginas finales	뒷부분	Bahagian Belakang	Phần cuối sách
+Planning	Planung	Planification	Pianificazione	Планирование	Планування	Planowanie	計画	规划	Perencanaan	Planificación	기획	Perancangan	Lên kế hoạch
+Research	Recherche	Recherche	Ricerca	Материалы	Матеріали	Materiały	資料	资料	Riset	Investigación	자료	Penyelidikan	Tư liệu
+Recycle Bin	Papierkorb	Corbeille	Cestino	Корзина	Кошик	Kosz	ごみ箱	回收站	Tempat Sampah	Papelera	휴지통	Tong Kitar Semula	Thùng rác
+Empty Recycle Bin	Papierkorb leeren	Vider la corbeille	Svuota il cestino	Очистить корзину	Очистити кошик	Opróżnij kosz	ごみ箱を空にする	清空回收站	Kosongkan Tempat Sampah	Vaciar la papelera	휴지통 비우기	Kosongkan Tong	Dọn sạch thùng rác
+Restore	Wiederherstellen	Restaurer	Ripristina	Восстановить	Відновити	Przywróć	復元	恢复	Pulihkan	Restaurar	복원	Pulihkan	Khôi phục
+Goals	Ziele	Objectifs	Obiettivi	Цели	Цілі	Cele	目標	目标	Target	Objetivos	목표	Matlamat	Mục tiêu
+Goal	Ziel	Objectif	Obiettivo	Цель	Ціль	Cel	目標	目标	Target	Objetivo	목표	Matlamat	Mục tiêu
+Deadline	Abgabetermin	Échéance	Scadenza	Срок	Термін	Termin	締め切り	截止日期	Tenggat	Fecha límite	마감일	Tarikh Akhir	Hạn chót
+Today	Heute	Aujourd’hui	Oggi	Сегодня	Сьогодні	Dzisiaj	今日	今天	Hari Ini	Hoy	오늘	Hari Ini	Hôm nay
+Snippets	Schnipsel	Extraits	Frammenti	Фрагменты	Фрагменти	Fragmenty	スニペット	片段	Cuplikan	Fragmentos	스니펫	Petikan	Đoạn trích
+Snippet	Schnipsel	Extrait	Frammento	Фрагмент	Фрагмент	Fragment	スニペット	片段	Cuplikan	Fragmento	스니펫	Petikan	Đoạn trích
+New Snippet	Neuer Schnipsel	Nouvel extrait	Nuovo frammento	Новый фрагмент	Новий фрагмент	Nowy fragment	新しいスニペット	新建片段	Cuplikan Baru	Fragmento nuevo	새 스니펫	Petikan Baharu	Đoạn trích mới
+To-Do	Aufgaben	À faire	Da fare	Задачи	Завдання	Do zrobienia	やること	待办事项	Tugas	Pendientes	할 일	Senarai Tugas	Việc cần làm
+Comment	Kommentar	Commentaire	Commento	Комментарий	Коментар	Komentarz	コメント	批注	Komentar	Comentario	댓글	Komen	Bình luận
+New Comment	Neuer Kommentar	Nouveau commentaire	Nuovo commento	Новый комментарий	Новий коментар	Nowy komentarz	新しいコメント	新建批注	Komentar Baru	Comentario nuevo	새 댓글	Komen Baharu	Bình luận mới
+Delete Comment	Kommentar löschen	Supprimer le commentaire	Elimina commento	Удалить комментарий	Видалити коментар	Usuń komentarz	コメントを削除	删除批注	Hapus Komentar	Eliminar comentario	댓글 삭제	Padam Komen	Xóa bình luận
+Hide comments	Kommentare ausblenden	Masquer les commentaires	Nascondi commenti	Скрыть комментарии	Сховати коментарі	Ukryj komentarze	コメントを隠す	隐藏批注	Sembunyikan komentar	Ocultar comentarios	댓글 가리기	Sembunyikan komen	Ẩn bình luận
+Show comments	Kommentare einblenden	Afficher les commentaires	Mostra commenti	Показать комментарии	Показати коментарі	Pokaż komentarze	コメントを表示	显示批注	Tampilkan komentar	Mostrar comentarios	댓글 보기	Tunjukkan komen	Hiện bình luận
+Chapter	Kapitel	Chapitre	Capitolo	Глава	Розділ	Rozdział	章	章	Bab	Capítulo	장	Bab	Chương
+Chapters	Kapitel	Chapitres	Capitoli	Главы	Розділи	Rozdziały	章	章节	Bab	Capítulos	장	Bab	Chương
+Scene	Szene	Scène	Scena	Сцена	Сцена	Scena	シーン	场景	Adegan	Escena	장면	Babak	Cảnh
+Scenes	Szenen	Scènes	Scene	Сцены	Сцени	Sceny	シーン	场景	Adegan	Escenas	장면	Babak	Cảnh
+Add Scene	Szene hinzufügen	Ajouter une scène	Aggiungi scena	Добавить сцену	Додати сцену	Dodaj scenę	シーンを追加	添加场景	Tambah Adegan	Añadir escena	장면 추가	Tambah Babak	Thêm cảnh
+Title	Titel	Titre	Titolo	Название	Назва	Tytuł	タイトル	标题	Judul	Título	제목	Tajuk	Tiêu đề
+Subtitle	Untertitel	Sous-titre	Sottotitolo	Подзаголовок	Підзаголовок	Podtytuł	サブタイトル	副标题	Subjudul	Subtítulo	부제	Subjudul	Phụ đề
+Author	Autor	Auteur	Autore	Автор	Автор	Autor	著者	作者	Penulis	Autor	저자	Pengarang	Tác giả
+Title Page	Titelseite	Page de titre	Frontespizio	Титульная страница	Титульна сторінка	Strona tytułowa	タイトルページ	扉页	Halaman Judul	Portada	속표지	Halaman Tajuk	Trang tên sách
+Copyright	Impressum	Copyright	Copyright	Авторские права	Авторські права	Prawa autorskie	著作権	版权	Hak Cipta	Derechos de autor	저작권	Hak Cipta	Bản quyền
+Dedication	Widmung	Dédicace	Dedica	Посвящение	Присвята	Dedykacja	献辞	献词	Persembahan	Dedicatoria	헌사	Dedikasi	Lời đề tặng
+Epigraph	Motto	Épigraphe	Epigrafe	Эпиграф	Епіграф	Motto	エピグラフ	题词	Epigraf	Epígrafe	제사	Epigraf	Đề từ
+Contents	Inhalt	Table des matières	Indice	Содержание	Зміст	Spis treści	目次	目录	Daftar Isi	Índice	목차	Kandungan	Mục lục
+Prologue	Prolog	Prologue	Prologo	Пролог	Пролог	Prolog	プロローグ	序章	Prolog	Prólogo	프롤로그	Prolog	Phần mở đầu
+Epilogue	Epilog	Épilogue	Epilogo	Эпилог	Епілог	Epilog	エピローグ	尾声	Epilog	Epílogo	에필로그	Epilog	Phần kết
+Acknowledgments	Danksagung	Remerciements	Ringraziamenti	Благодарности	Подяки	Podziękowania	謝辞	致谢	Ucapan Terima Kasih	Agradecimientos	감사의 글	Penghargaan	Lời cảm ơn
+Bibliography	Literaturverzeichnis	Bibliographie	Bibliografia	Список литературы	Список літератури	Bibliografia	参考文献	参考文献	Daftar Pustaka	Bibliografía	참고 문헌	Bibliografi	Thư mục tham khảo
+Index	Register	Index	Indice analitico	Указатель	Покажчик	Indeks	索引	索引	Indeks	Índice analítico	색인	Indeks	Chỉ mục
+About the Author	Über den Autor	À propos de l’auteur	L’autore	Об авторе	Про автора	O autorze	著者について	关于作者	Tentang Penulis	Sobre el autor	저자 소개	Tentang Pengarang	Về tác giả
+Appendix	Anhang	Annexe	Appendice	Приложение	Додаток	Dodatek	付録	附录	Lampiran	Apéndice	부록	Lampiran	Phụ lục
+Auto	Auto	Auto	Auto	Авто	Авто	Auto	自動	自动	Otomatis	Auto	자동	Auto	Tự động
+Words	Wörter	Mots	Parole	Слова	Слова	Słowa	語数	字数	Kata	Palabras	단어	Perkataan	Từ
+words	Wörter	mots	parole	слов	слів	słów	語	字	kata	palabras	단어	perkataan	từ
+pages	Seiten	pages	pagine	стр.	стор.	str.	ページ	页	halaman	páginas	페이지	halaman	trang
+Pages	Seiten	Pages	Pagine	Страницы	Сторінки	Strony	ページ	页数	Halaman	Páginas	페이지	Halaman	Trang
+E-book	E-Book	Livre numérique	E-book	Эл. книга	Ел. книга	E-book	電子書籍	电子书	E-book	Libro electrónico	전자책	E-buku	Sách điện tử
+Print	Druck	Impression	Stampa	Печать	Друк	Druk	印刷	印刷	Cetak	Impresión	인쇄	Cetak	In
+Zoom	Zoom	Zoom	Zoom	Масштаб	Масштаб	Powiększenie	ズーム	缩放	Zoom	Zoom	확대/축소	Zum	Thu phóng
+Focus	Fokus	Concentration	Concentrazione	Фокус	Фокус	Skupienie	集中	专注	Fokus	Enfoque	집중	Fokus	Tập trung
+Exit Focus	Fokus beenden	Quitter la concentration	Esci dalla concentrazione	Выйти из фокуса	Вийти з фокусу	Zakończ skupienie	集中を終了	退出专注	Keluar dari Fokus	Salir del enfoque	집중 종료	Keluar Fokus	Thoát tập trung
+Templates	Vorlagen	Modèles	Modelli	Шаблоны	Шаблони	Szablony	テンプレート	模板	Templat	Plantillas	템플릿	Templat	Mẫu
+Paragraph	Absatz	Paragraphe	Paragrafo	Абзац	Абзац	Akapit	段落	段落	Paragraf	Párrafo	단락	Perenggan	Đoạn văn
+Paper	Papier	Papier	Carta	Бумага	Папір	Papier	用紙	纸张	Kertas	Papel	용지	Kertas	Giấy
+Backdrop	Hintergrund	Arrière-plan	Sfondo	Фон	Тло	Tło	背景	背景	Latar	Fondo	배경	Latar	Phông nền
+Plain	Schlicht	Uni	Semplice	Простой	Простий	Gładkie	無地	纯色	Polos	Liso	단색	Biasa	Trơn
+Oak Desk	Eichenschreibtisch	Bureau en chêne	Scrivania in rovere	Дубовый стол	Дубовий стіл	Dębowe biurko	オークの机	橡木书桌	Meja Kayu Ek	Escritorio de roble	오크 책상	Meja Kayu Oak	Bàn gỗ sồi
+Walnut Desk	Nussbaumschreibtisch	Bureau en noyer	Scrivania in noce	Ореховый стол	Горіховий стіл	Orzechowe biurko	ウォルナットの机	胡桃木书桌	Meja Kayu Walnut	Escritorio de nogal	월넛 책상	Meja Kayu Walnut	Bàn gỗ óc chó
+Marble	Marmor	Marbre	Marmo	Мрамор	Мармур	Marmur	大理石	大理石	Marmer	Mármol	대리석	Marmar	Đá cẩm thạch
+Slate	Schiefer	Ardoise	Ardesia	Сланец	Сланець	Łupek	スレート	石板	Batu Sabak	Pizarra	슬레이트	Batu Loh	Đá phiến
+Linen Cloth	Leinentuch	Nappe en lin	Tovaglia di lino	Льняная скатерть	Лляна скатертина	Lniany obrus	リネンのクロス	亚麻桌布	Kain Linen	Mantel de lino	리넨 천	Kain Linen	Khăn vải lanh
+Green Felt	Grüner Filz	Feutrine verte	Panno verde	Зелёное сукно	Зелене сукно	Zielone sukno	緑のフェルト	绿色毡布	Kain Laken Hijau	Fieltro verde	초록 펠트	Kain Felt Hijau	Nỉ xanh
+Library Shelves	Bücherregale	Étagères de bibliothèque	Scaffali	Книжные полки	Книжкові полиці	Półki z książkami	本棚	书架	Rak Buku	Estanterías	서가	Rak Buku	Kệ sách
+Botanical	Botanisch	Botanique	Botanico	Ботаника	Ботаніка	Botaniczne	植物柄	植物	Botani	Botánico	식물 무늬	Botani	Thực vật
+Old Map	Alte Karte	Carte ancienne	Mappa antica	Старая карта	Стара мапа	Stara mapa	古地図	古地图	Peta Kuno	Mapa antiguo	옛 지도	Peta Lama	Bản đồ cổ
+Watercolor	Aquarell	Aquarelle	Acquerello	Акварель	Акварель	Akwarela	水彩	水彩	Cat Air	Acuarela	수채화	Cat Air	Màu nước
+Dusk	Abenddämmerung	Crépuscule	Crepuscolo	Сумерки	Присмерк	Zmierzch	夕暮れ	黄昏	Senja	Atardecer	해질녘	Senja	Hoàng hôn
+Starry Night	Sternennacht	Nuit étoilée	Notte stellata	Звёздная ночь	Зоряна ніч	Gwiaździsta noc	星空	星空	Malam Berbintang	Noche estrellada	별이 빛나는 밤	Malam Berbintang	Đêm đầy sao
+Spelling & Grammar	Rechtschreibung & Grammatik	Orthographe et grammaire	Ortografia e grammatica	Орфография и грамматика	Правопис і граматика	Pisownia i gramatyka	スペルと文法	拼写和语法	Ejaan & Tata Bahasa	Ortografía y gramática	맞춤법 및 문법	Ejaan & Tatabahasa	Chính tả & ngữ pháp
+Automatic	Automatisch	Automatique	Automatico	Автоматически	Автоматично	Automatycznie	自動	自动	Otomatis	Automático	자동	Automatik	Tự động
+On Demand	Auf Anfrage	À la demande	Su richiesta	По запросу	На вимогу	Na żądanie	手動	按需	Sesuai Permintaan	Bajo demanda	요청 시	Atas Permintaan	Khi yêu cầu
+Check Now	Jetzt prüfen	Vérifier	Controlla ora	Проверить	Перевірити	Sprawdź teraz	今すぐチェック	立即检查	Periksa Sekarang	Revisar ahora	지금 검사	Semak Sekarang	Kiểm tra ngay
+Next Problem	Nächstes Problem	Problème suivant	Problema successivo	Следующая ошибка	Наступна помилка	Następny problem	次の問題	下一个问题	Masalah Berikutnya	Siguiente problema	다음 문제	Masalah Seterusnya	Lỗi tiếp theo
+Spelling	Rechtschreibung	Orthographe	Ortografia	Орфография	Правопис	Pisownia	スペル	拼写	Ejaan	Ortografía	맞춤법	Ejaan	Chính tả
+Grammar	Grammatik	Grammaire	Grammatica	Грамматика	Граматика	Gramatyka	文法	语法	Tata Bahasa	Gramática	문법	Tatabahasa	Ngữ pháp
+Style	Stil	Style	Stile	Стиль	Стиль	Styl	文体	文体	Gaya	Estilo	문체	Gaya	Văn phong
+No problems found.	Keine Probleme gefunden.	Aucun problème trouvé.	Nessun problema trovato.	Ошибок не найдено.	Помилок не знайдено.	Nie znaleziono problemów.	問題は見つかりませんでした。	未发现问题。	Tidak ada masalah.	No se encontraron problemas.	문제가 없습니다.	Tiada masalah ditemui.	Không tìm thấy lỗi.
+Your dictionary	Ihr Wörterbuch	Votre dictionnaire	Il tuo dizionario	Ваш словарь	Ваш словник	Twój słownik	ユーザー辞書	您的词典	Kamus Anda	Tu diccionario	내 사전	Kamus anda	Từ điển của bạn
+Add a word…	Wort hinzufügen…	Ajouter un mot…	Aggiungi una parola…	Добавить слово…	Додати слово…	Dodaj słowo…	単語を追加…	添加单词…	Tambahkan kata…	Añadir una palabra…	단어 추가…	Tambah perkataan…	Thêm từ…
+Not in the dictionary — click to add:	Nicht im Wörterbuch – zum Hinzufügen klicken:	Absent du dictionnaire — cliquez pour l’ajouter :	Non nel dizionario — fai clic per aggiungere:	Нет в словаре — нажмите, чтобы добавить:	Немає у словнику — натисніть, щоб додати:	Brak w słowniku — kliknij, aby dodać:	辞書にない語 — クリックして追加：	词典中没有 — 点按以添加：	Tidak ada di kamus — klik untuk menambah:	No está en el diccionario: haz clic para añadir:	사전에 없음 — 클릭하여 추가:	Tiada dalam kamus — klik untuk menambah:	Không có trong từ điển — bấm để thêm:
+Runs on this computer — nothing is sent anywhere.	Läuft auf diesem Computer – nichts wird gesendet.	S’exécute sur cet ordinateur — rien n’est envoyé.	Funziona su questo computer: nulla viene inviato.	Работает на этом компьютере — ничего не отправляется.	Працює на цьому комп’ютері — нічого не надсилається.	Działa na tym komputerze — nic nie jest wysyłane.	このコンピュータ上で動作し、何も送信されません。	在本机运行——不会发送任何内容。	Berjalan di komputer ini — tidak ada yang dikirim.	Se ejecuta en este equipo: no se envía nada.	이 컴퓨터에서 실행되며 아무것도 전송되지 않습니다.	Berjalan pada komputer ini — tiada apa dihantar.	Chạy trên máy này — không gửi đi đâu cả.
+Ignore	Ignorieren	Ignorer	Ignora	Пропустить	Пропустити	Ignoruj	無視	忽略	Abaikan	Ignorar	무시	Abaikan	Bỏ qua
+Add	Hinzufügen	Ajouter	Aggiungi	Добавить	Додати	Dodaj	追加	添加	Tambah	Añadir	추가	Tambah	Thêm
+Cancel	Abbrechen	Annuler	Annulla	Отмена	Скасувати	Anuluj	キャンセル	取消	Batal	Cancelar	취소	Batal	Hủy
+Done	Fertig	Terminé	Fine	Готово	Готово	Gotowe	完了	完成	Selesai	Listo	완료	Selesai	Xong
+OK	OK	OK	OK	ОК	ОК	OK	OK	好	OK	Aceptar	확인	OK	OK
+Delete	Löschen	Supprimer	Elimina	Удалить	Видалити	Usuń	削除	删除	Hapus	Eliminar	삭제	Padam	Xóa
+Delete…	Löschen…	Supprimer…	Elimina…	Удалить…	Видалити…	Usuń…	削除…	删除…	Hapus…	Eliminar…	삭제…	Padam…	Xóa…
+Remove	Entfernen	Retirer	Rimuovi	Убрать	Прибрати	Usuń	取り除く	移除	Buang	Quitar	제거	Buang	Gỡ bỏ
+Close	Schließen	Fermer	Chiudi	Закрыть	Закрити	Zamknij	閉じる	关闭	Tutup	Cerrar	닫기	Tutup	Đóng
+Apply	Anwenden	Appliquer	Applica	Применить	Застосувати	Zastosuj	適用	应用	Terapkan	Aplicar	적용	Guna	Áp dụng
+Reset	Zurücksetzen	Réinitialiser	Reimposta	Сбросить	Скинути	Resetuj	リセット	重置	Atur Ulang	Restablecer	재설정	Set Semula	Đặt lại
+Clear	Leeren	Effacer	Cancella	Очистить	Очистити	Wyczyść	消去	清除	Bersihkan	Borrar	지우기	Kosongkan	Xóa sạch
+Copy	Kopieren	Copier	Copia	Копировать	Копіювати	Kopiuj	コピー	拷贝	Salin	Copiar	복사	Salin	Sao chép
+Cut	Ausschneiden	Couper	Taglia	Вырезать	Вирізати	Wytnij	カット	剪切	Potong	Cortar	오려두기	Potong	Cắt
+Paste	Einfügen	Coller	Incolla	Вставить	Вставити	Wklej	ペースト	粘贴	Tempel	Pegar	붙여넣기	Tampal	Dán
+Insert	Einfügen	Insérer	Inserisci	Вставка	Вставити	Wstaw	挿入	插入	Sisipkan	Insertar	삽입	Sisip	Chèn
+Replace	Ersetzen	Remplacer	Sostituisci	Заменить	Замінити	Zamień	置換	替换	Ganti	Reemplazar	바꾸기	Ganti	Thay thế
+Replace All	Alle ersetzen	Tout remplacer	Sostituisci tutto	Заменить все	Замінити все	Zamień wszystko	すべて置換	全部替换	Ganti Semua	Reemplazar todo	모두 바꾸기	Ganti Semua	Thay thế tất cả
+Show	Zeigen	Afficher	Mostra	Показать	Показати	Pokaż	表示	显示	Tampilkan	Mostrar	보기	Tunjuk	Hiện
+Hide	Ausblenden	Masquer	Nascondi	Скрыть	Сховати	Ukryj	隠す	隐藏	Sembunyikan	Ocultar	가리기	Sembunyi	Ẩn
+More	Mehr	Plus	Altro	Ещё	Ще	Więcej	その他	更多	Lainnya	Más	더 보기	Lagi	Thêm
+Move Up	Nach oben	Monter	Sposta su	Вверх	Вгору	W górę	上へ移動	上移	Pindah ke Atas	Subir	위로 이동	Alih ke Atas	Di chuyển lên
+Move Down	Nach unten	Descendre	Sposta giù	Вниз	Вниз	W dół	下へ移動	下移	Pindah ke Bawah	Bajar	아래로 이동	Alih ke Bawah	Di chuyển xuống
+Undo	Widerrufen	Annuler	Annulla	Отменить	Скасувати	Cofnij	取り消す	撤销	Urungkan	Deshacer	실행 취소	Buat Asal	Hoàn tác
+Redo	Wiederholen	Rétablir	Ripeti	Повторить	Повторити	Ponów	やり直す	重做	Ulangi	Rehacer	다시 실행	Buat Semula	Làm lại
+Footnote	Fußnote	Note de bas de page	Nota a piè di pagina	Сноска	Виноска	Przypis	脚注	脚注	Catatan Kaki	Nota al pie	각주	Nota Kaki	Chú thích
+Citation…	Zitat…	Citation…	Citazione…	Цитата…	Цитата…	Cytat…	引用…	引用…	Kutipan…	Cita…	인용…	Petikan…	Trích dẫn…
+Equation (LaTeX)…	Formel (LaTeX)…	Équation (LaTeX)…	Equazione (LaTeX)…	Формула (LaTeX)…	Формула (LaTeX)…	Równanie (LaTeX)…	数式（LaTeX）…	公式（LaTeX）…	Persamaan (LaTeX)…	Ecuación (LaTeX)…	수식(LaTeX)…	Persamaan (LaTeX)…	Phương trình (LaTeX)…
+Symbol…	Sonderzeichen…	Symbole…	Simbolo…	Символ…	Символ…	Symbol…	記号…	符号…	Simbol…	Símbolo…	기호…	Simbol…	Ký hiệu…
+Drawing…	Zeichnung…	Dessin…	Disegno…	Рисунок…	Малюнок…	Rysunek…	描画…	绘图…	Gambar…	Dibujo…	그리기…	Lukisan…	Bản vẽ…
+Link…	Link…	Lien…	Link…	Ссылка…	Посилання…	Link…	リンク…	链接…	Tautan…	Enlace…	링크…	Pautan…	Liên kết…
+Table…	Tabelle…	Tableau…	Tabella…	Таблица…	Таблиця…	Tabela…	表…	表格…	Tabel…	Tabla…	표…	Jadual…	Bảng…
+Table	Tabelle	Tableau	Tabella	Таблица	Таблиця	Tabela	表	表格	Tabel	Tabla	표	Jadual	Bảng
+Code Block	Codeblock	Bloc de code	Blocco di codice	Блок кода	Блок коду	Blok kodu	コードブロック	代码块	Blok Kode	Bloque de código	코드 블록	Blok Kod	Khối mã
+Insert Code…	Code einfügen…	Insérer du code…	Inserisci codice…	Вставить код…	Вставити код…	Wstaw kod…	コードを挿入…	插入代码…	Sisipkan Kode…	Insertar código…	코드 삽입…	Sisip Kod…	Chèn mã…
+Insert Snippet	Schnipsel einfügen	Insérer un extrait	Inserisci frammento	Вставить фрагмент	Вставити фрагмент	Wstaw fragment	スニペットを挿入	插入片段	Sisipkan Cuplikan	Insertar fragmento	스니펫 삽입	Sisip Petikan	Chèn đoạn trích
+Highlighter	Textmarker	Surligneur	Evidenziatore	Маркер	Маркер	Zakreślacz	蛍光ペン	荧光笔	Stabilo	Resaltador	형광펜	Penyerlah	Bút dạ quang
+Remove Highlight	Markierung entfernen	Retirer le surlignage	Rimuovi evidenziazione	Убрать выделение	Прибрати виділення	Usuń zakreślenie	ハイライトを解除	移除高亮	Hapus Sorotan	Quitar resaltado	강조 제거	Buang Serlahan	Bỏ tô sáng
+Yellow	Gelb	Jaune	Giallo	Жёлтый	Жовтий	Żółty	黄	黄色	Kuning	Amarillo	노랑	Kuning	Vàng
+Bright Yellow	Leuchtgelb	Jaune vif	Giallo acceso	Ярко-жёлтый	Яскраво-жовтий	Jaskrawożółty	明るい黄	亮黄色	Kuning Terang	Amarillo intenso	밝은 노랑	Kuning Terang	Vàng tươi
+Green	Grün	Vert	Verde	Зелёный	Зелений	Zielony	緑	绿色	Hijau	Verde	초록	Hijau	Xanh lá
+Blue	Blau	Bleu	Blu	Синий	Синій	Niebieski	青	蓝色	Biru	Azul	파랑	Biru	Xanh dương
+Pink	Rosa	Rose	Rosa	Розовый	Рожевий	Różowy	ピンク	粉色	Merah Muda	Rosa	분홍	Merah Jambu	Hồng
+Orange	Orange	Orange	Arancione	Оранжевый	Помаранчевий	Pomarańczowy	オレンジ	橙色	Oranye	Naranja	주황	Oren	Cam
+Purple	Lila	Violet	Viola	Фиолетовый	Фіолетовий	Fioletowy	紫	紫色	Ungu	Morado	보라	Ungu	Tím
+Status	Status	Statut	Stato	Статус	Статус	Status	ステータス	状态	Status	Estado	상태	Status	Trạng thái
+Label	Etikett	Étiquette	Etichetta	Метка	Мітка	Etykieta	ラベル	标签	Label	Etiqueta	레이블	Label	Nhãn
+Clear Filter	Filter löschen	Effacer le filtre	Rimuovi filtro	Сбросить фильтр	Скинути фільтр	Wyczyść filtr	フィルタを解除	清除筛选	Hapus Filter	Quitar filtro	필터 지우기	Kosongkan Penapis	Xóa bộ lọc
+Excluded	Ausgeschlossen	Exclu	Escluso	Исключено	Виключено	Wykluczone	除外	已排除	Dikecualikan	Excluido	제외됨	Dikecualikan	Đã loại trừ
+Exclude from Export	Vom Export ausschließen	Exclure de l’export	Escludi dall’esportazione	Исключить из экспорта	Виключити з експорту	Wyklucz z eksportu	書き出しから除外	从导出中排除	Kecualikan dari Ekspor	Excluir de la exportación	내보내기에서 제외	Kecualikan daripada Eksport	Loại khỏi bản xuất
+Include in Export	In den Export aufnehmen	Inclure dans l’export	Includi nell’esportazione	Включить в экспорт	Включити в експорт	Uwzględnij w eksporcie	書き出しに含める	包含在导出中	Sertakan dalam Ekspor	Incluir en la exportación	내보내기에 포함	Sertakan dalam Eksport	Đưa vào bản xuất
+Appearance	Erscheinungsbild	Apparence	Aspetto	Оформление	Оформлення	Wygląd	外観	外观	Tampilan	Apariencia	모양	Penampilan	Giao diện
+System	System	Système	Sistema	Системная	Системна	Systemowy	システム	跟随系统	Sistem	Sistema	시스템	Sistem	Hệ thống
+Day	Tag	Jour	Giorno	День	День	Dzień	昼	白天	Siang	Día	주간	Siang	Ngày
+Night	Nacht	Nuit	Notte	Ночь	Ніч	Noc	夜	夜间	Malam	Noche	야간	Malam	Đêm
+Skin	Design	Habillage	Tema	Обложка	Тема	Motyw	スキン	皮肤	Tema	Aspecto	스킨	Kulit	Giao diện mẫu
+Vision & Comfort	Sehen & Komfort	Vision et confort	Vista e comfort	Зрение и комфорт	Зір і комфорт	Wzrok i komfort	見やすさと快適さ	视觉与舒适	Penglihatan & Kenyamanan	Visión y comodidad	시각 및 편의	Penglihatan & Keselesaan	Thị lực & thoải mái
+Interface size	Größe der Oberfläche	Taille de l’interface	Dimensioni interfaccia	Размер интерфейса	Розмір інтерфейсу	Rozmiar interfejsu	インターフェイスのサイズ	界面大小	Ukuran antarmuka	Tamaño de la interfaz	인터페이스 크기	Saiz antara muka	Cỡ giao diện
+Projects folder	Projektordner	Dossier des projets	Cartella dei progetti	Папка проектов	Тека проєктів	Folder projektów	プロジェクトフォルダ	项目文件夹	Folder proyek	Carpeta de proyectos	프로젝트 폴더	Folder projek	Thư mục dự án
+Saving	Speichern	Enregistrement	Salvataggio	Сохранение	Збереження	Zapisywanie	保存	保存	Penyimpanan	Guardado	저장	Penyimpanan	Lưu
+Automatically	Automatisch	Automatiquement	Automaticamente	Автоматически	Автоматично	Automatycznie	自動	自动	Otomatis	Automáticamente	자동으로	Secara automatik	Tự động
+Manually	Manuell	Manuellement	Manualmente	Вручную	Вручну	Ręcznie	手動	手动	Manual	Manualmente	수동으로	Secara manual	Thủ công
+Folders	Ordner	Dossiers	Cartelle	Папки	Теки	Foldery	フォルダ	文件夹	Folder	Carpetas	폴더	Folder	Thư mục
+Backups	Sicherungen	Sauvegardes	Backup	Резервные копии	Резервні копії	Kopie zapasowe	バックアップ	备份	Cadangan	Copias de seguridad	백업	Sandaran	Bản sao lưu
+Change…	Ändern…	Modifier…	Cambia…	Изменить…	Змінити…	Zmień…	変更…	更改…	Ubah…	Cambiar…	변경…	Tukar…	Thay đổi…
+Use Default	Standard verwenden	Utiliser la valeur par défaut	Usa predefinito	По умолчанию	За замовчуванням	Użyj domyślnego	デフォルトを使用	使用默认	Gunakan Bawaan	Usar predeterminado	기본값 사용	Guna Lalai	Dùng mặc định
+Language	Sprache	Langue	Lingua	Язык	Мова	Język	言語	语言	Bahasa	Idioma	언어	Bahasa	Ngôn ngữ
+Interface language	Sprache der Oberfläche	Langue de l’interface	Lingua dell’interfaccia	Язык интерфейса	Мова інтерфейсу	Język interfejsu	表示言語	界面语言	Bahasa antarmuka	Idioma de la interfaz	인터페이스 언어	Bahasa antara muka	Ngôn ngữ giao diện
+General	Allgemein	Général	Generale	Общие	Загальні	Ogólne	一般	通用	Umum	General	일반	Umum	Chung
+Design	Gestaltung	Mise en page	Design	Оформление	Оформлення	Projekt	デザイン	设计	Desain	Diseño	디자인	Reka Bentuk	Thiết kế
+Cover	Umschlag	Couverture	Copertina	Обложка	Обкладинка	Okładka	表紙	封面	Sampul	Portada	표지	Kulit Buku	Bìa
+Front Cover	Vorderseite	Première de couverture	Copertina anteriore	Передняя обложка	Передня обкладинка	Przednia okładka	表表紙	封面	Sampul Depan	Cubierta	앞표지	Kulit Hadapan	Bìa trước
+Back Cover	Rückseite	Quatrième de couverture	Quarta di copertina	Задняя обложка	Задня обкладинка	Tylna okładka	裏表紙	封底	Sampul Belakang	Contracubierta	뒤표지	Kulit Belakang	Bìa sau
+Preview	Vorschau	Aperçu	Anteprima	Просмотр	Перегляд	Podgląd	プレビュー	预览	Pratinjau	Vista previa	미리보기	Pratonton	Xem trước
+Overview	Übersicht	Vue d’ensemble	Panoramica	Обзор	Огляд	Przegląd	概要	概览	Ikhtisar	Resumen	개요	Gambaran Keseluruhan	Tổng quan
+Shortcuts	Tastenkürzel	Raccourcis	Scorciatoie	Сочетания клавиш	Сполучення клавіш	Skróty	ショートカット	快捷键	Pintasan	Atajos	단축키	Pintasan	Phím tắt
+Privacy	Datenschutz	Confidentialité	Privacy	Конфиденциальность	Конфіденційність	Prywatność	プライバシー	隐私	Privasi	Privacidad	개인정보 보호	Privasi	Quyền riêng tư
+Search help	Hilfe durchsuchen	Rechercher dans l’aide	Cerca nella guida	Поиск по справке	Пошук у довідці	Szukaj w pomocy	ヘルプを検索	搜索帮助	Cari bantuan	Buscar en la ayuda	도움말 검색	Cari bantuan	Tìm trợ giúp
+Welcome to Lutefisk	Willkommen bei Lutefisk	Bienvenue dans Lutefisk	Benvenuto in Lutefisk	Добро пожаловать в Lutefisk	Ласкаво просимо до Lutefisk	Witamy w Lutefisk	Lutefisk へようこそ	欢迎使用 Lutefisk	Selamat datang di Lutefisk	Te damos la bienvenida a Lutefisk	Lutefisk에 오신 것을 환영합니다	Selamat datang ke Lutefisk	Chào mừng đến với Lutefisk
+All Books	Alle Bücher	Tous les livres	Tutti i libri	Все книги	Усі книги	Wszystkie książki	すべてのブック	所有书籍	Semua Buku	Todos los libros	모든 책	Semua Buku	Tất cả sách
+Create Book	Buch erstellen	Créer le livre	Crea libro	Создать книгу	Створити книгу	Utwórz książkę	ブックを作成	创建书籍	Buat Buku	Crear libro	책 만들기	Cipta Buku	Tạo sách
+Delete Book…	Buch löschen…	Supprimer le livre…	Elimina libro…	Удалить книгу…	Видалити книгу…	Usuń książkę…	ブックを削除…	删除书籍…	Hapus Buku…	Eliminar libro…	책 삭제…	Padam Buku…	Xóa sách…
+Untitled Book	Unbenanntes Buch	Livre sans titre	Libro senza titolo	Книга без названия	Книга без назви	Książka bez tytułu	無題のブック	未命名书籍	Buku Tanpa Judul	Libro sin título	제목 없는 책	Buku Tanpa Tajuk	Sách chưa đặt tên
+Save your changes?	Änderungen speichern?	Enregistrer les modifications ?	Salvare le modifiche?	Сохранить изменения?	Зберегти зміни?	Zapisać zmiany?	変更を保存しますか？	保存更改吗？	Simpan perubahan?	¿Guardar los cambios?	변경 사항을 저장하시겠습니까?	Simpan perubahan?	Lưu thay đổi?
+Don’t Save	Nicht speichern	Ne pas enregistrer	Non salvare	Не сохранять	Не зберігати	Nie zapisuj	保存しない	不保存	Jangan Simpan	No guardar	저장 안 함	Jangan Simpan	Không lưu
+Notes	Notizen	Notes	Note	Заметки	Нотатки	Notatki	メモ	笔记	Catatan	Notas	메모	Nota	Ghi chú
+Name	Name	Nom	Nome	Имя	Ім’я	Nazwa	名前	名称	Nama	Nombre	이름	Nama	Tên
+Role — e.g. Protagonist	Rolle – z. B. Hauptfigur	Rôle — p. ex. protagoniste	Ruolo — es. protagonista	Роль — напр. главный герой	Роль — напр. головний герой	Rola — np. protagonista	役割 — 例：主人公	角色——例如：主角	Peran — mis. Protagonis	Papel — p. ej., protagonista	역할 — 예: 주인공	Peranan — cth. Protagonis	Vai trò — vd: nhân vật chính
+No characters yet	Noch keine Figuren	Aucun personnage pour l’instant	Ancora nessun personaggio	Персонажей пока нет	Персонажів поки немає	Brak postaci	登場人物はまだいません	尚无人物	Belum ada tokoh	Aún no hay personajes	아직 등장인물이 없습니다	Belum ada watak	Chưa có nhân vật
+Everyone	Alle	Tout le monde	Tutti	Все	Усі	Wszyscy	全員	所有人	Semua	Todos	모두	Semua	Mọi người
+Write	Schreiben	Écrire	Scrivi	Писать	Писати	Pisz	書く	写作	Tulis	Escribir	쓰기	Tulis	Viết
+Get started	Erste Schritte	Premiers pas	Per iniziare	Начало работы	Початок роботи	Pierwsze kroki	はじめに	入门	Memulai	Primeros pasos	시작하기	Bermula	Bắt đầu
+Unknown	Unbekannt	Inconnu	Sconosciuto	Неизвестно	Невідомо	Nieznane	不明	未知	Tidak diketahui	Desconocido	알 수 없음	Tidak diketahui	Không rõ
+None	Keine	Aucun	Nessuno	Нет	Немає	Brak	なし	无	Tidak ada	Ninguno	없음	Tiada	Không có
+Custom…	Eigene…	Personnalisé…	Personalizzato…	Другое…	Інше…	Własne…	カスタム…	自定义…	Kustom…	Personalizado…	사용자 지정…	Tersuai…	Tùy chỉnh…
+Trim size — the page size of the printed book	Beschnittformat – die Seitengröße des gedruckten Buchs	Format — la taille des pages du livre imprimé	Formato — le dimensioni della pagina del libro stampato	Формат — размер страницы печатной книги	Формат — розмір сторінки друкованої книги	Format — rozmiar strony drukowanej książki	判型 — 印刷本のページサイズ	开本——印刷书籍的页面尺寸	Ukuran potong — ukuran halaman buku cetak	Tamaño de corte: el tamaño de página del libro impreso	판형 — 인쇄본의 페이지 크기	Saiz potong — saiz halaman buku bercetak	Khổ sách — kích thước trang của sách in
+Font size	Schriftgröße	Taille de police	Dimensione carattere	Размер шрифта	Розмір шрифту	Rozmiar czcionki	フォントサイズ	字号	Ukuran huruf	Tamaño de fuente	글꼴 크기	Saiz fon	Cỡ chữ
+Template font	Vorlagenschrift	Police du modèle	Carattere del modello	Шрифт шаблона	Шрифт шаблону	Czcionka szablonu	テンプレートのフォント	模板字体	Font templat	Fuente de la plantilla	템플릿 글꼴	Fon templat	Phông của mẫu
+Classic	Klassisch	Classique	Classico	Классика	Класика	Klasyczny	クラシック	经典	Klasik	Clásico	클래식	Klasik	Cổ điển
+White	Weiß	Blanc	Bianco	Белая	Біла	Biały	白	白色	Putih	Blanco	흰색	Putih	Trắng
+Cream	Creme	Crème	Crema	Кремовая	Кремова	Kremowy	クリーム	米色	Krem	Crema	크림	Krim	Kem
+Ivory	Elfenbein	Ivoire	Avorio	Слоновая кость	Слонова кістка	Kość słoniowa	アイボリー	象牙白	Gading	Marfil	아이보리	Gading	Ngà
+Natural	Naturpapier	Naturel	Naturale	Натуральная	Натуральний	Naturalny	ナチュラル	自然色	Alami	Natural	내추럴	Asli	Tự nhiên
+Recycled	Recycling	Recyclé	Riciclata	Переработанная	Перероблений	Ekologiczny	再生紙	再生纸	Daur Ulang	Reciclado	재생지	Kitar Semula	Tái chế
+Laid	Gerippt	Vergé	Vergata	Верже	Верже	Prążkowany	レイド	条纹纸	Bergaris	Verjurado	레이드지	Berjalur	Giấy vân
+Linen	Leinen	Lin	Lino	Лён	Льон	Płótno	リネン	亚麻	Linen	Lino	리넨	Linen	Vải lanh
+Menus, buttons and labels. Your book’s own language is set in Book › General.	Menüs, Schaltflächen und Beschriftungen. Die Sprache Ihres Buchs legen Sie unter Buch › Allgemein fest.	Menus, boutons et libellés. La langue de votre livre se règle dans Livre › Général.	Menu, pulsanti ed etichette. La lingua del libro si imposta in Libro › Generale.	Меню, кнопки и надписи. Язык самой книги задаётся в разделе «Книга › Общие».	Меню, кнопки й написи. Мову самої книги задають у розділі «Книга › Загальні».	Menu, przyciski i etykiety. Język książki ustawisz w Książka › Ogólne.	メニュー、ボタン、ラベルの言語です。ブック本文の言語は「ブック › 一般」で設定します。	菜单、按钮和标签。书籍本身的语言在“书籍 › 通用”中设置。	Menu, tombol, dan label. Bahasa buku Anda diatur di Buku › Umum.	Menús, botones y etiquetas. El idioma del libro se define en Libro › General.	메뉴, 버튼, 레이블의 언어입니다. 책 자체의 언어는 책 › 일반에서 설정합니다.	Menu, butang dan label. Bahasa buku anda ditetapkan dalam Buku › Umum.	Menu, nút và nhãn. Ngôn ngữ của cuốn sách được đặt trong Sách › Chung.
+Book	Buch	Livre	Libro	Книга	Книга	Książka	ブック	书籍	Buku	Libro	책	Buku	Sách
+Saved	Gespeichert	Enregistré	Salvato	Сохранено	Збережено	Zapisano	保存済み	已保存	Tersimpan	Guardado	저장됨	Disimpan	Đã lưu
+Edited	Bearbeitet	Modifié	Modificato	Изменено	Змінено	Edytowano	編集済み	已编辑	Diedit	Editado	편집됨	Disunting	Đã sửa
+Saving…	Wird gespeichert…	Enregistrement…	Salvataggio…	Сохранение…	Збереження…	Zapisywanie…	保存中…	正在保存…	Menyimpan…	Guardando…	저장 중…	Menyimpan…	Đang lưu…
+Checking…	Wird geprüft…	Vérification…	Controllo…	Проверка…	Перевірка…	Sprawdzanie…	チェック中…	正在检查…	Memeriksa…	Revisando…	검사 중…	Menyemak…	Đang kiểm tra…
+Untitled	Ohne Titel	Sans titre	Senza titolo	Без названия	Без назви	Bez tytułu	無題	未命名	Tanpa Judul	Sin título	제목 없음	Tanpa Tajuk	Chưa đặt tên
+Clear Done	Erledigte entfernen	Effacer les tâches faites	Rimuovi completati	Убрать выполненные	Прибрати виконані	Usuń ukończone	完了を消去	清除已完成	Hapus yang Selesai	Borrar completadas	완료 항목 지우기	Kosongkan yang Selesai	Xóa việc đã xong
+Block	Block	Bloc	Blocco	Блок	Блок	Blok	ブロック	代码块	Blok	Bloque	블록	Blok	Khối
+Inline	Im Text	En ligne	In linea	В строке	У рядку	W tekście	インライン	行内	Sebaris	En línea	인라인	Sebaris	Trong dòng
+Layout	Anordnung	Disposition	Disposizione	Расположение	Розташування	Układ	レイアウト	布局	Tata Letak	Disposición	배치	Susun Atur	Bố cục
+Colors	Farben	Couleurs	Colori	Цвета	Кольори	Kolory	色	颜色	Warna	Colores	색상	Warna	Màu
+Line numbers	Zeilennummern	Numéros de ligne	Numeri di riga	Номера строк	Номери рядків	Numery wierszy	行番号	行号	Nomor baris	Números de línea	줄 번호	Nombor baris	Số dòng
+Insert code	Code einfügen	Insérer du code	Inserisci codice	Вставить код	Вставити код	Wstaw kod	コードを挿入	插入代码	Sisipkan kode	Insertar código	코드 삽입	Sisip kod	Chèn mã
+Code	Code	Code	Codice	Код	Код	Kod	コード	代码	Kode	Código	코드	Kod	Mã
+No border	Kein Rahmen	Sans bordure	Senza bordo	Без рамки	Без рамки	Bez ramki	枠なし	无边框	Tanpa bingkai	Sin borde	테두리 없음	Tiada sempadan	Không viền
+Thin border	Dünner Rahmen	Bordure fine	Bordo sottile	Тонкая рамка	Тонка рамка	Cienka ramka	細い枠	细边框	Bingkai tipis	Borde fino	얇은 테두리	Sempadan nipis	Viền mảnh
+Medium border	Mittlerer Rahmen	Bordure moyenne	Bordo medio	Средняя рамка	Середня рамка	Średnia ramka	中くらいの枠	中等边框	Bingkai sedang	Borde medio	보통 테두리	Sempadan sederhana	Viền vừa
+Thick border	Dicker Rahmen	Bordure épaisse	Bordo spesso	Толстая рамка	Товста рамка	Gruba ramka	太い枠	粗边框	Bingkai tebal	Borde grueso	굵은 테두리	Sempadan tebal	Viền dày
+How It Works	So funktioniert’s	Mode d’emploi	Come funziona	Как это работает	Як це працює	Jak to działa	使い方	使用说明	Cara Kerja	Cómo funciona	사용 방법	Cara Ia Berfungsi	Cách hoạt động
+Write like…	Schreiben wie…	Écrire comme…	Scrivi come…	Писать как…	Писати як…	Pisz jak…	あの作家のように…	像这位作家一样…	Menulis seperti…	Escribir como…	이 작가처럼…	Menulis seperti…	Viết như…
+Hours	Stunden	Heures	Ore	Часы	Години	Godziny	時間	小时	Jam	Horas	시간	Jam	Giờ
+Daily goal for this book	Tagesziel für dieses Buch	Objectif quotidien pour ce livre	Obiettivo giornaliero per questo libro	Дневная цель для этой книги	Денна ціль для цієї книги	Cel dzienny dla tej książki	このブックの1日の目標	本书每日目标	Target harian untuk buku ini	Objetivo diario para este libro	이 책의 하루 목표	Matlamat harian untuk buku ini	Mục tiêu hằng ngày cho sách này
+Custom	Eigene	Personnalisé	Personalizzato	Своя	Власна	Własny	カスタム	自定义	Kustom	Personalizado	사용자 지정	Tersuai	Tùy chỉnh
+Tools	Werkzeuge	Outils	Strumenti	Инструменты	Інструменти	Narzędzia	ツール	工具	Alat	Herramientas	도구	Alat	Công cụ
+Check Spelling and Grammar Now	Rechtschreibung und Grammatik jetzt prüfen	Vérifier l’orthographe et la grammaire maintenant	Controlla ora ortografia e grammatica	Проверить орфографию и грамматику сейчас	Перевірити правопис і граматику зараз	Sprawdź teraz pisownię i gramatykę	今すぐスペルと文法をチェック	立即检查拼写和语法	Periksa Ejaan dan Tata Bahasa Sekarang	Revisar ortografía y gramática ahora	지금 맞춤법 및 문법 검사	Semak Ejaan dan Tatabahasa Sekarang	Kiểm tra chính tả và ngữ pháp ngay

@@ -1,5 +1,5 @@
 // The writer's notebook: the logline, snippets and the to-do list.
-// All of it stays in book.yaml and never appears in the book or its exports.
+// All of it stays in lutefisk.yaml and never appears in the book or its exports.
 import { h, icon, toast, confirmDialog, popover, closePopovers, setHtml } from './ui.js';
 import { createMiniEditor, SNIPPET_MIME } from './editor.js';
 import { renderMarkdown, markdownToPlain } from '../shared/markdown.js';
@@ -17,59 +17,23 @@ const area = (value, attrs = {}) => {
 };
 
 /* ================================================================ logline */
-const LOGLINE_PARTS = [
-  { key: 'hero', label: 'Who', hint: 'Your protagonist, in a few words', ph: 'a lamplighter’s daughter' },
-  { key: 'incident', label: 'When', hint: 'The event that sets the story moving', ph: 'every lamp in the valley goes dark' },
-  { key: 'goal', label: 'Wants', hint: 'What they must do', ph: 'cross the mountains to find clear oil' },
-  { key: 'obstacle', label: 'But', hint: 'What stands in the way', ph: 'the only road runs through a town that blames her family' },
-  { key: 'stakes', label: 'Or else', hint: 'What happens if they fail', ph: 'the valley faces a winter without light' },
-];
-
-/** Build a logline sentence from its parts. */
-export function composeLogline(p = {}) {
-  const t = (k) => String(p[k] || '').trim().replace(/[.,;\s]+$/, '');
-  let s = '';
-  if (t('incident')) s += `When ${t('incident')}, `;
-  s += t('hero') || (t('goal') ? 'the hero' : '');
-  if (t('goal')) s += ` must ${t('goal')}`;
-  if (t('obstacle')) s += `${s.trim() ? ', but ' : ''}${t('obstacle')}`;
-  if (t('stakes')) s += `${s.trim() ? ', or ' : ''}${t('stakes')}`;
-  s = s.trim().replace(/,$/, '');
-  return s ? `${s.charAt(0).toUpperCase()}${s.slice(1)}.` : '';
-}
-
 export function openLogline(app, sheet, onChange) {
   const b = app.book;
-  b.loglineParts = b.loglineParts && typeof b.loglineParts === 'object' ? b.loglineParts : {};
-  const main = area(b.logline, { class: 'll-main', rows: 3, placeholder: 'One or two sentences: who your story is about, what they want, what stands in the way, and what’s at stake.', 'aria-label': 'Logline' });
+  const main = area(b.logline, { class: 'll-main', rows: 4, placeholder: 'Write your logline here.', 'aria-label': 'Logline' });
   const meter = h('div', { class: 'll-meter' });
   const drawMeter = () => {
     const n = countWords(main.value);
-    const tone = !n ? '' : n < 15 ? 'short' : n <= 50 ? 'good' : 'long';
+    const tone = !n ? '' : n < 25 ? 'short' : n <= 50 ? 'good' : 'long';
     meter.className = `ll-meter ${tone}`;
-    meter.textContent = !n ? 'Most loglines run 25–50 words.' : `${n} word${n === 1 ? '' : 's'} — ${tone === 'short' ? 'add who, what they want, or what’s at stake' : tone === 'good' ? 'a good length' : 'try to tighten it to one or two sentences'}`;
+    meter.textContent = !n ? 'Aim for 25–50 words.' : `${n} word${n === 1 ? '' : 's'} — ${tone === 'short' ? 'a little short; aim for 25–50' : tone === 'good' ? 'a good length' : 'a little long; aim for 25–50'}`;
   };
   main.addEventListener('input', () => { b.logline = main.value; app.markDirty(); drawMeter(); onChange?.(); });
   drawMeter();
-
-  const fields = LOGLINE_PARTS.map((p) => {
-    const inp = h('input', { type: 'text', value: b.loglineParts[p.key] || '', placeholder: p.ph, 'aria-label': p.label });
-    inp.addEventListener('input', () => { b.loglineParts[p.key] = inp.value; app.markDirty(); draft.textContent = composeLogline(b.loglineParts) || 'Fill in the parts to build a draft.'; });
-    return h('label', { class: 'll-part' }, h('b', {}, p.label), inp, h('small', { class: 'hint' }, p.hint));
-  });
-  const draft = h('p', { class: 'll-draft' }, composeLogline(b.loglineParts) || 'Fill in the parts to build a draft.');
-  const use = h('button', { class: 'btn small', onclick: () => {
-    const s = composeLogline(b.loglineParts);
-    if (!s) { toast('Fill in a few parts first', 'info', 1600); return; }
-    main.value = s; main.dispatchEvent(new Event('input')); autosize(main); main.focus();
-  } }, icon('arrowRight', 13), 'Use This Draft');
-
-  sheet('Logline', h('div', { class: 'll-body' },
-    h('p', { class: 'hint' }, 'Your story in a sentence — for your own focus, a query letter or a pitch. It’s kept with the book and never printed.'),
-    main, meter,
-    h('h3', {}, 'Build one'),
-    h('div', { class: 'll-parts' }, fields),
-    h('div', { class: 'll-draft-row' }, draft, use)), { wide: true, onClose: onChange });
+  const tips = h('ul', { class: 'll-tips' },
+    h('li', {}, 'Say who the story is about, and what they want.'),
+    h('li', {}, 'Name what stands in the way, and what happens if they fail.'),
+    h('li', {}, 'One or two sentences, 25–50 words. Skip names unless they matter.'));
+  sheet('Logline', h('div', { class: 'll-body' }, main, meter, tips), { wide: true, onClose: onChange });
   requestAnimationFrame(() => main.focus());
 }
 

@@ -1,6 +1,8 @@
 // App settings: where projects live, how saving works, and whether file choosers
 // remember the last folder. Stored by the main process in the app's own data
 // folder (never in a project or in the app's source).
+import { applyLanguage } from './i18n-dom.js';
+import { LANGUAGES } from '../shared/i18n.js';
 import { h, icon, toast, segmented, dialog } from './ui.js';
 
 const B = window.lutefisk;
@@ -27,15 +29,29 @@ export const SKINS = [
 export const applySkin = (id) => { document.documentElement.dataset.skin = SKINS.some((s) => s.id === id) ? id : 'classic'; };
 export const setSkin = (skin) => { applySkin(skin); return update({ skin }); };
 
+/** Vision and comfort settings, applied to the whole window. */
+export function applyA11y(st = settings) {
+  const d = document.documentElement.dataset;
+  d.a11yFont = st.a11yFont ? 'on' : '';
+  d.a11yContrast = st.a11yContrast ? 'on' : '';
+  d.a11yMotion = st.a11yMotion ? 'reduce' : '';
+  d.a11yFocus = st.a11yFocus ? 'on' : '';
+  d.a11ySpacing = st.a11ySpacing && st.a11ySpacing !== 'normal' ? st.a11ySpacing : '';
+}
+
 export async function loadSettings() {
   try { Object.assign(settings, await B.getSettings()); } catch { /* defaults */ }
   applySkin(settings.skin);
+  applyA11y();
+  applyLanguage(settings.uiLanguage || 'en-US');
   for (const fn of listeners) fn(settings);
   return settings;
 }
 export function onSettings(fn) { listeners.add(fn); return () => listeners.delete(fn); }
 async function update(patch) {
   try { Object.assign(settings, await B.setSettings(patch)); } catch (err) { toast(String(err?.message || err), 'error'); }
+  applyA11y();
+  if ('uiLanguage' in patch) applyLanguage(settings.uiLanguage || 'en-US');
   for (const fn of listeners) fn(settings);
 }
 
@@ -84,6 +100,85 @@ export function themeButton() {
   return b;
 }
 
+/** Add a word to your dictionary (from the editor's right-click menu). */
+export const addDictionaryWord = (w) => update({ dictionary: [...(settings.dictionary || []), String(w).trim()] });
+
+/** Settings › Spelling & Grammar: Harper, checked on this computer. */
+function spellSection(draw) {
+  const check = (key, label, hint) => {
+    const box = h('input', { type: 'checkbox', checked: settings[key] !== false });
+    box.addEventListener('change', () => update({ [key]: box.checked }).then(draw));
+    return h('label', { class: 'st-check a11y-check' }, box, h('span', {}, h('b', {}, label), hint ? h('small', { class: 'hint' }, hint) : null));
+  };
+  const dialect = h('select', { 'aria-label': 'English dialect' }, [['american', 'American'], ['british', 'British'], ['canadian', 'Canadian'], ['australian', 'Australian'], ['indian', 'Indian']].map(([v, l]) => h('option', { value: v }, l)));
+  dialect.value = settings.spellDialect || 'american';
+  dialect.addEventListener('change', () => update({ spellDialect: dialect.value }).then(draw));
+  const dict = settings.dictionary || [];
+  const add = h('input', { type: 'text', placeholder: 'Add a word…', 'aria-label': 'Add a word to your dictionary', maxlength: 64, class: 'dict-add' });
+  add.addEventListener('keydown', (e) => { if (e.key === 'Enter' && add.value.trim()) { e.preventDefault(); update({ dictionary: [...dict, add.value.trim()] }).then(draw); } });
+  return h('section', { class: 'st-sec' },
+    h('div', { class: 'st-ic' }, icon('check', 18)),
+    h('div', { class: 'st-main' },
+      h('h3', {}, 'Spelling & Grammar'),
+      check('spellOn', 'Check spelling and grammar', 'Powered by Harper, which is built into Lutefisk and runs entirely on this computer — your text is never sent anywhere. Right-click an underlined word for suggestions.'),
+      settings.spellOn !== false ? h('div', { class: 'st-sub-opts' },
+        h('label', { class: 'st-row' }, h('span', {}, 'When'), (() => {
+          const sel = h('select', { 'aria-label': 'When to check' }, h('option', { value: 'auto' }, 'Automatically, as I write'), h('option', { value: 'manual' }, 'Only when I ask (Check Now or F7)'));
+          sel.value = settings.spellMode === 'manual' ? 'manual' : 'auto';
+          sel.addEventListener('change', () => update({ spellMode: sel.value }).then(draw));
+          return sel;
+        })()),
+        h('label', { class: 'st-row' }, h('span', {}, 'English'), dialect),
+        check('spellGrammar', 'Grammar', 'Agreement, word choice, punctuation and more — underlined in blue.'),
+        check('spellStyle', 'Style', 'Wordiness, repetition and readability — dotted in purple.'),
+        h('div', { class: 'fld' }, h('span', {}, `Your dictionary${dict.length ? ` (${dict.length})` : ''}`), add,
+          dict.length ? h('div', { class: 'dict-list' }, dict.map((w) => h('span', { class: 'dict-word' }, w, h('button', { type: 'button', 'aria-label': `Remove ${w}`, title: 'Remove', onclick: () => update({ dictionary: dict.filter((x) => x !== w) }).then(draw) }, icon('close', 10))))) : h('small', { class: 'hint' }, 'Names and invented words you add here aren’t marked as misspelled.'))) : null));
+}
+
+/** Settings › Language: the language of menus and buttons (never of your book). */
+function languageSection(draw) {
+  const sel = h('select', { class: 'no-i18n', 'aria-label': 'Interface language' },
+    LANGUAGES.map(([code, name, en]) => h('option', { value: code }, name === en ? name : `${name} — ${en}`)));
+  sel.value = settings.uiLanguage || 'en-US';
+  sel.addEventListener('change', () => update({ uiLanguage: sel.value }).then(draw));
+  return h('section', { class: 'st-sec' },
+    h('div', { class: 'st-ic' }, icon('globe', 18)),
+    h('div', { class: 'st-main' },
+      h('h3', {}, 'Language'),
+      h('label', { class: 'st-row' }, h('span', {}, 'Interface language'), sel),
+      h('p', { class: 'hint' }, 'Menus, buttons and labels. Your book’s own language is set in Book › General.'),
+      sel.value === 'lkt' ? h('p', { class: 'hint' }, 'Lakȟótiyapi is just beginning: a few words are in place and the rest shows in English until fluent speakers contribute translations.') : null));
+}
+
+/** Settings › Vision & Comfort: larger interface, an easier-to-read font, stronger contrast, calmer motion. */
+function a11ySection(draw) {
+  const check = (key, label, hint) => {
+    const box = h('input', { type: 'checkbox', checked: !!settings[key] });
+    box.addEventListener('change', () => update({ [key]: box.checked }).then(draw));
+    return h('label', { class: 'st-check a11y-check' }, box, h('span', {}, h('b', {}, label), h('small', { class: 'hint' }, hint)));
+  };
+  const sizes = [[0.9, '90%'], [1, '100%'], [1.1, '110%'], [1.25, '125%'], [1.4, '140%'], [1.6, '160%'], [1.8, '180%'], [2, '200%']];
+  return h('section', { class: 'st-sec' },
+    h('div', { class: 'st-ic' }, icon('eye', 18)),
+    h('div', { class: 'st-main' },
+      h('h3', {}, 'Vision & Comfort'),
+      h('label', { class: 'st-row' }, h('span', {}, 'Interface size'),
+        (() => {
+          const sel = h('select', { 'aria-label': 'Interface size' }, sizes.map(([v, l]) => h('option', { value: String(v) }, l)));
+          sel.value = String(settings.uiZoom || 1);
+          sel.addEventListener('change', () => update({ uiZoom: Number(sel.value) }).then(draw));
+          return sel;
+        })(),
+        h('small', { class: 'hint' }, '⇧⌘+ / ⇧⌘− also work. The editor and previews have their own text size.')),
+      h('label', { class: 'st-row' }, h('span', {}, 'Editor line spacing'),
+        segmented([{ value: 'normal', label: 'Normal' }, { value: 'relaxed', label: 'Relaxed' }, { value: 'loose', label: 'Loose' }], settings.a11ySpacing || 'normal', (v) => update({ a11ySpacing: v }).then(draw), { label: 'Editor line spacing' })),
+      check('a11yFont', 'Easier-to-read font', 'Uses Atkinson Hyperlegible — designed for low vision — for menus, the binder and the editor. Your book keeps its own fonts.'),
+      check('a11yContrast', 'Stronger contrast', 'Darker secondary text, clearer borders and underlined links. Pairs well with the High Contrast skin.'),
+      check('a11yFocus', 'Always show a bold focus ring', 'A thick outline around whatever has keyboard focus, so you never lose your place.'),
+      check('a11yMotion', 'Reduce motion', 'Turns off animations and sliding panels.'),
+      h('p', { class: 'hint' }, 'Also: the editor text size goes from 25% to 300%; every control has a keyboard shortcut or tooltip; and screen readers can read equations from their LaTeX alt text.')));
+}
+
 const pretty = (p, home) => (p ? (home && p.startsWith(home) ? `~${p.slice(home.length)}` : p) : '');
 
 export function openSettings(sheet) {
@@ -104,6 +199,9 @@ export function openSettings(sheet) {
           h('h3', { class: 'st-sub' }, 'Skin'),
           skinPicker(draw),
           h('p', { class: 'hint' }, 'Colors and textures for Lutefisk itself, in day and night. Your book’s design is set by its template.'))),
+      languageSection(draw),
+      spellSection(draw),
+      a11ySection(draw),
       h('section', { class: 'st-sec' },
         h('div', { class: 'st-ic' }, icon('folder', 18)),
         h('div', { class: 'st-main' },

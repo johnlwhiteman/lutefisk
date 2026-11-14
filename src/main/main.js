@@ -15,7 +15,7 @@ import path from 'node:path';
 import fsSync from 'node:fs';
 import { promises as fs } from 'node:fs';
 import {
-  loadBook, saveBook, createBook, importAsset, writeAssetData, writeDrawing, readDrawing, isBookDir, within, mimeFor, isAssetPath, readSummary, importResearchFile,
+  loadBook, saveBook, createBook, importAsset, writeAssetData, writeDrawing, readDrawing, isBookDir, manifestPath, within, mimeFor, isAssetPath, readSummary, importResearchFile,
 } from './bookstore.js';
 import { buildEpub } from './export-epub.js';
 import { buildDocx } from './export-docx.js';
@@ -25,6 +25,7 @@ import { buildRtf } from './export-rtf.js';
 import { buildMobi } from './export-mobi.js';
 import { zip as zipAsync } from 'fflate';
 import { texToMathml } from '../shared/math.js';
+import { t, setLanguage, LANGUAGE_CODES } from '../shared/i18n.js';
 
 const APP_ROOT = path.join(__dirname, 'renderer');
 const isDev = !app.isPackaged && process.env.LUTEFISK_DEV === '1';
@@ -36,11 +37,13 @@ const exportPages = new Map(); // token → html for PDF rendering
 
 const CSP = [
   "default-src 'none'",
-  "script-src 'self'",
+  // 'wasm-unsafe-eval' lets the local spelling and grammar checker (Harper, WebAssembly) run;
+  // connect-src 'self' lets it load its own bundled files. Nothing can reach the network.
+  "script-src 'self' 'wasm-unsafe-eval'",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' book: data: blob:",
   "font-src 'self'",
-  "connect-src 'none'",
+  "connect-src 'self'",
   "media-src 'none'",
   "object-src 'none'",
   "frame-src book:",
@@ -249,7 +252,7 @@ async function writePrefs(p) { await fs.writeFile(prefsFile(), JSON.stringify(p,
 let closeTimer = null;
 
 /* App settings the user controls. Paths are only ever set through a folder chooser. */
-const SETTINGS_DEFAULTS = { autosave: true, autosaveSeconds: 5, rememberLastDir: true, theme: 'system', skin: 'classic' };
+const SETTINGS_DEFAULTS = { autosave: true, autosaveSeconds: 5, rememberLastDir: true, theme: 'system', skin: 'classic', a11yFont: false, a11yContrast: false, a11yMotion: false, a11yFocus: false, a11ySpacing: 'normal', uiZoom: 1, spellOn: true, spellDialect: 'american', spellMode: 'auto', uiLanguage: 'en-US', spellGrammar: true, spellStyle: true, dictionary: [] };
 const SKINS = ['classic', 'paper', 'typewriter', 'linen', 'leather', 'study', 'blueprint', 'midnight', 'fjord', 'forest', 'rose', 'lavender', 'graphite', 'contrast'];
 function cleanSettings(p) {
   const secs = Number(p.autosaveSeconds);
@@ -262,6 +265,21 @@ function cleanSettings(p) {
     lastDir: typeof p.lastDir === 'string' && path.isAbsolute(p.lastDir) ? p.lastDir : '',
     theme: ['system', 'light', 'dark'].includes(p.theme) ? p.theme : 'system',
     skin: SKINS.includes(p.skin) ? p.skin : 'classic',
+    // Vision and comfort.
+    a11yFont: p.a11yFont === true,
+    a11yContrast: p.a11yContrast === true,
+    a11yMotion: p.a11yMotion === true,
+    a11yFocus: p.a11yFocus === true,
+    a11ySpacing: ['normal', 'relaxed', 'loose'].includes(p.a11ySpacing) ? p.a11ySpacing : 'normal',
+    uiZoom: UI_STEPS.includes(Number(p.uiZoom)) ? Number(p.uiZoom) : 1,
+    // Spelling and grammar (Harper, local).
+    spellOn: p.spellOn !== false,
+    spellDialect: ['american', 'british', 'canadian', 'australian', 'indian'].includes(p.spellDialect) ? p.spellDialect : 'american',
+    spellMode: p.spellMode === 'manual' ? 'manual' : 'auto',
+    uiLanguage: LANGUAGE_CODES.includes(p.uiLanguage) ? p.uiLanguage : 'en-US',
+    spellGrammar: p.spellGrammar !== false,
+    spellStyle: p.spellStyle !== false,
+    dictionary: Array.isArray(p.dictionary) ? [...new Set(p.dictionary.filter((w) => typeof w === 'string').map((w) => w.trim().slice(0, 64)).filter((w) => w && !/[\s<>]/.test(w)))].slice(0, 5000) : [],
   };
 }
 async function uiZoom(dir) {
@@ -281,66 +299,68 @@ function send(cmd) { return () => win?.webContents.send('menu', cmd); }
 function buildMenu() {
   const mac = process.platform === 'darwin';
   const template = [
-    ...(mac ? [{ label: app.name, submenu: [{ role: 'about' }, { type: 'separator' }, { label: 'Settings…', accelerator: 'Cmd+,', click: send('open-settings') }, { type: 'separator' }, { role: 'services' }, { type: 'separator' }, { role: 'hide' }, { role: 'hideOthers' }, { role: 'unhide' }, { type: 'separator' }, { role: 'quit' }] }] : []),
+    ...(mac ? [{ label: app.name, submenu: [{ role: 'about' }, { type: 'separator' }, { label: t('Settings…'), accelerator: 'Cmd+,', click: send('open-settings') }, { type: 'separator' }, { role: 'services' }, { type: 'separator' }, { role: 'hide' }, { role: 'hideOthers' }, { role: 'unhide' }, { type: 'separator' }, { role: 'quit' }] }] : []),
     {
-      label: 'File',
+      label: t('File'),
       submenu: [
-        { label: 'New Book…', accelerator: 'CmdOrCtrl+N', click: send('new-book') },
-        { label: 'Open…', accelerator: 'CmdOrCtrl+O', click: send('open-book') },
-        { label: 'Library', accelerator: 'CmdOrCtrl+Shift+L', click: send('library') },
-        { label: 'Save', accelerator: 'CmdOrCtrl+S', click: send('save') },
-        { label: 'Back Up Book…', accelerator: 'CmdOrCtrl+Shift+S', click: send('backup-book') },
-        ...(mac ? [] : [{ type: 'separator' }, { label: 'Settings…', accelerator: 'Ctrl+,', click: send('open-settings') }]),
+        { label: t('New Book…'), accelerator: 'CmdOrCtrl+N', click: send('new-book') },
+        { label: t('Open…'), accelerator: 'CmdOrCtrl+O', click: send('open-book') },
+        { label: t('Library'), accelerator: 'CmdOrCtrl+Shift+L', click: send('library') },
+        { label: t('Save'), accelerator: 'CmdOrCtrl+S', click: send('save') },
+        { label: t('Back Up Book…'), accelerator: 'CmdOrCtrl+Shift+S', click: send('backup-book') },
+        ...(mac ? [] : [{ type: 'separator' }, { label: t('Settings…'), accelerator: 'Ctrl+,', click: send('open-settings') }]),
         { type: 'separator' },
-        { label: 'New Chapter', accelerator: 'CmdOrCtrl+Shift+N', click: send('new-chapter') },
-        { label: 'New Scene', accelerator: 'CmdOrCtrl+Alt+N', click: send('new-scene') },
-        { label: 'Split Scene at Cursor', accelerator: 'CmdOrCtrl+Alt+K', click: send('split-scene') },
+        { label: t('New Chapter'), accelerator: 'CmdOrCtrl+Shift+N', click: send('new-chapter') },
+        { label: t('New Scene'), accelerator: 'CmdOrCtrl+Alt+N', click: send('new-scene') },
+        { label: t('Split Scene at Cursor'), accelerator: 'CmdOrCtrl+Alt+K', click: send('split-scene') },
         { type: 'separator' },
-        { label: 'Export EPUB…', click: send('export-epub') },
-        { label: 'Export Markdown…', click: send('export-md') },
-        { label: 'Export MOBI (older Kindles)…', click: send('export-mobi') },
-        { label: 'Export PDF (Print)…', accelerator: 'CmdOrCtrl+P', click: send('export-pdf') },
-        { label: 'Export RTF…', click: send('export-rtf') },
-        { label: 'Export Plain Text…', click: send('export-txt') },
-        { label: 'Export Word…', click: send('export-docx') },
+        { label: t('Export EPUB…'), click: send('export-epub') },
+        { label: t('Export Markdown…'), click: send('export-md') },
+        { label: t('Export MOBI (older Kindles)…'), click: send('export-mobi') },
+        { label: t('Export PDF (Print)…'), accelerator: 'CmdOrCtrl+P', click: send('export-pdf') },
+        { label: t('Export RTF…'), click: send('export-rtf') },
+        { label: t('Export Plain Text…'), click: send('export-txt') },
+        { label: t('Export Word…'), click: send('export-docx') },
         { type: 'separator' },
-        { label: 'Show Book Folder', click: send('reveal') },
+        { label: t('Show Book Folder'), click: send('reveal') },
         ...(mac ? [] : [{ type: 'separator' }, { role: 'quit' }]),
       ],
     },
-    { role: 'editMenu' },
+    { role: 'editMenu', label: t('Edit') },
     {
-      label: 'View',
+      label: t('View'),
       submenu: [
-        { label: 'Device Preview', accelerator: 'CmdOrCtrl+Alt+1', click: send('view-device') },
-        { label: 'Print Preview', accelerator: 'CmdOrCtrl+Alt+2', click: send('view-print') },
-        { label: 'Insights', accelerator: 'CmdOrCtrl+Alt+3', click: send('view-stats') },
+        { label: t('Device Preview'), accelerator: 'CmdOrCtrl+Alt+1', click: send('view-device') },
+        { label: t('Print Preview'), accelerator: 'CmdOrCtrl+Alt+2', click: send('view-print') },
+        { label: t('Insights'), accelerator: 'CmdOrCtrl+Alt+3', click: send('view-stats') },
         { type: 'separator' },
-        { label: 'Zoom In Text', accelerator: 'CmdOrCtrl+=', click: send('zoom-in') },
-        { label: 'Zoom In Text ', accelerator: 'CmdOrCtrl+Plus', visible: false, acceleratorWorksWhenHidden: true, click: send('zoom-in') },
-        { label: 'Zoom Out Text', accelerator: 'CmdOrCtrl+-', click: send('zoom-out') },
-        { label: 'Actual Text Size', accelerator: 'CmdOrCtrl+0', click: send('zoom-reset') },
+        { label: t('Zoom In Text'), accelerator: 'CmdOrCtrl+=', click: send('zoom-in') },
+        { label: t('Zoom In Text '), accelerator: 'CmdOrCtrl+Plus', visible: false, acceleratorWorksWhenHidden: true, click: send('zoom-in') },
+        { label: t('Zoom Out Text'), accelerator: 'CmdOrCtrl+-', click: send('zoom-out') },
+        { label: t('Actual Text Size'), accelerator: 'CmdOrCtrl+0', click: send('zoom-reset') },
         { type: 'separator' },
-        { label: 'Larger Interface', accelerator: 'CmdOrCtrl+Shift+=', click: () => uiZoom(1) },
-        { label: 'Smaller Interface', accelerator: 'CmdOrCtrl+Shift+-', click: () => uiZoom(-1) },
-        { label: 'Default Interface Size', accelerator: 'CmdOrCtrl+Shift+0', click: () => uiZoom(0) },
+        { label: t('Larger Interface'), accelerator: 'CmdOrCtrl+Shift+=', click: () => uiZoom(1) },
+        { label: t('Smaller Interface'), accelerator: 'CmdOrCtrl+Shift+-', click: () => uiZoom(-1) },
+        { label: t('Default Interface Size'), accelerator: 'CmdOrCtrl+Shift+0', click: () => uiZoom(0) },
         { type: 'separator' },
-        { label: 'Focus on Writing', accelerator: 'CmdOrCtrl+Shift+F', click: send('focus-mode') },
-        { label: 'Focus on Preview', accelerator: 'CmdOrCtrl+Alt+P', click: send('toggle-preview') },
-        { label: 'Characters', click: send('open-characters') },
-        { label: 'Plot Board', accelerator: 'CmdOrCtrl+Alt+L', click: send('open-plot') },
-        { label: 'Writing History', click: send('open-history') },
+        { label: t('Focus on Writing'), accelerator: 'CmdOrCtrl+Shift+F', click: send('focus-mode') },
+        { label: t('Focus on Preview'), accelerator: 'CmdOrCtrl+Alt+P', click: send('toggle-preview') },
+        { label: t('Characters'), click: send('open-characters') },
+        { label: t('Plot Board'), accelerator: 'CmdOrCtrl+Alt+L', click: send('open-plot-board') },
+        { label: t('Story Timeline'), click: send('open-timeline') },
+        { label: t('Writing History'), click: send('open-history') },
         { type: 'separator' },
-        { label: 'Search Book', accelerator: 'CmdOrCtrl+F', click: send('content-search') },
-        { label: 'Find and Replace', accelerator: 'CmdOrCtrl+Shift+H', click: send('find-replace') },
-        { label: 'Show / Hide Comments', accelerator: 'CmdOrCtrl+Alt+C', click: send('toggle-comments') },
-        { label: 'Toggle Sidebar', accelerator: MAC ? 'Cmd+Ctrl+S' : 'Ctrl+Shift+B', click: send('toggle-sidebar') },
+        { label: t('Search Book'), accelerator: 'CmdOrCtrl+F', click: send('content-search') },
+        { label: t('Find and Replace'), accelerator: 'CmdOrCtrl+Shift+H', click: send('find-replace') },
+        { label: t('Check Spelling and Grammar (F7)'), click: send('spell-check') },
+        { label: t('Show / Hide Comments'), accelerator: 'CmdOrCtrl+Alt+C', click: send('toggle-comments') },
+        { label: t('Toggle Sidebar'), accelerator: MAC ? 'Cmd+Ctrl+S' : 'Ctrl+Shift+B', click: send('toggle-sidebar') },
         { type: 'separator' }, { role: 'togglefullscreen' },
         ...(isDev ? [{ role: 'toggleDevTools' }] : []),
       ],
     },
-    { role: 'windowMenu' },
-    { role: 'help', submenu: [{ label: 'Lutefisk Help', accelerator: 'F1', click: send('help') }, { label: 'Guided Tour', click: send('tour') }, ...(mac ? [] : [{ type: 'separator' }, { role: 'about', label: 'About Lutefisk' }])] },
+    { role: 'windowMenu', label: t('Window') },
+    { role: 'help', label: t('Help'), submenu: [{ label: t('Lutefisk Help'), accelerator: 'F1', click: send('help') }, { label: t('Guided Tour'), click: send('tour') }, ...(mac ? [] : [{ type: 'separator' }, { role: 'about', label: t('About Lutefisk') }])] },
   ];
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
@@ -357,13 +377,15 @@ function registerIpc() {
   handle('settings:set', async (patch = {}) => {
     const prefs = await readPrefs();
     // Paths can't be set from the window, only through the choosers below.
-    for (const k of ['autosave', 'autosaveSeconds', 'rememberLastDir', 'theme', 'skin']) if (k in patch) prefs[k] = patch[k];
+    for (const k of ['autosave', 'autosaveSeconds', 'rememberLastDir', 'theme', 'skin', 'a11yFont', 'a11yContrast', 'a11yMotion', 'a11yFocus', 'a11ySpacing', 'uiZoom', 'spellOn', 'spellDialect', 'spellMode', 'uiLanguage', 'spellGrammar', 'spellStyle', 'dictionary']) if (k in patch) prefs[k] = patch[k];
     if (patch.resetLibraryDir) { delete prefs.libraryDir; customLibrary = ''; }
     if (patch.rememberLastDir === false) delete prefs.lastDir;
     Object.assign(prefs, cleanSettings({ ...SETTINGS_DEFAULTS, ...prefs }));
     await writePrefs(prefs);
     const clean = cleanSettings(prefs);
     if ('theme' in patch) applyTheme(clean.theme);
+    if ('uiZoom' in patch && win) win.webContents.setZoomFactor(clean.uiZoom);
+    if ('uiLanguage' in patch) { setLanguage(clean.uiLanguage); buildMenu(); }
     return clean;
   });
   handle('settings:chooseDir', async (which) => {
@@ -485,7 +507,7 @@ function registerIpc() {
     return known && (await isBookDir(dir));
   }
   handle('library:reveal', async (dir) => {
-    if (await knownProject(dir)) shell.showItemInFolder(path.join(dir, 'book.yaml'));
+    if (await knownProject(dir)) shell.showItemInFolder((await manifestPath(dir)) || dir);
   });
 
   /** The text of every project the Library knows, for Insights across all books. Read-only. */
@@ -612,20 +634,20 @@ function registerIpc() {
   handle('book:openPath', async (dir) => {
     if (typeof dir !== 'string' || !path.isAbsolute(dir)) throw new Error('Invalid folder');
     if (!(await isBookDir(dir))) {
-      // A dropped book.yaml file is fine too.
-      if (path.basename(dir) === 'book.yaml' && (await isBookDir(path.dirname(dir)))) return openBookAt(path.dirname(dir));
-      throw new Error('That folder isn’t a Lutefisk book (no book.yaml inside).');
+      // A dropped lutefisk.yaml (or an older book.yaml) is fine too.
+      if (['lutefisk.yaml', 'book.yaml'].includes(path.basename(dir)) && (await isBookDir(path.dirname(dir)))) return openBookAt(path.dirname(dir));
+      throw new Error('That folder isn’t a Lutefisk book (no lutefisk.yaml inside).');
     }
     return openBookAt(dir);
   });
 
-  /** Open a book: its folder or its book.yaml. */
+  /** Open a book: its folder or its lutefisk.yaml. */
   handle('book:open', async () => {
     const mac = process.platform === 'darwin';
     const testIn = !app.isPackaged && process.env.LUTEFISK_TEST_IN;
     const res = testIn ? { canceled: false, filePaths: [testIn] } : await dialog.showOpenDialog(win, {
       title: 'Open', buttonLabel: 'Open', defaultPath: await startDir(),
-      message: 'Choose a book folder or its book.yaml.',
+      message: 'Choose a book folder or its lutefisk.yaml.',
       properties: mac ? ['openFile', 'openDirectory'] : ['openDirectory'],
       filters: [{ name: 'Lutefisk books', extensions: ['yaml'] }],
     });
@@ -636,7 +658,7 @@ function registerIpc() {
     if (st.isFile()) {
       dir = path.dirname(pick);
     }
-    if (!(await isBookDir(dir))) throw new Error('That isn’t a Lutefisk book (there’s no book.yaml in the folder).');
+    if (!(await isBookDir(dir))) throw new Error('That isn’t a Lutefisk book (there’s no lutefisk.yaml in the folder).');
     await rememberDir(path.dirname(dir));
     return openBookAt(dir);
   });
@@ -657,7 +679,7 @@ function registerIpc() {
 
 
 
-  handle('book:reveal', () => { if (bookDir) shell.showItemInFolder(path.join(bookDir, 'book.yaml')); });
+  handle('book:reveal', async () => { if (bookDir) shell.showItemInFolder((await manifestPath(bookDir)) || bookDir); });
 
   handle('asset:import', async () => {
     const dir = requireBook();
@@ -1046,6 +1068,7 @@ if (!app.requestSingleInstanceLock()) {
     registerProtocols();
     registerIpc();
     buildMenu();
+    readPrefs().then((p) => { if (p.uiLanguage && p.uiLanguage !== 'en-US') { setLanguage(p.uiLanguage); buildMenu(); } }).catch(() => {});
     createWindow();
     app.on('activate', () => { if (!BrowserWindow.getAllWindows().length) { allowClose = false; createWindow(); } });
   });

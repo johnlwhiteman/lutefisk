@@ -97,7 +97,7 @@ export function openBookSettings(app, initialTab = 'general') {
         img.style.cssText = coverImgCss(o, { x: 9, top: 8, bottom: 8 });
         frame.classList.toggle('ext-margins', o.extent === 'margins');
         inner = img;
-      } else inner = key === 'cover' ? generatedCover(b.title, b.author, fontStack(tplById(b.template).head)) : h('div', { class: 'cover-empty' }, icon('image', 22), 'None');
+      } else inner = key === 'cover' ? generatedCover(b.title, b.author, fontStack(tplById(b.template).head), b.subtitle) : h('div', { class: 'cover-empty' }, icon('image', 22), 'None');
       frame.replaceChildren(inner, h('div', { class: 'lib-spine' }));
     };
     const draw = () => {

@@ -1,6 +1,6 @@
 // The Recycle Bin: chapters, scenes, front and back matter, research notes,
 // snippets, to-dos, characters and plot cards you delete go here first. Each
-// entry keeps what's needed to put it back; it lives in book.yaml, on this
+// entry keeps what's needed to put it back; it lives in lutefisk.yaml, on this
 // computer, and is never exported.
 import { h, icon, toast, confirmDialog, timeAgo, popover } from './ui.js';
 import { newId } from '../shared/sections.js';

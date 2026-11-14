@@ -42,7 +42,7 @@ function citeRule(state, silent) {
 
 /**
  * Comments use CriticMarkup: {==commented text==}{>>#c-id<<}. The comment body
- * lives in book.yaml under comments[id]; the manuscript only marks the range.
+ * lives in lutefisk.yaml under comments[id]; the manuscript only marks the range.
  */
 export const COMMENT_RE = /\{==([\s\S]*?)==\}\{>>#(c-[A-Za-z0-9_-]{1,40})<<\}/g;
 export const stripComments = (src) => String(src || '').replace(COMMENT_RE, '$1');
@@ -143,12 +143,12 @@ function pageBreakRule(state, startLine, _endLine, silent) {
  *   :::
  */
 export const ALIGNS = ['left', 'center', 'right', 'justify'];
-/** Block styles written the same way: ::: verse (poetry: every line kept) and ::: hanging (hanging indent). */
-export const BLOCK_STYLES = ['verse', 'hanging'];
+/** Block styles written the same way: ::: verse (poetry: every line kept), ::: hanging (hanging indent) and ::: attribution (the source under a quote or epigraph, set right). */
+export const BLOCK_STYLES = ['verse', 'hanging', 'attribution'];
 function alignRule(state, startLine, endLine, silent) {
   const start = state.bMarks[startLine] + state.tShift[startLine];
   const first = state.src.slice(start, state.eMarks[startLine]).trim();
-  const m = /^:::\s*\{?\.?(left|center|centre|right|justify|verse|hanging)\}?$/.exec(first);
+  const m = /^:::\s*\{?\.?(left|center|centre|right|justify|verse|hanging|attribution)\}?$/.exec(first);
   if (!m || state.sCount[startLine] - state.blkIndent >= 4) return false;
   if (silent) return true;
   let line = startLine + 1;
@@ -228,7 +228,7 @@ function bulletsRule(state, startLine, endLine, silent) {
  * Writer's highlights: ==text== (yellow) or =={green,thin}text==. They're for
  * you while writing, so the published book shows the text without them.
  */
-export const HL_COLORS = ['yellow', 'green', 'pink', 'blue', 'orange', 'purple'];
+export const HL_COLORS = ['yellow', 'bright', 'green', 'pink', 'blue', 'orange', 'purple'];
 export const HL_SIZES = ['thin', 'medium', 'full'];
 function highlightRule(state, silent) {
   const src = state.src;
@@ -318,10 +318,10 @@ export function createMarkdown({ typographer = true } = {}) {
   md.renderer.rules.table_open = () => '<div class="bk-table"><table>\n';
   md.renderer.rules.table_close = () => '</table></div>\n';
   const codeBlock = (code, info, env) => {
-    const { lang: raw, lineNumbers } = parseCodeInfo(info);
+    const { lang: raw, lineNumbers, colors, border } = parseCodeInfo(info);
     const lang = normalizeLang(raw);
-    const html = highlightCode(code.replace(/\n$/, ''), raw, { enabled: env?.codeHighlight !== false });
-    return `<pre class="bk-code${lang ? ` lang-${lang}` : ''}${lineNumbers ? ' linenums' : ''}"><code>${lineNumbers ? numberLines(html) : html}</code></pre>\n`;
+    const html = highlightCode(code.replace(/\n$/, ''), raw, { enabled: colors && env?.codeHighlight !== false });
+    return `<pre class="bk-code${lang ? ` lang-${lang}` : ''}${lineNumbers ? ' linenums' : ''}${border ? ` border-${border}` : ''}"><code>${lineNumbers ? numberLines(html) : html}</code></pre>\n`;
   };
   md.renderer.rules.fence = (tokens, idx, _o, env) => codeBlock(tokens[idx].content, tokens[idx].info, env);
   md.renderer.rules.code_block = (tokens, idx, _o, env) => codeBlock(tokens[idx].content, 'plaintext', env);

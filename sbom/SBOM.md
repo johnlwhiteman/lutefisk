@@ -1,6 +1,6 @@
 # Lutefisk 1.0.0 — Software Bill of Materials
 
-Generated 2026-11-14T01:56:21.923Z with `npm sbom` (npm 10.9.9).
+Generated 2026-11-14T06:35:59.087Z with `npm sbom` (npm 10.9.9).
 
 Machine-readable files:
 
@@ -11,7 +11,7 @@ Embedded runtime: **Electron 45.2.3** (Chromium + Node.js), downloaded from the 
 
 `npm audit`: info 0, low 0, moderate 0, high 0, critical 0, total 0.
 
-## Shipped in the application (69)
+## Shipped in the application (70)
 
 | Package | Version | License |
 |---|---|---|
@@ -55,6 +55,7 @@ Embedded runtime: **Electron 45.2.3** (Chromium + Node.js), downloaded from the 
 | entities | 8.1.0 | BSD-2-Clause |
 | entities | 4.5.0 | BSD-2-Clause |
 | fflate | 0.8.3 | MIT |
+| harper.js | 3.2.0 | Apache-2.0 |
 | highlight.js | 11.12.0 | BSD-3-Clause |
 | linkify-it | 6.1.0 | MIT |
 | linkify-it | 5.0.2 | MIT |

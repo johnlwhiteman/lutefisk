@@ -10,7 +10,7 @@ export const GROUPS = [
 // multi: more than one may exist.
 export const SECTION_TYPES = {
   'title-page': { group: 'front', label: 'Title Page', generated: true },
-  copyright: { group: 'front', label: 'Copyright Page' },
+  copyright: { group: 'front', label: 'Copyright' },
   dedication: { group: 'front', label: 'Dedication' },
   epigraph: { group: 'front', label: 'Epigraph' },
   toc: { group: 'front', label: 'Table of Contents', generated: true },

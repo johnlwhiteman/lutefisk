@@ -41,10 +41,33 @@ export const DEVICES = [
   D({ id: 'kindle-scribe', name: 'Kindle Scribe', group: 'Kindle', kind: 'ereader', ui: 'kindle', eink: true, body: [189, 245], radius: 8,
     screen: [168.1, 224.2], screenOffset: [10.45, 10.4], screenRadius: 0.6, res: [993, 1324], bezel: '#2a2b2e',
     rim: 'linear-gradient(135deg,#4a4c50,#2a2b2e 45%,#55575b 70%,#2c2d30)' }),
+  // ------------------------------------------------------------------ Kobo
+  // Kobo Libra Colour (2024): 144.6 × 161 mm, 7-inch E Ink Kaleido 3, 1264 × 1680
+  // (300 ppi black and white, 150 ppi color); page-turn buttons on a side grip.
+  D({ id: 'kobo-libra-color', name: 'Libra Color', group: 'Kobo', kind: 'ereader', ui: 'kobo', eink: true, color: true, body: [144.6, 161], radius: 7,
+    screen: [107.0, 142.2], screenOffset: [8.6, 9.4], screenRadius: 0.6, res: [632, 840], bezel: '#18191b',
+    rim: 'linear-gradient(135deg,#2a2b2e,#121315)',
+    grip: { side: 'right', width: 26, color: 'linear-gradient(90deg,#1c1d20,#141517)', buttons: 2, ridge: true } }),
+  // ------------------------------------------------------------------ Nook
+  // NOOK GlowLight 3 (2017): 127 × 176 mm (5 × 6.93 in), 6-inch 1072 × 1448 at 300 ppi,
+  // page-turn buttons on both sides, home button below the screen.
+  D({ id: 'nook-glowlight-3', name: 'GlowLight 3', group: 'Nook', kind: 'ereader', ui: 'nook', eink: true, recessed: true, body: [127, 176], radius: 7,
+    screen: [90.8, 122.6], screenOffset: [18.1, 19.5], screenRadius: 0.3, res: [536, 724], bezel: '#1d1e20',
+    rim: 'linear-gradient(135deg,#2e2f32,#17181a)', sideButtons: true, home: true }),
+  // NOOK GlowLight 4 (2021): 119.9 × 155.2 mm (4.72 × 6.11 in), 6-inch 1072 × 1448 at 300 ppi,
+  // page-turn buttons at the edges of both sides, home button below.
+  D({ id: 'nook-glowlight-4', name: 'GlowLight 4', group: 'Nook', kind: 'ereader', ui: 'nook', eink: true, recessed: true, body: [119.9, 155.2], radius: 6.5,
+    screen: [90.8, 122.6], screenOffset: [14.55, 12.8], screenRadius: 0.3, res: [536, 724], bezel: '#1b1c1e',
+    rim: 'linear-gradient(135deg,#2c2d30,#161719)', sideButtons: true, home: true }),
+  // NOOK GlowLight 4 Plus (2023): 146.86 × 198.36 mm, 7.8-inch 1404 × 1872 at 300 ppi,
+  // page-turn buttons on both sides, home button below.
+  D({ id: 'nook-glowlight-4-plus', name: 'GlowLight 4 Plus', group: 'Nook', kind: 'ereader', ui: 'nook', eink: true, body: [146.86, 198.36], radius: 7,
+    screen: [118.9, 158.5], screenOffset: [13.98, 14.5], screenRadius: 0.5, res: [702, 936], bezel: '#3a3d42',
+    rim: 'linear-gradient(135deg,#4c4f55,#2c2e32 45%,#575a60 70%,#303236)', sideButtons: true, home: true }),
 ];
 
 /** Old device choices map to the nearest device still offered. */
-const RENAMED = { 'galaxy-s21': 'galaxy-s26', 'galaxy-tab-s7': 'galaxy-tab-s11', 'kindle-fire': 'galaxy-tab-s11', 'kindle-oasis': 'kindle-paperwhite', 'kobo-clara': 'kindle-basic', 'kobo-nia': 'kindle-basic', 'kobo-forma': 'kindle-scribe', 'kobo-libra-h2o': 'kindle-paperwhite', 'nook-glowlight-3': 'kindle-basic', 'nook-glowlight-plus': 'kindle-paperwhite' };
+const RENAMED = { 'galaxy-s21': 'galaxy-s26', 'galaxy-tab-s7': 'galaxy-tab-s11', 'kindle-fire': 'galaxy-tab-s11', 'kindle-oasis': 'kindle-paperwhite', 'kobo-clara': 'kindle-basic', 'kobo-nia': 'kindle-basic', 'kobo-forma': 'kindle-scribe', 'kobo-libra-h2o': 'kobo-libra-color', 'kobo-libra-colour': 'kobo-libra-color', 'nook-glowlight-plus': 'nook-glowlight-4-plus' };
 
 export const deviceById = (id) => DEVICES.find((d) => d.id === (RENAMED[id] || id)) || DEVICES.find((d) => d.id === 'kindle-paperwhite');
 

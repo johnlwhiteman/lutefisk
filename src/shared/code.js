@@ -112,14 +112,24 @@ export const languageLabel = (lang) => CODE_LANGUAGES.find(([id]) => id === norm
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-/** A fence's info string: "python linenums" → { lang: 'python', lineNumbers: true }. */
+/** Border around a code block: none (the default) or a width in pixels. */
+export const CODE_BORDERS = [[0, 'No border'], [1, 'Thin border'], [2, 'Medium border'], [3, 'Thick border']];
+/**
+ * A fence's info string: "python linenums nocolor border2" →
+ * { lang: 'python', lineNumbers: true, colors: false, border: 2 }.
+ */
+const FLAG = /^(linenums|nocolor|border[0-3])$/i;
 export function parseCodeInfo(info) {
   const words = String(info || '').trim().split(/\s+/).filter(Boolean);
-  const lineNumbers = words.some((w) => w.toLowerCase() === 'linenums');
-  return { lang: words.find((w) => w.toLowerCase() !== 'linenums') || '', lineNumbers };
+  const has = (f) => words.some((w) => w.toLowerCase() === f);
+  const b = words.map((w) => /^border([0-3])$/i.exec(w)).find(Boolean);
+  return { lang: words.find((w) => !FLAG.test(w)) || '', lineNumbers: has('linenums'), colors: !has('nocolor'), border: b ? Number(b[1]) : 0 };
 }
 /** The info string for a fence (the reverse of parseCodeInfo). */
-export const codeInfo = (lang, lineNumbers) => [lang || (lineNumbers ? 'auto' : ''), lineNumbers ? 'linenums' : ''].filter(Boolean).join(' ');
+export const codeInfo = (lang, lineNumbers, colors = true, border = 0) => {
+  const flags = [lineNumbers ? 'linenums' : '', colors === false ? 'nocolor' : '', border > 0 ? `border${Math.min(3, border)}` : ''].filter(Boolean);
+  return [lang || (flags.length ? 'auto' : ''), ...flags].filter(Boolean).join(' ');
+};
 
 /**
  * Highlighted HTML split into lines, each a complete element, with a line
@@ -195,7 +205,11 @@ export const CODE_FONT = { family: 'JetBrains Mono', pkg: 'jetbrains-mono' };
 
 /** CSS for code in the book (previews, PDF and EPUB). */
 export const CODE_CSS = (s = '') => `
-${s} pre.bk-code{font-family:'JetBrains Mono','DejaVu Sans Mono',Menlo,Consolas,monospace;font-size:.78em;line-height:1.45;text-align:left;text-indent:0;hyphens:none;-webkit-hyphens:none;white-space:pre-wrap;overflow-wrap:anywhere;word-wrap:break-word;margin:.9em 0;padding:.6em .8em;border:1px solid #d0d7de;border-left:3px solid #8c959f;border-radius:4px;background:#f6f8fa;color:#1f2328;break-inside:avoid;page-break-inside:avoid;}
+${s} pre.bk-code{font-family:'JetBrains Mono','DejaVu Sans Mono',Menlo,Consolas,monospace;font-size:.78em;line-height:1.45;text-align:left;text-indent:0;hyphens:none;-webkit-hyphens:none;white-space:pre-wrap;overflow-wrap:anywhere;word-wrap:break-word;margin:.9em 0;padding:0;border:0;background:transparent;color:inherit;break-inside:avoid;page-break-inside:avoid;}
+${s} pre.bk-code.border-1,${s} pre.bk-code.border-2,${s} pre.bk-code.border-3{padding:.6em .8em;border-style:solid;border-color:#8c959f;border-radius:4px;}
+${s} pre.bk-code.border-1{border-width:1px;}
+${s} pre.bk-code.border-2{border-width:2px;}
+${s} pre.bk-code.border-3{border-width:3px;}
 ${s} pre.bk-code code{font-family:inherit;font-size:1em;background:none;padding:0;white-space:inherit;}
 ${s} pre.bk-code.linenums{padding-left:.4em;}
 ${s} pre.bk-code .bk-ln{display:block;padding-left:3.2em;text-indent:-3.2em;}

@@ -211,7 +211,8 @@ export function openCharacters(ctx, sheet, { select } = {}) {
 
   drawList();
   drawDetail();
-  const close = sheet('Characters', body, { full: true, onClose: () => ctx.onClose?.() });
+  const helpBtn = ctx.help ? h('button', { class: 'btn small plain', title: 'A step-by-step walkthrough of Characters', onclick: () => ctx.help('characters') }, icon('help', 14), 'How It Works') : null;
+  const close = sheet('Characters', body, { full: true, actions: helpBtn, onClose: () => ctx.onClose?.() });
   ctx.close = close;
   return { refresh() { recount(); drawList(); drawDetail(); } };
 }
