@@ -6,7 +6,7 @@
 //  * Image attributes: ![alt](assets/pic.jpg){width=60% align=center}
 //  * Scene breaks: a thematic break (***) renders as the template's ornament
 import { mathRule, renderMathToken, collectMath } from './math.js';
-import { highlightCode, normalizeLang } from './code.js';
+import { highlightCode, normalizeLang, parseCodeInfo, numberLines } from './code.js';
 import MarkdownIt from 'markdown-it';
 
 const FN_DEF = /^\[\^([^\]\s]+)\]:[ \t]?(.*)$/;
@@ -139,7 +139,7 @@ function pageBreakRule(state, startLine, _endLine, silent) {
 /**
  * Aligned blocks, written as Pandoc-style fenced divs:
  *   ::: center
- *   Text to centre.
+ *   Text to center.
  *   :::
  */
 export const ALIGNS = ['left', 'center', 'right', 'justify'];
@@ -318,8 +318,10 @@ export function createMarkdown({ typographer = true } = {}) {
   md.renderer.rules.table_open = () => '<div class="bk-table"><table>\n';
   md.renderer.rules.table_close = () => '</table></div>\n';
   const codeBlock = (code, info, env) => {
-    const lang = normalizeLang(info);
-    return `<pre class="bk-code${lang ? ` lang-${lang}` : ''}"><code>${highlightCode(code.replace(/\n$/, ''), info, { enabled: env?.codeHighlight !== false })}</code></pre>\n`;
+    const { lang: raw, lineNumbers } = parseCodeInfo(info);
+    const lang = normalizeLang(raw);
+    const html = highlightCode(code.replace(/\n$/, ''), raw, { enabled: env?.codeHighlight !== false });
+    return `<pre class="bk-code${lang ? ` lang-${lang}` : ''}${lineNumbers ? ' linenums' : ''}"><code>${lineNumbers ? numberLines(html) : html}</code></pre>\n`;
   };
   md.renderer.rules.fence = (tokens, idx, _o, env) => codeBlock(tokens[idx].content, tokens[idx].info, env);
   md.renderer.rules.code_block = (tokens, idx, _o, env) => codeBlock(tokens[idx].content, 'plaintext', env);

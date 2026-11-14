@@ -184,7 +184,24 @@ export function createGoals(app) {
     return s;
   }
 
+  /** Reset Insights: clear the writing history (and session log and stopwatch) of this book, or of all books. */
+  async function resetHistory(scope) {
+    pending = { d: 0, s: 0, sw: 0 };
+    await B().resetHistory({ scope, bookId: app.book?.uuid });
+    try {
+      for (const k of Object.keys(localStorage)) {
+        if (scope === 'all' ? /^lutefisk\.(sessions|stopwatch)\./.test(k) : k === sessKey() || k === swKey()) localStorage.removeItem(k);
+      }
+    } catch { /* ignore */ }
+    sw = { acc: 0, since: 0 };
+    startSession();
+    try { history = await B().getHistory({ days: 400 }); } catch { history = { book: [], all: [] }; }
+    lastTotal = bookWords();
+    onUpdate();
+  }
+
   return {
+    resetHistory,
     session, pauseSession, newSession, sessionLog, archiveSession,
     stopwatch, stopwatchStart, stopwatchStop, stopwatchReset,
     load, activity, measured, flush, today, dailyTarget, streak, byDay, events, bookWords, deadlinePace,

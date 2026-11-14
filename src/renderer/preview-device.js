@@ -6,7 +6,7 @@ import { DEVICES, DEVICE_GROUPS, deviceById } from './devices.js';
 import { FONTS, fontStack } from '../shared/fonts.js';
 import { baseCss, templateCss, templateById, withCasePrefs } from '../shared/templates.js';
 import { ebookDropCaps } from '../shared/sections.js';
-import { h, icon, assetUrl, magnifier } from './ui.js';
+import { h, icon, assetUrl, magnifier, rangeBubble } from './ui.js';
 
 const THEMES = {
   light: { bg: '#ffffff', fg: '#151515', ui: '#7a7a7a' },
@@ -15,11 +15,107 @@ const THEMES = {
 };
 const EINK = { bg: '#efeee9', fg: '#1d1d1d', ui: '#555' };
 
-/** Templates, and the gear that edits the template in use — shared by both previews. */
-export function templateButtons(app) {
-  return h('span', { class: 'pv-tpl-group' },
-    h('button', { class: 'chip-toggle pv-tpl', title: 'Templates — choose a book design (fonts, chapter openings, ornaments), previewed with your own text', onclick: () => app.openTemplates?.() }, icon('palette', 15), h('span', {}, 'Templates')),
-    h('button', { class: 'chip-toggle pv-tpl-cfg', title: 'Edit the current template — change its fonts, headings, ornament and spacing, then save', 'aria-label': 'Edit the current template', onclick: () => app.editTemplate?.() }, icon('gear', 15)));
+/**
+ * The template strip under the device: ◀ [Template ▾] ▶ ⚙.
+ * ↑ ↓ ← → step through every design and the device redraws at each step.
+ * The list (click the name) works the same way: arrow keys move and apply live,
+ * Enter keeps the design, Esc goes back to the one you had; type to filter.
+ */
+export function templateStrip(app) {
+  const name = h('span', { class: 'ts-name' });
+  const ordered = () => {
+    const { mine, all } = app.templateList();
+    return [...mine, ...all.filter((t) => !t.custom)];
+  };
+  const curIndex = (list) => Math.max(0, list.findIndex((t) => t.id === app.book?.template));
+  const step = (d) => {
+    const list = ordered();
+    if (!list.length) return;
+    const i = (curIndex(list) + d + list.length) % list.length;
+    app.useTemplate(list[i].id);
+    draw();
+  };
+  const draw = () => { if (app.book) name.textContent = app.templateList().all.find((t) => t.id === app.book.template)?.name || 'Template'; };
+  const btn = h('button', { type: 'button', class: 'ts-btn', 'aria-haspopup': 'listbox',
+    title: 'Template — the book’s design. Press ↑ ↓ (or ← →) to try each one; the device updates as you go. Click for the full list.',
+    onclick: () => openList(), onkeydown: (e) => {
+      const d = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+      if (d) { e.preventDefault(); e.stopPropagation(); step(d); }
+      else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openList(); }
+    } }, icon('palette', 14), name, icon('chevron', 11));
+
+  function openList() {
+    document.querySelector('.ts-list')?.remove();
+    const original = app.book.template;
+    const list = ordered();
+    const mineCount = list.filter((t) => t.custom).length;
+    const q = h('input', { type: 'search', class: 'ts-search', placeholder: 'Type to find a template', 'aria-label': 'Find a template' });
+    const box = h('div', { class: 'ts-items', role: 'listbox', 'aria-label': 'Templates' });
+    let shown = list;
+    let at = curIndex(list);
+    const render = () => {
+      const f = q.value.trim().toLowerCase();
+      shown = f ? list.filter((t) => t.name.toLowerCase().includes(f)) : list;
+      box.replaceChildren(...shown.map((t, i) => {
+        const opt = h('div', { class: `ts-item${t.id === app.book.template ? ' on' : ''}`, role: 'option', 'aria-selected': String(t.id === app.book.template), onmousedown: (e) => e.preventDefault(), onclick: () => { pick(i); done(); } },
+          h('span', {}, t.name), h('small', {}, t.custom ? (t.origin === 'changed' ? 'Modified' : 'Custom') : t.category));
+        if (!f && i === mineCount && mineCount) opt.classList.add('first-builtin');
+        return opt;
+      }));
+      at = Math.max(0, shown.findIndex((t) => t.id === app.book.template));
+      box.children[at]?.scrollIntoView({ block: 'nearest' });
+    };
+    const pick = (i) => {
+      if (!shown[i]) return;
+      at = i;
+      app.useTemplate(shown[i].id);
+      draw();
+      [...box.children].forEach((c, k) => { c.classList.toggle('on', k === i); c.setAttribute('aria-selected', String(k === i)); });
+      box.children[i]?.scrollIntoView({ block: 'nearest' });
+    };
+    const live = h('input', { type: 'checkbox', role: 'switch', class: 'switch', checked: app.templateLive(), 'aria-label': 'Live — show the designs with your own text' });
+    live.addEventListener('change', () => { app.setTemplateLive(live.checked); q.focus(); });
+    const panel = h('div', { class: 'ts-list' }, q, box,
+      h('label', { class: 'ts-live', title: 'Off: the device shows example text in each design. On: it shows your own book.', onmousedown: (e) => { if (e.target !== live) e.preventDefault(); } }, live, h('span', {}, 'Live — show my text')),
+      h('div', { class: 'ts-foot' }, h('span', { class: 'hint' }, '↑ ↓ try · Enter keep · Esc undo'),
+        h('button', { type: 'button', class: 'btn small plain', onmousedown: (e) => e.preventDefault(), onclick: () => { done(); app.openTemplates?.(); } }, 'Gallery…')));
+    const done = () => { panel.remove(); document.removeEventListener('mousedown', outside, true); app.setTemplateBrowsing?.(false); btn.focus(); };
+    const outside = (e) => { if (!panel.contains(e.target) && e.target !== btn && !btn.contains(e.target)) done(); };
+    q.addEventListener('input', render);
+    q.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); pick(Math.max(0, Math.min(shown.length - 1, at + (e.key === 'ArrowDown' ? 1 : -1)))); }
+      else if (e.key === 'PageDown' || e.key === 'PageUp') { e.preventDefault(); pick(Math.max(0, Math.min(shown.length - 1, at + (e.key === 'PageDown' ? 8 : -8)))); }
+      else if (e.key === 'Enter') { e.preventDefault(); if (shown[at] && shown[at].id !== app.book.template) pick(at); done(); }
+      else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); if (app.book.template !== original) { app.useTemplate(original); draw(); } done(); }
+    });
+    document.body.append(panel);
+    // Beside the preview (over the editor), so the whole device stays in view as designs change.
+    // Without room there, it opens above the strip.
+    const r = btn.getBoundingClientRect();
+    const pane = btn.closest('.preview-pane')?.getBoundingClientRect();
+    const w = 280;
+    if (pane && pane.left > w + 24) {
+      const maxH = Math.min(520, window.innerHeight - 90);
+      Object.assign(panel.style, { left: `${pane.left - w - 10}px`, width: `${w}px`, bottom: `${Math.max(8, window.innerHeight - r.bottom)}px`, maxHeight: `${maxH}px` });
+      panel.classList.add('beside');
+    } else {
+      const left = Math.max(8, Math.min(window.innerWidth - w - 8, r.left + r.width / 2 - w / 2));
+      Object.assign(panel.style, { left: `${left}px`, width: `${w}px`, bottom: `${window.innerHeight - r.top + 8}px`, maxHeight: `${Math.max(200, Math.min(420, r.top - 16))}px` });
+    }
+    render();
+    document.addEventListener('mousedown', outside, true);
+    app.setTemplateBrowsing?.(true);
+    q.focus();
+  }
+
+  queueMicrotask(draw);
+  const el = h('div', { class: 'ts-strip', role: 'group', 'aria-label': 'Template' },
+    h('button', { type: 'button', class: 'ts-arrow', title: 'Previous template — the device updates as you go', 'aria-label': 'Previous template', onclick: () => step(-1) }, icon('arrowLeft', 14)),
+    btn,
+    h('button', { type: 'button', class: 'ts-arrow', title: 'Next template — the device updates as you go', 'aria-label': 'Next template', onclick: () => step(1) }, icon('arrowRight', 14)),
+    h('button', { type: 'button', class: 'ts-arrow ts-cfg', title: 'Edit the current template — change its fonts, headings, ornament and spacing, then save', 'aria-label': 'Edit the current template', onclick: () => app.editTemplate?.() }, icon('gear', 15)));
+  el.draw = draw;
+  return el;
 }
 
 export function createDevicePreview(host, app) {
@@ -33,8 +129,7 @@ export function createDevicePreview(host, app) {
     h('option', { value: '' }, 'Template font'),
     h('optgroup', { label: 'Included fonts' }, FONTS.filter((f) => !f.system && f.kind !== 'display' && f.kind !== 'mono').map((f) => h('option', { value: f.id }, f.family + (f.note ? ` — ${f.note}` : '')))),
     h('optgroup', { label: 'Device fonts (if installed)' }, FONTS.filter((f) => f.system).map((f) => h('option', { value: f.id }, `${f.family} — ${f.note}`))));
-  const size = h('input', { type: 'range', min: 70, max: 200, step: 5, 'aria-label': 'Font size', class: 'pv-size' });
-  const sizeLbl = h('span', { class: 'pv-size-lbl' });
+  const size = h('input', { type: 'range', min: 25, max: 300, step: 5, 'aria-label': 'Font size', class: 'pv-size' });
   const themeSel = h('select', { 'aria-label': 'Theme', class: 'pv-theme' }, ['light', 'sepia', 'dark'].map((t) => h('option', { value: t }, t[0].toUpperCase() + t.slice(1))));
   const firstBtn = h('button', { class: 'pg-btn', title: 'Front cover (Home)', 'aria-label': 'Front cover', onclick: () => app.previewJump('cover') }, icon('cover', 15));
   const tocBtn = h('button', { class: 'pg-btn', title: 'Contents — every part of the book', 'aria-label': 'Contents — every part of the book', onclick: () => app.previewContents?.(tocBtn) }, icon('toc', 15));
@@ -43,7 +138,7 @@ export function createDevicePreview(host, app) {
   const lastBtn = h('button', { class: 'pg-btn', title: 'Back cover (End)', 'aria-label': 'Back cover', onclick: () => app.previewJump('end') }, icon('book', 15));
   const pageLbl = h('div', { class: 'pg-label' });
   const progress = h('div', { class: 'pg-progress' }, h('i'));
-  const pager = h('div', { class: 'pager' }, firstBtn, tocBtn, prevBtn, h('div', { class: 'pg-mid' }, pageLbl, progress), nextBtn, lastBtn);
+  const pager = h('div', { class: 'pager' }, tocBtn, prevBtn, h('div', { class: 'pg-mid' }, pageLbl, progress), nextBtn); // cover and back cover are in Contents (and Home / End)
 
   const mag = magnifier('lutefisk.deviceZoom', () => fit());
   const dcBtn = h('button', { class: 'chip-toggle', title: 'Drop caps in e-books', 'aria-pressed': 'true', onclick: () => {
@@ -53,14 +148,12 @@ export function createDevicePreview(host, app) {
   // Row 1 (shared header): text size and zoom. Row 2: device, theme and templates.
   // Row 1 (shared header): text size, just left of Focus. Zoom is at the right of row 2.
   const row1 = h('div', { class: 'pv-row1-items' },
-    h('label', { class: 'pv-ctl size-ctl', title: 'Text size — how large a reader has set the type on this device (doesn’t change the book)' }, h('span', { class: 'small-a' }, 'A'), size, h('span', { class: 'big-a' }, 'A'), sizeLbl));
-  // Row 2: the device, its colour theme, then Templates and the gear that edits the current one.
+    h('label', { class: 'pv-ctl size-ctl', title: 'Text size — how large a reader has set the type on this device (doesn’t change the book)' }, h('span', { class: 'small-a' }, 'A'), size, h('span', { class: 'big-a' }, 'A')));
+  // Row 2: the device and its reading theme. The template strip sits under the device.
   const bar = h('div', { class: 'pv-bar' },
     h('label', { class: 'pv-ctl', title: 'Device — the phone, tablet or e-reader the page is shown on' }, devSel),
-    h('label', { class: 'pv-ctl theme-ctl', title: 'Reading theme — light, sepia or dark, as a reader would choose on a phone or tablet' }, themeSel),
-    templateButtons(app),
-    h('span', { class: 'spacer' }),
-    mag);
+    h('label', { class: 'pv-ctl theme-ctl', title: 'Reading theme — light, sepia or dark, as a reader would choose on a phone or tablet' }, themeSel));
+  const tplStrip = templateStrip(app);
 
   const stage = h('div', { class: 'dv-stage', tabindex: 0, 'aria-label': 'Device preview' });
   const styleEl = h('style');
@@ -85,11 +178,13 @@ export function createDevicePreview(host, app) {
     const m = /^#sec-(.+)$/.exec(href);
     if (m) app.previewJump(m[1]);
   });
-  host.append(bar, h('div', { class: 'dv-wrap' }, h('div', { class: 'dv-stage-wrap' }, stage, sideL, sideR), pager, caption), styleEl);
+  host.append(bar, h('div', { class: 'dv-wrap' }, h('div', { class: 'dv-stage-wrap' }, stage, sideL, sideR), tplStrip, pager, caption), styleEl);
 
   devSel.addEventListener('change', () => { opts().device = devSel.value; app.markDirty(); build(); app.refreshPreview(true); });
   fontSel.addEventListener('change', () => { opts().font = fontSel.value; app.markDirty(); restyle(); draw(); });
-  size.addEventListener('input', () => { opts().fontSize = +size.value; sizeLbl.textContent = `${size.value}%`; restyle(); draw(); });
+  size.addEventListener('input', () => { opts().fontSize = +size.value; restyle(); draw(); });
+  size.addEventListener('dblclick', () => { size.value = 100; size.dispatchEvent(new Event('input')); app.markDirty(); });
+  rangeBubble(size);
   size.addEventListener('change', () => app.markDirty());
   themeSel.addEventListener('change', () => { opts().theme = themeSel.value; app.markDirty(); build(); app.refreshPreview(true); });
   stage.addEventListener('keydown', (e) => {
@@ -114,7 +209,6 @@ export function createDevicePreview(host, app) {
     devSel.value = dev.id;
     fontSel.value = opts().font || '';
     size.value = opts().fontSize || 100;
-    sizeLbl.textContent = `${size.value}%`;
     themeSel.value = opts().theme || 'light';
     themeSel.parentElement.style.display = dev.eink ? 'none' : '';
     syncDc();
@@ -363,6 +457,7 @@ ${ff ? `.scr .scr-flow .bk, .scr .scr-flow .bk .bk-body p{font-family:${ff};}` :
 
   return {
     row1,
+    zoom: mag,
     build, render, restyle: () => { restyle(); if (last) { paginate(); page = Math.min(page, pages - 1); draw(); } },
     get pages() { return pages; },
   };

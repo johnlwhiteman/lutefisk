@@ -9,8 +9,10 @@ const T = (id, name, category, o) => ({
   id, name, category,
   body: 'literata', head: 'literata', scale: 1, lh: 1.5, indent: 1.4, gap: 0, justify: true,
   align: 'center', numbering: 'words', numCase: 'smallcaps', numSize: 1.05, titleSize: 1.9, titleWeight: 400,
-  titleItalic: false, titleCase: 'none', tracking: 0, sink: 7, ornament: '', scene: '* * *', rule: 'none',
+  titleItalic: false, titleCase: 'none', tracking: 0, sink: 7, ornament: '', rule: 'none',
   dropcap: 'drop', firstLine: 'smallcaps', accent: '#1f1f1f', heading: o.numbering === 'none' ? 'title' : 'both', ...o,
+  // Most designs use the classic * * * scene break; the World & Heritage designs keep their own ornaments.
+  scene: category === 'World & Heritage' ? (o.scene ?? '* * *') : '* * *',
 });
 
 export const TEMPLATES = [

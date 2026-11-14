@@ -127,6 +127,12 @@ export function fillPlaceholders(text, meta) {
   return String(text || '').replace(/\{\{(\w+)\}\}/g, (m, k) => (k in map ? String(map[k]) : m));
 }
 
+/** “About the Author”, or “About the Authors” when the book has more than one. */
+export function aboutAuthorsLabel(meta = {}) {
+  const n = Array.isArray(meta.authors) ? meta.authors.filter((x) => String(x || '').trim()).length : 0;
+  return n > 1 ? 'About the Authors' : 'About the Author';
+}
+
 /** Annotate sections with chapter numbers and display titles. */
 export function numberSections(sections, tpl = {}, meta = {}) {
   let ch = 0;
@@ -148,6 +154,9 @@ export function numberSections(sections, tpl = {}, meta = {}) {
       out.label = mode === 'title' && ownTitle ? '' : chapterLabel(ch, numStyle, meta.chapterWord || 'Chapter');
       out.displayTitle = mode === 'number' ? '' : ownTitle;
       out.tocTitle = [out.label, out.displayTitle].filter(Boolean).join(': ') || s.title || `${meta.chapterWord || 'Chapter'} ${ch}`;
+    } else if (s.type === 'about-author' && (!s.title || /^about the authors?$/i.test(s.title.trim()))) {
+      out.displayTitle = aboutAuthorsLabel(meta);
+      out.tocTitle = out.displayTitle;
     } else {
       out.displayTitle = s.title || def.label || s.type;
       out.tocTitle = out.displayTitle;
@@ -156,15 +165,30 @@ export function numberSections(sections, tpl = {}, meta = {}) {
   });
 }
 
+/** "A", "A and B", "A, B and C" — the authors as one line (title page, metadata, running heads). */
+export function authorLine(list) {
+  const a = (Array.isArray(list) ? list : []).map((x) => String(x || '').trim()).filter(Boolean);
+  if (a.length < 2) return a[0] || '';
+  return `${a.slice(0, -1).join(', ')} and ${a[a.length - 1]}`;
+}
+/** Keep book.authors (the list) and book.author (the line) in step; older books had only book.author. */
+export function syncAuthors(book) {
+  if (!Array.isArray(book.authors)) book.authors = book.author ? [String(book.author)] : [];
+  book.authors = book.authors.map((x) => String(x || '').trim().slice(0, 200)).filter(Boolean).slice(0, 50);
+  book.author = authorLine(book.authors);
+  return book;
+}
+
 export function defaultBook(meta = {}) {
   const year = new Date().getFullYear();
   const mk = (type, extra = {}) => ({ id: newId(type.slice(0, 3)), type, enabled: true, ...extra });
-  const chapter = mk('chapter', { title: 'The Beginning' });
+  const chapter = mk('chapter', { title: '' }); // shown as “Chapter One”
   return {
     format: 'lutefisk/1',
     title: meta.title || 'Untitled Book',
     subtitle: meta.subtitle || '',
     author: meta.author || '',
+    authors: meta.author ? [meta.author] : [],
     publisher: '',
     language: 'en',
     year,
@@ -182,7 +206,6 @@ export function defaultBook(meta = {}) {
     citationStyle: 'apa',
     cover: '',
     backCover: '',
-    authorPhoto: '',
     print: { trim: '6x9', dropCaps: true, startRecto: true, romanFrontMatter: true, runningHeads: true, fontSize: 11, includeCover: false },
     preview: { device: 'kindle-paperwhite', fontSize: 100, font: '', theme: 'light' },
     index: { terms: [] },

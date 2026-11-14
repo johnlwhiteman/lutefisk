@@ -1,6 +1,6 @@
 // Writing history: what you wrote each day, as charts. Everything is read from the
 // local history log (per book in <book>/stats, across books in the app's data folder).
-import { h, icon, segmented } from './ui.js';
+import { h, icon, segmented, popover, confirmDialog, toast } from './ui.js';
 import { textInsights, bookTextUnits, helpTip } from './panels.js';
 import { markdownToPlain } from '../shared/markdown.js';
 import { dayKey } from './goals.js';
@@ -42,7 +42,9 @@ function tooltip(host) {
       const hw = host.clientWidth;
       const tw = tip.offsetWidth;
       tip.style.left = `${Math.max(4, Math.min(hw - tw - 4, x - tw / 2))}px`;
-      tip.style.top = `${Math.max(0, y - tip.offsetHeight - 10)}px`;
+      // Above the point when there's room, otherwise below it — never clipped by the card.
+      const above = y - tip.offsetHeight - 10;
+      tip.style.top = `${above >= 0 ? above : Math.min(host.clientHeight - tip.offsetHeight, y + 14)}px`;
     },
     hide() { tip.hidden = true; },
   };
@@ -200,7 +202,7 @@ function heatmap(host, days, { weeks = 53 } = {}) {
 /**
  * Insights: your writing history (days, time, streaks) and an analysis of the
  * text, for this project or all of them. opts.textUnits() overrides the units
- * analysed.
+ * analyzed.
  */
 export function openInsights(app, goals, sheet, opts = {}) {
   let scope = 'book';
@@ -208,17 +210,32 @@ export function openInsights(app, goals, sheet, opts = {}) {
   let tab = opts.tab === 'text' ? 'text' : 'history';
   const body = h('div', { class: 'history insights' });
   const rangeSeg = segmented([{ value: 30, label: '30 Days' }, { value: 90, label: '90 Days' }, { value: 365, label: 'Year' }], range, (v) => { range = Number(v); draw(); }, { label: 'Range' });
+  // Reset Insights: forget the writing history of this book, or of every book.
+  const doReset = async (which) => {
+    const all = which === 'all';
+    const ok = await confirmDialog(all ? 'Reset Insights for all books?' : `Reset Insights for “${app.book?.title || 'this book'}”?`,
+      `${all ? 'Every book’s' : 'This book’s'} writing history — words per day, writing time, stopwatch time and streaks — is deleted from this computer. Your text, goals and the analysis of your text aren’t affected. This can’t be undone.`, 'Reset');
+    if (!ok) return;
+    try { await goals.resetHistory(all ? 'all' : 'book'); toast(all ? 'Insights reset for all books' : 'Insights reset for this book', 'ok', 2000); } catch (err) { toast(String(err?.message || err), 'error'); }
+    show();
+  };
+  const resetBtn = h('button', { type: 'button', class: 'btn small plain hx-reset', title: 'Reset Insights — clear the writing history for this book or for all books', onclick: () => popover(resetBtn, [
+    { header: 'Reset writing history' },
+    { label: 'This Book…', icon: 'reset', onClick: () => doReset('book') },
+    { label: 'All Books…', icon: 'reset', danger: true, onClick: () => doReset('all') },
+  ], { align: 'right', width: 220 }) }, icon('reset', 14), 'Reset…');
   const controls = h('div', { class: 'hx-controls' },
     segmented([{ value: 'history', label: 'Writing History', icon: 'calendar' }, { value: 'text', label: 'Your Text', icon: 'doc' }], tab, (v) => { tab = v; show(); }, { label: 'Insights' }),
     h('span', { class: 'spacer' }),
     rangeSeg,
-    segmented([{ value: 'book', label: 'This Book' }, { value: 'all', label: 'All Books' }], scope, (v) => { scope = v; show(); }, { label: 'Scope' }));
+    segmented([{ value: 'book', label: 'This Book' }, { value: 'all', label: 'All Books' }], scope, (v) => { scope = v; show(); }, { label: 'Scope' }),
+    resetBtn);
   const content = h('div', {});
   const textHost = h('div', { class: 'ins-text' });
   body.append(...(opts.textOnly ? [] : [controls]), content, textHost);
   let allTexts = null;
   async function drawText() {
-    textHost.replaceChildren(h('p', { class: 'hint ins-empty' }, 'Analysing…'));
+    textHost.replaceChildren(h('p', { class: 'hint ins-empty' }, 'Analyzing…'));
     if (scope === 'book') {
       const units = opts.textUnits ? opts.textUnits() : bookTextUnits(app);
       const pages = opts.pages ? opts.pages() : app.printPageCount?.() || 0;
@@ -231,6 +248,7 @@ export function openInsights(app, goals, sheet, opts = {}) {
   }
   function show() {
     rangeSeg.hidden = tab !== 'history';
+    resetBtn.hidden = tab !== 'history';
     content.hidden = tab !== 'history';
     textHost.hidden = tab !== 'text';
     if (tab === 'history') draw(); else drawText();
@@ -295,13 +313,13 @@ export function openInsights(app, goals, sheet, opts = {}) {
         : [h('tr', {}, h('td', { colspan: 8, class: 'hint' }, 'Your writing days will appear here as you write.'))])));
 
     const legend = (items) => h('div', { class: 'hx-legend' }, items.map(([cls, name]) => h('span', {}, swatch(cls), name)));
-    content.replaceChildren(tiles,
+    content.replaceChildren(...[tiles,
       h('section', { class: 'hx-card' }, h('div', { class: 'hx-card-head' }, h('h3', {}, range === 365 ? 'Words per week' : 'Words per day'), legend([['s1', 'Net words'], ['neg', 'More removed than added'], ...(target && range !== 365 ? [['goal', 'Daily goal']] : [])])), wordsHost),
       scope === 'book' ? h('section', { class: 'hx-card' }, h('div', { class: 'hx-card-head' }, h('h3', {}, 'Manuscript size'), h('span', { class: 'hint' }, 'Words in the book at the end of each day')), totalHost) : null,
       h('section', { class: 'hx-card' }, h('div', { class: 'hx-card-head' }, h('h3', {}, range === 365 ? 'Time per week' : 'Time per day'), legend([['s1', 'Stopwatch'], ['s2', 'Typing']])), timeHost),
       h('section', { class: 'hx-card' }, h('div', { class: 'hx-card-head' }, h('h3', {}, 'The last year'), h('span', { class: 'hint' }, 'Each square is a day; darker means more words')), heatHost),
       h('section', { class: 'hx-card' }, h('div', { class: 'hx-card-head' }, h('h3', {}, 'Daily log')), table),
-      h('p', { class: 'hint' }, 'Words are net — deleting counts against the day. Stopwatch time is what you clock with the stopwatch; typing time counts minutes with keystrokes (pauses over 90 seconds are breaks). History stays on this computer.'));
+      h('p', { class: 'hint' }, 'Words are net — deleting counts against the day. Stopwatch time is what you clock with the stopwatch; typing time counts minutes with keystrokes (pauses over 90 seconds are breaks). History stays on this computer.')].filter(Boolean));
 
     requestAnimationFrame(() => {
       columnChart(wordsHost, buckets.map((b) => ({ label: b.label, values: [b.words], tip: [period(b), `${signed(b.words)} words`, b.added || b.removed ? `+${n0(b.added)} added · −${n0(b.removed)} removed` : '', b.sw ? `Stopwatch ${mins(b.sw)}` : ''].filter(Boolean) })), [{ name: 'Words', cls: 's1' }], { goal: range === 365 ? 0 : target, height: 210 });

@@ -77,10 +77,6 @@ export async function buildMarkdown({ book, contents, assetsFolder }) {
     const notes = [...defs].map(([l, t]) => `[^${prefix}-${l}]: ${t.replace(/\[@([A-Za-z0-9_-]{1,64})(?:,\s*([^\]\n]{1,60}))?\]/g, (_m, ref, loc) => cite(ref, (loc || '').trim()))}`).join('\n');
     const title = s.type === 'chapter' ? s.tocTitle : s.displayTitle;
     const head = ['copyright', 'dedication', 'epigraph'].includes(s.type) ? '' : `${heading(title)}\n\n`;
-    if (s.type === 'about-author' && book.authorPhoto) {
-      const r = assetRef(book.authorPhoto);
-      if (r) text = `![${book.author || 'Author'}](${r})\n\n${text}`;
-    }
     out.push(`${head}${text.trim()}${notes ? `\n\n${notes}` : ''}`);
   }
   return { markdown: `${frontMatter}\n\n${out.join('\n\n---\n\n')}\n`, images: [...images.values()] };

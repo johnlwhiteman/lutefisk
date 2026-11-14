@@ -241,3 +241,48 @@ test('custom templates remember whether they are your own or a changed built-in'
   assert.equal(sanitizeTemplate({ name: 'Renamed', baseId: 'classic' }).origin, 'changed');
   assert.equal(sanitizeTemplate({ name: 'Mine' }).origin, 'new');
 });
+
+test('books can have no author, one or many; a new book starts at an untitled Chapter One', async () => {
+  const { authorLine, syncAuthors } = await import('../src/shared/sections.js');
+  assert.equal(authorLine([]), '');
+  assert.equal(authorLine(['Ann Lee']), 'Ann Lee');
+  assert.equal(authorLine(['Ann Lee', 'Bo Park']), 'Ann Lee and Bo Park');
+  assert.equal(authorLine(['A', 'B', 'C']), 'A, B and C');
+  const old = syncAuthors({ author: 'Eliza Marrow' });
+  assert.deepEqual(old.authors, ['Eliza Marrow']);
+  const many = syncAuthors({ authors: ['  X ', '', 'Y'] });
+  assert.deepEqual(many.authors, ['X', 'Y']);
+  assert.equal(many.author, 'X and Y');
+  const book = ensureSections(defaultBook({ title: 'T', author: 'A' }));
+  const ch = book.sections.find((s) => s.type === 'chapter');
+  assert.equal(ch.title, '');
+  const n = numberSections(book.sections, TEMPLATES[0], book).find((s) => s.id === ch.id);
+  assert.match(n.tocTitle, /^Chapter One/);
+});
+
+test('titles are checked against the citation style unless you choose another (APA by default)', async () => {
+  const { bookTitleStyle } = await import('../src/shared/titlecase.js');
+  assert.equal(bookTitleStyle({}), 'apa');
+  assert.equal(bookTitleStyle({ citationStyle: 'mla' }), 'mla');
+  assert.equal(bookTitleStyle({ citationStyle: 'chicago' }), 'chicago');
+  assert.equal(bookTitleStyle({ citationStyle: 'mla', titleStyle: 'ap' }), 'ap');
+});
+
+test('code blocks: info string, line numbers and more languages', async () => {
+  const { parseCodeInfo, codeInfo, numberLines, normalizeLang } = await import('../src/shared/code.js');
+  const { renderMarkdown } = await import('../src/shared/markdown.js');
+  assert.deepEqual(parseCodeInfo('python linenums'), { lang: 'python', lineNumbers: true });
+  assert.deepEqual(parseCodeInfo('linenums'), { lang: '', lineNumbers: true });
+  assert.equal(codeInfo('', true), 'auto linenums');
+  assert.equal(codeInfo('yaml', false), 'yaml');
+  assert.equal(normalizeLang('auto linenums'), '');
+  for (const l of ['json', 'yaml', 'xml', 'bash', 'powershell', 'graphql', 'nginx', 'elixir', 'toml', 'zsh', 'fish']) assert.notEqual(normalizeLang(l), 'plaintext', l);
+  // A comment spanning lines is closed and reopened on each numbered line.
+  const html = numberLines('<span class="c">/* a\nb */</span>\nx');
+  assert.equal((html.match(/class="bk-ln"/g) || []).length, 3);
+  assert.equal((html.match(/<span/g) || []).length, (html.match(/<\/span>/g) || []).length);
+  const out = renderMarkdown('```js linenums\nconst a = 1;\nconst b = 2;\n```').html;
+  assert.match(out, /class="bk-code lang-javascript linenums"/);
+  assert.equal((out.match(/bk-lnum/g) || []).length, 2);
+  assert.doesNotMatch(renderMarkdown('```js\nconst a = 1;\n```').html, /bk-lnum/);
+});

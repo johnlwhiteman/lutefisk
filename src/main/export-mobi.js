@@ -1,5 +1,5 @@
 // MOBI (Mobipocket 6 / Kindle "KF7") exporter for older Kindles and apps that
-// read .mobi. The book HTML is converted to Mobipocket-flavoured HTML, every
+// read .mobi. The book HTML is converted to Mobipocket-flavored HTML, every
 // non-ASCII character becomes a numeric entity (so text records split cleanly),
 // images become JPEG records, and the table of contents uses filepos links.
 //
@@ -174,7 +174,7 @@ export async function buildMobi({ dir, book, contents, rasterize, toJpeg }) {
         continue;
       }
       if (t === 'pre') {
-        // Older Kindles have no colour: keywords bold, comments italic.
+        // Older Kindles have no color: keywords bold, comments italic.
         out += '<pre>';
         const walkCode = (nodes, cls) => {
           for (const c of nodes) {

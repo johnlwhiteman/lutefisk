@@ -4,7 +4,7 @@
 export const COVER_EXTENTS = [['bleed', 'Full bleed'], ['margins', 'Within margins']];
 export const COVER_VALIGNS = [['top', 'Top'], ['center', 'Center'], ['bottom', 'Bottom']];
 
-/** Normalised settings for 'cover' (front) or 'backCover'. */
+/** Normalized settings for 'cover' (front) or 'backCover'. */
 export function coverOpts(book, key = 'cover') {
   const o = (book.coverLayout && book.coverLayout[key]) || {};
   return {

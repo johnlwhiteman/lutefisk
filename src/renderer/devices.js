@@ -1,4 +1,4 @@
-// Device catalogue. Physical sizes (mm) and screen resolutions come from the
+// Device catalog. Physical sizes (mm) and screen resolutions come from the
 // manufacturers' published specifications so the frames render to scale.
 // res = logical CSS pixels of the reading viewport (portrait).
 // Frames are drawn with CSS only; no brand logos are reproduced.

@@ -1,4 +1,4 @@
-// Insert Symbol: a searchable, categorised character palette for the text
+// Insert Symbol: a searchable, categorized character palette for the text
 // editor, with recently used symbols and lookup by Unicode code point.
 import { h, icon } from './ui.js';
 import { UNICODE_SYMBOLS, ALL_UNICODE_SYMBOLS, codeOf } from '../shared/unicode-symbols.js';

@@ -1,5 +1,5 @@
 // Character avatars: a set of simple icon portraits drawn in white on the
-// character's colour, or a picture the author uploads (cropped square).
+// character's color, or a picture the author uploads (cropped square).
 // The icons are plain SVG paths in a 64×64 box — no images, no network.
 
 const C = (cx, cy, r) => `M${cx - r} ${cy}a${r} ${r} 0 1 0 ${r * 2} 0a${r} ${r} 0 1 0 ${-r * 2} 0z`;
@@ -28,7 +28,7 @@ export const AVATARS = [
 ];
 
 const NS = 'http://www.w3.org/2000/svg';
-/** An <svg> for an avatar icon id (white on transparent; the circle behind supplies the colour). */
+/** An <svg> for an avatar icon id (white on transparent; the circle behind supplies the color). */
 export function avatarSvg(id) {
   const a = AVATARS.find((x) => x.id === id);
   if (!a) return null;
@@ -36,7 +36,7 @@ export function avatarSvg(id) {
   svg.setAttribute('viewBox', '0 0 64 64');
   svg.setAttribute('aria-hidden', 'true');
   svg.classList.add('ch-av-ic');
-  // Holes are cut with even-odd filling so the colour shows through.
+  // Holes are cut with even-odd filling so the color shows through.
   const d = [...(a.paths || [])].join(' ');
   if (a.holes?.length) {
     const p = document.createElementNS(NS, 'path');
@@ -58,7 +58,7 @@ export function avatarSvg(id) {
 /** Recommended upload size for a character picture. */
 export const AVATAR_PX = 256;
 
-/** Read an image file, crop the centre square and scale it to AVATAR_PX. Returns PNG bytes. */
+/** Read an image file, crop the center square and scale it to AVATAR_PX. Returns PNG bytes. */
 export async function squareAvatar(file) {
   if (!file || file.size > 15 * 1024 * 1024) throw new Error('Choose a picture under 15 MB');
   const url = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => rej(new Error('Couldn’t read the file')); r.readAsDataURL(file); });

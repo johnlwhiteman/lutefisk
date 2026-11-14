@@ -1,6 +1,6 @@
 // Rich-text editor (Quill-style toolbar) built on ProseMirror. The document
 // is stored as Markdown; this module converts both ways.
-import { Schema } from 'prosemirror-model';
+import { Schema, Slice } from 'prosemirror-model';
 import { EditorState, NodeSelection, TextSelection, Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView, Decoration, DecorationSet } from 'prosemirror-view';
 import { keymap } from 'prosemirror-keymap';
@@ -16,9 +16,12 @@ import { createMarkdown, extractFootnotes, safeAssetPath, cleanBullet } from '..
 import { h, icon, dialog, assetUrl, popover, setHtml, bumpAsset, toast, closePopovers } from './ui.js';
 import { openDrawingEditor } from './drawing-editor.js';
 import { texToMathml } from '../shared/math.js';
-import { highlightRanges, CODE_LANGUAGES, normalizeLang } from '../shared/code.js';
+import { highlightRanges, CODE_LANGUAGES, normalizeLang, parseCodeInfo, codeInfo, CODE_CSS } from '../shared/code.js';
 import { openMathDialog } from './math-dialog.js';
 import { openSymbolPicker } from './symbol-picker.js';
+
+/** Drag type for snippets dragged from the Snippets panel into the text. */
+export const SNIPPET_MIME = 'application/x-lutefisk-snippet';
 
 /* ------------------------------------------------------------------ schema */
 
@@ -34,7 +37,7 @@ export const schema = new Schema({
       parseDOM: [1, 2, 3, 4, 5, 6].map((l) => ({ tag: `h${l}`, attrs: { level: l } })),
       toDOM: (n) => [`h${n.attrs.level}`, 0],
     },
-    /* Left/centre/right/justified text, saved as a Pandoc-style ::: fenced div. */
+    /* Left/center/right/justified text, saved as a Pandoc-style ::: fenced div. */
     align: {
       attrs: { align: { default: 'center' } }, content: 'block+', group: 'block', defining: true,
       parseDOM: [{ tag: 'div.pm-align', getAttrs: (d) => ({ align: d.dataset.align || 'center' }) }],
@@ -53,9 +56,9 @@ export const schema = new Schema({
     text: { group: 'inline' },
     code_block: {
       content: 'text*', marks: '', group: 'block', code: true, defining: true,
-      attrs: { params: { default: '' } },
-      parseDOM: [{ tag: 'pre', preserveWhitespace: 'full', getAttrs: (d) => ({ params: d.getAttribute('data-lang') || '' }) }],
-      toDOM: (n) => ['pre', { class: 'pm-code', 'data-lang': n.attrs.params }, ['code', 0]],
+      attrs: { params: { default: '' }, lineNumbers: { default: false } },
+      parseDOM: [{ tag: 'pre', preserveWhitespace: 'full', getAttrs: (d) => ({ params: d.getAttribute('data-lang') || '', lineNumbers: d.hasAttribute('data-linenums') }) }],
+      toDOM: (n) => ['pre', { class: 'pm-code', 'data-lang': n.attrs.params, ...(n.attrs.lineNumbers ? { 'data-linenums': '' } : {}) }, ['code', 0]],
     },
     image: {
       inline: true, group: 'inline', draggable: true,
@@ -134,7 +137,7 @@ const parser = new MarkdownParser(schema, tokenizer, {
   align: { block: 'align', getAttrs: (tok) => ({ align: tok.meta?.align || 'center' }) },
   hl: { mark: 'highlight', getAttrs: (tok) => ({ color: tok.meta?.color || 'yellow', size: tok.meta?.size || 'full' }) },
   code_block: { block: 'code_block', noCloseToken: true },
-  fence: { block: 'code_block', getAttrs: (tok) => ({ params: (tok.info || '').trim().split(/\s+/)[0] || '' }), noCloseToken: true },
+  fence: { block: 'code_block', getAttrs: (tok) => { const i = parseCodeInfo(tok.info); return { params: i.lang === 'auto' ? '' : i.lang, lineNumbers: i.lineNumbers }; }, noCloseToken: true },
   hr: { node: 'horizontal_rule' },
   pagebreak: { node: 'page_break' },
   image: {
@@ -189,6 +192,16 @@ export function parseMarkdownDoc(md) {
 let notesOut = [];
 const serializer = new MarkdownSerializer({
   ...defaultMarkdownSerializer.nodes,
+  code_block(state, node) {
+    // ```lang linenums — a longer fence when the code itself contains ```.
+    const ticks = node.textContent.match(/`{3,}/gm);
+    const fence = ticks ? `${ticks.sort().slice(-1)[0]}\`` : '```';
+    state.write(`${fence}${codeInfo(node.attrs.params, node.attrs.lineNumbers)}\n`);
+    state.text(node.textContent, false);
+    state.ensureNewLine();
+    state.write(fence);
+    state.closeBlock(node);
+  },
   bullet_list(state, node, parent, index) {
     const b = cleanBullet(node.attrs.symbol);
     if (!b) { defaultMarkdownSerializer.nodes.bullet_list(state, node, parent, index); return; }
@@ -515,7 +528,7 @@ const codeHighlight = new Plugin({
   props: { decorations(state) { return this.getState(state); } },
 });
 
-/** Code block with a language picker. */
+/** Code block with a language picker, a line-numbers switch and a number gutter. */
 class CodeBlockView {
   constructor(node, view, getPos) {
     this.node = node;
@@ -526,24 +539,38 @@ class CodeBlockView {
       group.append(h('option', { value: id }, label));
     }
     this.sel.value = normalizeLang(node.attrs.params);
-    this.sel.addEventListener('change', () => {
-      const pos = getPos();
-      view.dispatch(view.state.tr.setNodeMarkup(pos, null, { params: this.sel.value }));
-      view.focus();
-    });
-    this.sel.addEventListener('mousedown', (e) => e.stopPropagation());
+    const set = (attrs) => { view.dispatch(view.state.tr.setNodeMarkup(getPos(), null, { ...this.node.attrs, ...attrs })); view.focus(); };
+    this.sel.addEventListener('change', () => set({ params: this.sel.value }));
+    this.ln = h('input', { type: 'checkbox', checked: !!node.attrs.lineNumbers, 'aria-label': 'Show line numbers' });
+    this.ln.addEventListener('change', () => set({ lineNumbers: this.ln.checked }));
+    const lnLabel = h('label', { class: 'pm-code-ln', title: 'Show line numbers in the book' }, this.ln, h('span', {}, 'Line numbers'));
+    for (const el of [this.sel, lnLabel]) el.addEventListener('mousedown', (e) => e.stopPropagation());
+    this.bar = h('div', { class: 'pm-code-bar', contenteditable: 'false' }, icon('code', 13), this.sel, h('span', { class: 'spacer' }), lnLabel);
+    this.gutter = h('div', { class: 'pm-code-gutter', contenteditable: 'false', 'aria-hidden': 'true' });
     this.code = h('code');
-    this.dom = h('div', { class: 'pm-code-wrap' }, h('div', { class: 'pm-code-bar', contenteditable: 'false' }, icon('code', 13), this.sel), h('pre', { class: 'pm-code' }, this.code));
+    this.pre = h('pre', { class: 'pm-code' }, this.code);
+    this.dom = h('div', { class: 'pm-code-wrap' }, this.bar, h('div', { class: 'pm-code-body' }, this.gutter, this.pre));
     this.contentDOM = this.code;
+    this.drawNumbers();
+  }
+  drawNumbers() {
+    const on = !!this.node.attrs.lineNumbers;
+    this.dom.classList.toggle('linenums', on);
+    this.gutter.hidden = !on;
+    if (!on) return;
+    const n = this.node.textContent.split('\n').length;
+    if (this.gutter.dataset.n !== String(n)) { this.gutter.dataset.n = String(n); this.gutter.textContent = Array.from({ length: n }, (_, i) => i + 1).join('\n'); }
   }
   update(node) {
     if (node.type !== this.node.type) return false;
     this.node = node;
     const v = normalizeLang(node.attrs.params);
     if (this.sel.value !== v) this.sel.value = v;
+    this.ln.checked = !!node.attrs.lineNumbers;
+    this.drawNumbers();
     return true;
   }
-  stopEvent(e) { return e.target === this.sel || this.sel.contains(e.target); }
+  stopEvent(e) { return this.bar.contains(e.target); }
   ignoreMutation(m) { return !this.contentDOM.contains(m.target); }
 }
 
@@ -625,11 +652,19 @@ const currentBlock = new Plugin({
   },
 });
 
+/** The same token colors as the book, inside the editor's code blocks. */
+let codeStyled = false;
+function styleCodeBlocks() {
+  if (codeStyled) return;
+  codeStyled = true;
+  document.head.append(h('style', { id: 'lutefisk-code-colors' }, CODE_CSS('.pm-code')));
+}
+
 export function createEditor(mount, ctx) {
+  styleCodeBlocks();
   const toolbar = h('div', { class: 'ql-toolbar', role: 'toolbar', 'aria-label': 'Formatting' });
   const area = h('div', { class: 'ql-container' });
-  const splitBox = h('div', { class: 'ql-split' }, area);
-  mount.append(toolbar, splitBox);
+  mount.append(toolbar, area);
 
   const keys = {
     'Mod-z': undo, 'Shift-Mod-z': redo, 'Mod-y': redo,
@@ -674,63 +709,25 @@ export function createEditor(mount, ctx) {
       const newState = view.state.apply(tr);
       view.updateState(newState);
       refreshToolbar();
-      if (view2 && tr.docChanged && !tr.getMeta(FROM_SPLIT)) mirrorSteps(tr, view2);
       ctx.onChange?.(tr, newState);
     },
     handleDOMEvents: {
-      drop: (_v, e) => { if (e.dataTransfer?.files?.length) { e.preventDefault(); return true; } return false; },
+      drop: (_v, e) => {
+        // A snippet dragged from the Snippets panel lands where it's dropped.
+        if (e.dataTransfer?.types?.includes(SNIPPET_MIME)) {
+          e.preventDefault();
+          const at = view.posAtCoords({ left: e.clientX, top: e.clientY });
+          ctx.dropSnippet?.(e.dataTransfer.getData(SNIPPET_MIME), at ? at.pos : view.state.selection.from);
+          return true;
+        }
+        if (e.dataTransfer?.files?.length) { e.preventDefault(); return true; }
+        return false;
+      },
       paste: (_v, e) => { if ([...(e.clipboardData?.items || [])].some((i) => i.kind === 'file')) { e.preventDefault(); return true; } return false; },
       contextmenu: (_v, e) => { e.preventDefault(); contextMenu(e); return true; },
     },
     transformPastedHTML: (html) => html.replace(/<img[^>]*>/gi, ''),
   });
-
-  /* ---- split view: a second, independently scrolled view of the same text.
-     Edits in either side are applied to the other as ProseMirror steps; the
-     main view owns history, so undo works the same from both sides. */
-  const FROM_SPLIT = 'lutefisk-from-split';
-  let view2 = null;
-  let area2 = null;
-  function mirrorSteps(tr, target) {
-    const t = target.state.tr;
-    try { for (const st of tr.steps) t.step(st); } catch { resyncSplit(); return; }
-    t.setMeta('addToHistory', false);
-    target.updateState(target.state.apply(t));
-  }
-  const splitState = () => EditorState.create({
-    doc: view.state.doc,
-    plugins: [tableEditing(), codeHighlight, keymap({ 'Mod-z': () => undo(view.state, view.dispatch), 'Shift-Mod-z': () => redo(view.state, view.dispatch), 'Mod-y': () => redo(view.state, view.dispatch), 'Mod-b': toggleMark(schema.marks.strong), 'Mod-i': toggleMark(schema.marks.em) }), keymap(baseKeymap), dropCursor(), gapCursor()],
-  });
-  function resyncSplit() { if (view2) view2.updateState(splitState()); }
-  let splitDir = 'side';
-  /** on: false | true | 'side' (side by side) | 'stack' (one above the other) */
-  function setSplit(on) {
-    const dir = on === 'stack' ? 'stack' : 'side';
-    if (on && view2) { splitDir = dir; splitBox.classList.toggle('stack', dir === 'stack'); return; }
-    if (!!view2 === !!on) return;
-    if (!on) { view2.destroy(); view2 = null; area2.remove(); area2 = null; splitBox.classList.remove('on', 'stack'); return; }
-    splitDir = dir;
-    splitBox.classList.toggle('stack', dir === 'stack');
-    area2 = h('div', { class: 'ql-container ql-second', 'aria-label': 'Second view of this chapter' });
-    splitBox.classList.add('on');
-    splitBox.append(area2);
-    view2 = new EditorView(area2, {
-      state: splitState(),
-      attributes: { class: 'ql-editor book-editor', spellcheck: 'true', 'aria-label': 'Chapter text (second view)' },
-      nodeViews: view.props.nodeViews,
-      dispatchTransaction(tr) {
-        view2.updateState(view2.state.apply(tr));
-        if (tr.docChanged) {
-          const m = view.state.tr;
-          try { for (const st of tr.steps) m.step(st); } catch { resyncSplit(); return; }
-          m.setMeta(FROM_SPLIT, true);
-          view.dispatch(m);
-        }
-      },
-      handleDOMEvents: { drop: (_v, e) => { if (e.dataTransfer?.files?.length) { e.preventDefault(); return true; } return false; } },
-    });
-    area2.scrollTop = area.scrollTop;
-  }
 
   /* ---- toolbar */
   const run = (cmd) => () => { cmd(view.state, view.dispatch, view); view.focus(); };
@@ -961,6 +958,52 @@ export function createEditor(mount, ctx) {
     view.focus();
   }
 
+  /** Insert Code…: pick a language (remembered), optionally paste the code, and choose line numbers (off by default). */
+  async function insertCodeCmd() {
+    const { $from } = view.state.selection;
+    if ($from.parent.type === schema.nodes.code_block) { toast('You’re in a code block — change its language and line numbers in the bar above it', 'info', 2600); return; }
+    let last = '';
+    try { last = localStorage.getItem('lutefisk.codeLang') || ''; } catch { /* ignore */ }
+    const lang = h('select', { class: 'code-lang-sel', 'aria-label': 'Language' });
+    let group = null;
+    for (const [id, label, g] of CODE_LANGUAGES) {
+      if (g !== group?.label) { group = h('optgroup', { label: g }); lang.append(group); }
+      group.append(h('option', { value: id }, label));
+    }
+    lang.value = normalizeLang(last) || '';
+    const lines = h('input', { type: 'checkbox', 'aria-label': 'Show line numbers' });
+    const code = h('textarea', { class: 'code-paste', rows: 10, spellcheck: 'false', placeholder: 'Paste or type code here (optional — you can also type in the block afterwards)', 'aria-label': 'Code' });
+    code.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab' && !e.shiftKey) { e.preventDefault(); const a = code.selectionStart; code.setRangeText('  ', a, code.selectionEnd, 'end'); }
+    });
+    const body = h('div', { class: 'code-dlg' },
+      h('label', { class: 'fld' }, h('span', {}, 'Language'), lang),
+      h('label', { class: 'code-ln-row' }, lines, h('span', {}, 'Show line numbers')),
+      h('label', { class: 'fld' }, h('span', {}, 'Code'), code),
+      h('small', { class: 'hint' }, 'Highlighted the same way in the editor, the preview and every export. Tip: type ``` and a language name, then a space, to start a code block from the keyboard.'));
+    requestAnimationFrame(() => code.focus());
+    const res = await dialog({ title: 'Insert code', body, ok: 'Insert', cancel: 'Cancel', wide: true });
+    if (!res) { view.focus(); return; }
+    try { localStorage.setItem('lutefisk.codeLang', lang.value); } catch { /* ignore */ }
+    const text = code.value.replace(/\r\n?/g, '\n').replace(/\n+$/, '');
+    const node = schema.nodes.code_block.create({ params: lang.value, lineNumbers: lines.checked }, text ? schema.text(text) : null);
+    const { state } = view;
+    const sel = state.selection;
+    let tr;
+    const para = sel.$from.parent;
+    if (para.isTextblock && para.content.size === 0 && sel.empty) tr = state.tr.replaceWith(sel.$from.before(), sel.$from.after(), node);
+    else {
+      let at = sel.to;
+      for (let d = sel.$to.depth; d > 0; d--) if (sel.$to.node(d).isTextblock) { at = sel.$to.after(d); break; }
+      tr = state.tr.insert(at, node);
+    }
+    let pos = null;
+    tr.doc.descendants((n, p2) => { if (pos == null && n === node) pos = p2; return pos == null; });
+    if (pos != null) tr.setSelection(TextSelection.create(tr.doc, pos + 1 + (text ? 0 : node.content.size)));
+    view.dispatch(tr.scrollIntoView());
+    view.focus();
+  }
+
   function codeCmd(lang = '') {
     const { $from } = view.state.selection;
     if ($from.parent.type === schema.nodes.code_block) setBlockType(schema.nodes.paragraph)(view.state, view.dispatch);
@@ -985,12 +1028,14 @@ export function createEditor(mount, ctx) {
         { label: 'Delete Comment', icon: 'trash', onClick: () => { removeComment(cid); ctx.deleteComment?.(cid); } },
       ] : []),
       '-',
+      ...(ctx.snippets?.().length ? [{ label: 'Insert Snippet', icon: 'snippet', onClick: () => ctx.pickSnippet?.({ x: e.clientX, y: e.clientY }) }] : []),
       { label: 'Footnote', icon: 'footnote', onClick: () => footnoteCmd() },
       { label: 'Citation…', icon: 'cite', onClick: () => citeCmd() },
       { label: 'Equation (LaTeX)…', icon: 'sigma', onClick: () => mathCmd() },
       { label: 'Symbol…', icon: 'omega', onClick: () => symbolCmd() },
       { label: 'Drawing…', icon: 'pen', onClick: () => drawCmd() },
       { label: 'Link…', icon: 'link', onClick: () => linkCmd() },
+      { label: 'Insert Code…', icon: 'code', onClick: () => insertCodeCmd() },
       { label: 'Code Block', icon: 'code', onClick: () => codeCmd() },
       ...(inTable ? ['-', { header: 'Table' }, ...tableItems()] : [{ label: 'Table…', icon: 'table', onClick: customTable }]),
     ];
@@ -1161,6 +1206,7 @@ export function createEditor(mount, ctx) {
     [[tb('image', 'Insert image', () => imageCmd()),
       noteMenu,
       tb('table', 'Table', () => popover(toolbar.querySelector('.ql-table'), tableItems()), (s) => isInTable(s)),
+      tb('code', 'Insert code — syntax highlighting for programming, scripting and shell languages, JSON, YAML, XML and more', () => insertCodeCmd(), (s) => s.selection.$from.parent.type === schema.nodes.code_block, 'ql-codeblock'),
       fxBtn,
       tb('omega', 'Insert symbol (⌥⌘I)', () => symbolCmd())],
     [tb('clear', 'Clear formatting', run(clearFormatting)), tb('undo', 'Undo (⌘Z)', run(undo)), tb('redo', 'Redo (⇧⌘Z)', run(redo))]],
@@ -1196,12 +1242,54 @@ export function createEditor(mount, ctx) {
       if (!st) { st = mkState(parseMarkdownDoc(markdown)); states.set(id, st); }
       view.updateState(st);
       refreshToolbar();
-      resyncSplit();
     },
     /** Re-draw node views (citations pick up a new citation style). */
-    redraw() { view.setProps({ nodeViews: { ...view.props.nodeViews } }); if (view2) view2.setProps({ nodeViews: { ...view2.props.nodeViews } }); },
-    setSplit,
-    get split() { return view2 ? splitDir : false; },
+    /** Insert Markdown at a document position (a dropped snippet): one paragraph goes inline; more go between paragraphs. */
+    insertMarkdownAt(md, pos) {
+      const doc = parseMarkdownDoc(String(md || ''));
+      if (!doc.content.size) return false;
+      const { state } = view;
+      const $p = state.doc.resolve(Math.max(0, Math.min(pos, state.doc.content.size)));
+      let tr = state.tr;
+      const single = doc.childCount === 1 && doc.firstChild.type === schema.nodes.paragraph;
+      if (single && $p.parent.isTextblock && $p.parent.type.spec.code !== true) {
+        // Inline: add a space on either side when dropped against a word.
+        const before = $p.parent.textBetween(Math.max(0, $p.parentOffset - 1), $p.parentOffset);
+        const after = $p.parent.textBetween($p.parentOffset, Math.min($p.parent.content.size, $p.parentOffset + 1));
+        const nodes = [];
+        if (before && /\S/.test(before)) nodes.push(schema.text(' '));
+        doc.firstChild.content.forEach((n) => nodes.push(n));
+        if (after && /\S/.test(after) && !/^[.,;:!?’”)]/.test(after)) nodes.push(schema.text(' '));
+        tr = tr.insert($p.pos, nodes);
+        tr.setSelection(TextSelection.create(tr.doc, $p.pos + nodes.reduce((n, x) => n + x.nodeSize, 0)));
+      } else {
+        let at = $p.pos;
+        for (let d = $p.depth; d > 0; d--) {
+          if ($p.node(d).isTextblock) { at = $p.parentOffset === 0 ? $p.before(d) : $p.after(d); break; }
+        }
+        tr = tr.insert(at, doc.content);
+        tr.setSelection(TextSelection.near(tr.doc.resolve(Math.min(tr.doc.content.size, at + doc.content.size))));
+      }
+      view.dispatch(tr.scrollIntoView());
+      view.focus();
+      return true;
+    },
+    /** Insert Markdown (e.g. a snippet) at the cursor, as blocks. */
+    insertMarkdown(md) {
+      const doc = parseMarkdownDoc(String(md || ''));
+      if (!doc.content.size) return false;
+      const { state } = view;
+      const slice = new Slice(doc.content, 0, 0);
+      const { $from } = state.selection;
+      let tr = state.tr;
+      // Between paragraphs rather than inside one, when the cursor is at a paragraph's end or in an empty one.
+      if ($from.parent.isTextblock && $from.parent.content.size === 0) tr = tr.replaceRange($from.before(), $from.after(), slice);
+      else tr = tr.replaceSelection(slice);
+      view.dispatch(tr.scrollIntoView());
+      view.focus();
+      return true;
+    },
+    redraw() { view.setProps({ nodeViews: { ...view.props.nodeViews } }); },
     /** Highlight all matches of `re`; select and scroll to match number `index` (if given). */
     search(re, index = -1) {
       const ms = findMatches(view.state.doc, re);
@@ -1288,4 +1376,68 @@ export function createEditor(mount, ctx) {
     selectNodeAt(pos) { view.dispatch(view.state.tr.setSelection(NodeSelection.create(view.state.doc, pos))); },
   };
   return api;
+}
+
+/**
+ * A small rich-text editor (snippets): the same text and list formatting as the
+ * chapter editor, stored as Markdown. Returns { el, focus(), markdown(), view }.
+ */
+export function createMiniEditor(markdown, { placeholder = '', label = 'Text', onChange, onSubmit } = {}) {
+  const toolbar = h('div', { class: 'mini-tb', role: 'toolbar', 'aria-label': 'Formatting' });
+  const area = h('div', { class: 'mini-area' });
+  const el = h('div', { class: 'mini-ed' }, toolbar, area);
+  const keys = {
+    'Mod-z': undo, 'Shift-Mod-z': redo, 'Mod-y': redo,
+    'Mod-b': toggleMark(schema.marks.strong), 'Mod-i': toggleMark(schema.marks.em), 'Mod-u': toggleMark(schema.marks.underline),
+    'Mod-Shift-x': toggleMark(schema.marks.strike), 'Mod-,': toggleMark(schema.marks.subscript), 'Mod-.': toggleMark(schema.marks.superscript),
+    Enter: splitListItem(schema.nodes.list_item), 'Mod-[': liftListItem(schema.nodes.list_item), 'Mod-]': sinkListItem(schema.nodes.list_item),
+    'Shift-Enter': chainCommands(exitCode, (state, dispatch) => { dispatch?.(state.tr.replaceSelectionWith(schema.nodes.hard_break.create()).scrollIntoView()); return true; }),
+    'Mod-Enter': () => { onSubmit?.(); return true; },
+  };
+  const view = new EditorView(area, {
+    state: EditorState.create({ doc: parseMarkdownDoc(String(markdown || '')), plugins: [buildInputRules(), keymap(keys), keymap(baseKeymap), history()] }),
+    attributes: { class: 'ql-editor mini-editor', spellcheck: 'true', 'aria-label': label, 'data-placeholder': placeholder },
+    dispatchTransaction(tr) {
+      view.updateState(view.state.apply(tr));
+      refresh();
+      if (tr.docChanged) onChange?.();
+    },
+    handleDOMEvents: {
+      drop: (_v, e) => { if (e.dataTransfer?.files?.length) { e.preventDefault(); return true; } return false; },
+      paste: (_v, e) => { if ([...(e.clipboardData?.items || [])].some((i) => i.kind === 'file')) { e.preventDefault(); return true; } return false; },
+    },
+    transformPastedHTML: (html) => html.replace(/<img[^>]*>/gi, ''),
+  });
+  const run = (cmd) => () => { cmd(view.state, view.dispatch, view); view.focus(); };
+  const list = (type) => (state, dispatch) => (inAncestor(state, type) ? liftListItem(schema.nodes.list_item)(state, dispatch) : wrapInList(type)(state, dispatch));
+  const quote = (state, dispatch) => (inAncestor(state, schema.nodes.blockquote) ? lift(state, dispatch) : wrapIn(schema.nodes.blockquote)(state, dispatch));
+  const B = [
+    ['bold', 'Bold (⌘B)', toggleMark(schema.marks.strong), (s) => markActive(s, schema.marks.strong)],
+    ['italic', 'Italic (⌘I)', toggleMark(schema.marks.em), (s) => markActive(s, schema.marks.em)],
+    ['underline', 'Underline (⌘U)', toggleMark(schema.marks.underline), (s) => markActive(s, schema.marks.underline)],
+    ['strike', 'Strikethrough', toggleMark(schema.marks.strike), (s) => markActive(s, schema.marks.strike)],
+    ['superscript', 'Superscript', toggleMark(schema.marks.superscript), (s) => markActive(s, schema.marks.superscript)],
+    ['subscript', 'Subscript', toggleMark(schema.marks.subscript), (s) => markActive(s, schema.marks.subscript)],
+    '|',
+    ['ul', 'Bulleted list', list(schema.nodes.bullet_list), (s) => inAncestor(s, schema.nodes.bullet_list)],
+    ['ol', 'Numbered list', list(schema.nodes.ordered_list), (s) => inAncestor(s, schema.nodes.ordered_list)],
+    ['quote', 'Block quote', quote, (s) => inAncestor(s, schema.nodes.blockquote)],
+    '|',
+    ['clear', 'Clear formatting', clearFormatting, null],
+    ['undo', 'Undo (⌘Z)', undo, null],
+    ['redo', 'Redo (⇧⌘Z)', redo, null],
+  ];
+  for (const b of B) {
+    if (b === '|') { toolbar.append(h('span', { class: 'mini-sep' })); continue; }
+    const [ic, title, cmd, active] = b;
+    const btn = h('button', { type: 'button', class: 'mini-btn', title, 'aria-label': title, onmousedown: (e) => e.preventDefault(), onclick: run(cmd) }, icon(ic, 15));
+    btn._active = active;
+    toolbar.append(btn);
+  }
+  function refresh() {
+    for (const b of toolbar.querySelectorAll('button')) if (b._active) b.classList.toggle('on', !!b._active(view.state));
+    area.classList.toggle('empty', view.state.doc.textContent.length === 0 && view.state.doc.childCount <= 1);
+  }
+  refresh();
+  return { el, view, focus: () => view.focus(), markdown: () => docToMarkdown(view.state.doc).trim(), destroy: () => view.destroy() };
 }

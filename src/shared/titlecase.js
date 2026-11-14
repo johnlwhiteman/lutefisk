@@ -33,8 +33,8 @@ const MINOR = {
 };
 
 export const TITLE_STYLES = [
-  { id: 'chicago', label: 'Chicago', long: 'Chicago Manual of Style' },
   { id: 'apa', label: 'APA', long: 'APA (7th edition)' },
+  { id: 'chicago', label: 'Chicago', long: 'Chicago Manual of Style' },
   { id: 'mla', label: 'MLA', long: 'MLA Handbook' },
   { id: 'ap', label: 'AP', long: 'AP Stylebook' },
   { id: 'sentence', label: 'Sentence case', long: 'Sentence case' },
@@ -120,7 +120,7 @@ export function toStyle(title, style) {
 }
 
 /**
- * Analyse a title: which styles it already follows, and what each would change.
+ * Analyze a title: which styles it already follows, and what each would change.
  * → [{ id, label, long, text, matches, changes: [{ from, to }] }]
  */
 export function analyzeTitle(title) {
@@ -132,4 +132,13 @@ export function analyzeTitle(title) {
     for (let i = 0; i < Math.max(a.length, b.length); i++) if (a[i] !== b[i]) changes.push({ from: a[i] || '', to: b[i] || '' });
     return { ...st, text, matches: text === src, changes };
   });
+}
+
+/**
+ * The style a book's titles are checked against: the one you chose, otherwise the
+ * same as its citations (APA, MLA or Chicago), otherwise APA.
+ */
+export function bookTitleStyle(book) {
+  if (TITLE_STYLES.some((s) => s.id === book?.titleStyle)) return book.titleStyle;
+  return ['apa', 'mla', 'chicago'].includes(book?.citationStyle) ? book.citationStyle : 'apa';
 }

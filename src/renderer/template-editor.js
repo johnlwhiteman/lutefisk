@@ -136,6 +136,9 @@ export function openTemplateEditor(app, base, { onSaved, current = false, fresh 
   const form = h('div', { class: 'td-form' },
     field('Name', name),
     h('h4', {}, 'Text'),
+    field('Chapter heading', sel('heading', TEMPLATE_OPTIONS.heading.map((v) => [v, LABELS.heading[v]])), 'Books using this template can still choose differently in Book › Chapters.'),
+    field('Drop cap', sel('dropcap', TEMPLATE_OPTIONS.dropcap.map((v) => [v, LABELS.dropcap[v]]))),
+    field('Opening line', sel('firstLine', TEMPLATE_OPTIONS.firstLine.map((v) => [v, LABELS.firstLine[v]])), 'Shown when “As the template designs it” is chosen in Book › Chapters.'),
     field('Body font', sel('body', fontOpts)),
     field('Text size', range('scale', 0.7, 1.6, 0.01, (v) => `${Math.round(v * 100)}%`)),
     field('Line spacing', range('lh', 1.1, 2.2, 0.05, (v) => v.toFixed(2))),
@@ -145,7 +148,6 @@ export function openTemplateEditor(app, base, { onSaved, current = false, fresh 
     h('h4', {}, 'Chapter openings'),
     field('Heading font', sel('head', fontOpts)),
     field('Alignment', sel('align', TEMPLATE_OPTIONS.align.map((v) => [v, LABELS.align[v]]))),
-    field('Chapter heading', sel('heading', TEMPLATE_OPTIONS.heading.map((v) => [v, LABELS.heading[v]])), 'Books using this template can still choose differently in Book › Chapters.'),
     numberField,
     field('Number style', sel('numCase', TEMPLATE_OPTIONS.numCase.map((v) => [v, LABELS.numCase[v]]))),
     field('Number size', range('numSize', 0.6, 6, 0.05, (v) => `${v.toFixed(2)}×`)),
@@ -159,11 +161,9 @@ export function openTemplateEditor(app, base, { onSaved, current = false, fresh 
     field('Ornament under the title', glyphPick('ornament', ORNAMENTS)),
     field('…or a picture', picField),
     picWidthRow,
-    field('Accent colour', color, 'Used for numbers, ornaments, scene breaks and drop caps in colour formats.'),
+    field('Accent color', color, 'Used for numbers, ornaments, scene breaks and drop caps in color formats.'),
     h('h4', {}, 'Details'),
-    field('Scene break', glyphPick('scene', SCENES)),
-    field('Drop cap', sel('dropcap', TEMPLATE_OPTIONS.dropcap.map((v) => [v, LABELS.dropcap[v]]))),
-    field('Opening line', sel('firstLine', TEMPLATE_OPTIONS.firstLine.map((v) => [v, LABELS.firstLine[v]])), 'Shown when “As the template designs it” is chosen in Book › Chapters.'));
+    field('Scene break', glyphPick('scene', SCENES)));
 
   function save() {
     const clean = sanitizeTemplate({ ...t, name: t.name.trim() || 'My Template' }, fontIds);
@@ -191,10 +191,10 @@ export function openTemplateEditor(app, base, { onSaved, current = false, fresh 
   const onKey = (e) => { if (e.key === 'Escape') { e.preventDefault(); close(); } };
   const close = () => { overlay.remove(); document.removeEventListener('keydown', onKey, true); };
   const dlg = h('div', { class: 'dlg td-dlg', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Template designer' },
+    h('button', { class: 'btn small plain td-all', title: 'Show All Templates — browse every design and choose another (unsaved changes here are discarded)', onclick: () => { close(); app.openTemplates?.(); } }, icon('arrowLeft', 14), 'Show All Templates'),
     h('h2', {}, icon('palette', 18), current ? `Current Template — ${base.name}` : isEdit ? 'Edit Template' : 'New Template', h('small', { class: 'hint' }, current && !isEdit ? 'Built-in designs stay as they are; your changes are saved as your own copy, used by this book.' : isEdit ? '' : `based on ${base.name}`)),
     h('div', { class: 'td-cols' }, form, h('div', { class: 'td-preview' }, style, h('div', { class: 'td-page' }, page))),
     h('div', { class: 'btn-row' }, isEdit ? h('button', { class: 'btn plain danger', onclick: remove }, 'Delete Template') : null,
-      h('button', { class: 'btn plain', title: 'All Templates — browse every design and choose another (unsaved changes here are discarded)', onclick: () => { close(); app.openTemplates?.(); } }, icon('palette', 14), 'All Templates…'),
       h('span', { class: 'spacer' }),
       h('button', { class: 'btn', onclick: close }, 'Cancel'), h('button', { class: 'btn primary', onclick: save }, isEdit || current ? 'Save Template' : 'Create Template')));
   const overlay = h('div', { class: 'overlay' }, dlg);

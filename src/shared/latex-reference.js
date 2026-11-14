@@ -1,4 +1,4 @@
-// LaTeX reference for the equation editor: a categorised symbol palette and a
+// LaTeX reference for the equation editor: a categorized symbol palette and a
 // searchable how-to reference. Every entry is checked by the unit tests to
 // render with Temml, so nothing listed here produces an error.
 
@@ -103,9 +103,9 @@ export const LATEX_REFERENCE = [
   E('Decorations', 'Accents', '', '\\hat{x} \\quad \\bar{x} \\quad \\vec{v} \\quad \\tilde{n} \\quad \\dot{a}', false, 'hat bar vector'),
   E('Decorations', 'Over and under braces', '', '\\overbrace{a + b + c}^{\\text{sum}} = \\underbrace{x \\cdot y}_{\\text{product}}', true, 'brace annotate'),
   E('Decorations', 'Symbol over or under', '\\overset{top}{base}, \\underset{bottom}{base}.', 'A \\overset{\\text{def}}{=} B \\quad \\underset{x \\in S}{\\arg\\max}\\, f(x)', true, 'stack overset underset stackrel'),
-  E('Decorations', 'Labelled arrows', '', 'A \\xrightarrow{f} B \\xleftarrow[g]{} C', true, 'arrow label map'),
+  E('Decorations', 'Labeled arrows', '', 'A \\xrightarrow{f} B \\xleftarrow[g]{} C', true, 'arrow label map'),
   E('Decorations', 'Box and cancel', '', '\\boxed{E = mc^2} \\quad \\cancel{x} \\quad \\bcancel{y}', false, 'boxed strike cross out'),
-  E('Decorations', 'Colour', 'Colours print in colour in the PDF and on colour screens.', '\\color{blue} x + \\textcolor{red}{y}', false, 'color colour red blue'),
+  E('Decorations', 'Color', 'Colors print in color in the PDF and on color screens.', '\\color{blue} x + \\textcolor{red}{y}', false, 'color color red blue'),
 
   // Letter styles
   E('Letter styles', 'Bold, calligraphic, blackboard', '', '\\mathbf{v} \\quad \\boldsymbol{\\alpha} \\quad \\mathcal{L} \\quad \\mathbb{R} \\quad \\mathfrak{g} \\quad \\mathscr{F}', false, 'bold font mathbb mathcal'),

@@ -112,6 +112,7 @@ const ICON_PATHS = {
   table: 'M3 5h18v14H3zM3 10h18M3 15h18M9 5v14M15 5v14',
   pen: 'M4 20l4-1 11-11a2.1 2.1 0 0 0-3-3L5 16l-1 4zM14 7l3 3',
   comment: 'M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z',
+  commentOff: 'M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12zM3 3l18 18',
   omega: 'M5 19h4v-2a6.5 6.5 0 1 1 6 0v2h4',
   clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2',
   stopwatch: 'M12 22a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM12 10v4.5M10 2.5h4M12 2.5V6M18.5 6.5l1.5-1.5',
@@ -123,6 +124,12 @@ const ICON_PATHS = {
   calendar: 'M4 6h16v15H4zM4 10h16M8 3v5M16 3v5M8 14h2M12 14h2M16 14h.01M8 17.5h2M12 17.5h2',
   stop: 'M7 7h10v10H7z',
   pagebreak: 'M5 3v5h14V3M5 21v-5h14v5M3 12h2M8 12h2M13 12h2M18 12h3',
+  snippet: 'M7 4h10v16l-5-3.5L7 20zM10 8.5h4M10 11.5h4',
+  snippetOff: 'M7 4h10v16l-5-3.5L7 20zM10 8.5h4M10 11.5h4M3 3l18 18',
+  thought: 'M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3zM9.5 19h5M10.5 21.5h3',
+  logline: 'M4 7h16M4 12h11M4 17h7M18 15l2 2-4 4h-2v-2z',
+  keyboard: 'M3 7h18v11H3zM7 11h.01M11 11h.01M15 11h.01M7 14.5h10',
+  lock: 'M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3',
   star: 'M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z',
   splitV: 'M4 4h16v16H4zM4 12h16',
   capTitle: 'M4 7V5h10v2M9 5v14M7 19h4M14 13v-1.5h6V13M17 11.5V19M15.5 19h3',
@@ -148,6 +155,8 @@ const ICON_PATHS = {
   moon: 'M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z',
   slides: 'M3 4h18v12H3zM12 16v4M8 20h8M7 8h6M7 11h10',
   present: 'M3 4h18v12H3zM12 16v4M8 20h8M10 7.5l5 2.5-5 2.5z',
+  checklist: 'M4 6.5l1.5 1.5L8 5.5M4 12.5l1.5 1.5L8 11.5M4 18.5l1.5 1.5L8 17.5M11 7h9M11 13h9M11 19h9',
+  grip: 'M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01',
   eraser: 'M8 20h12M5.5 14.5l8-8a2 2 0 0 1 2.8 0l2.2 2.2a2 2 0 0 1 0 2.8L12 18H8.5l-3-3a.4.4 0 0 1 0-.5zM9 11l5 5',
   fullscreen: 'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5',
   textSizeUp: 'M3 18l5-12 5 12M4.8 14h6.4M17 8v8M13 12h8',
@@ -186,8 +195,19 @@ export function popover(anchor, items, { align = 'left', width, onClose, maxHeig
   const m = menu.getBoundingClientRect();
   let left = align === 'right' ? r.right - m.width : r.left;
   left = Math.max(8, Math.min(window.innerWidth - m.width - 8, left));
+  // Below the anchor if it fits, else above; if neither fits, the roomier side, scrolling inside.
+  const H = window.innerHeight;
+  const below = H - r.bottom - 14, above = r.top - 14;
   let top = r.bottom + 6;
-  if (top + m.height > window.innerHeight - 8) top = Math.max(8, r.top - m.height - 6);
+  if (m.height > below) {
+    if (m.height <= above) top = r.top - m.height - 6;
+    else {
+      const room = Math.max(below, above);
+      menu.style.maxHeight = `${Math.max(120, room)}px`; menu.style.overflowY = 'auto';
+      top = room === below ? r.bottom + 6 : Math.max(8, r.top - room - 6);
+    }
+  }
+  top = Math.max(8, Math.min(H - Math.min(m.height, H - 16) - 8, top));
   menu.style.left = `${left}px`;
   menu.style.top = `${top}px`;
   menu.querySelector('button:not([disabled])')?.focus();
@@ -222,14 +242,46 @@ export function segmented(options, value, onChange, { label } = {}) {
 }
 
 /** Magnifier control: − 100% + Fit. Persists per key in localStorage. */
+/**
+ * A slider's value as a small bubble over its thumb, shown only while it changes.
+ * Returns show(); call it after setting the value from elsewhere (keys, buttons).
+ */
+export function rangeBubble(range, fmt = (v) => `${v}%`) {
+  const tip = h('span', { class: 'range-bubble', 'aria-hidden': 'true' });
+  let timer = 0;
+  const show = () => {
+    if (!range.isConnected) return;
+    if (!tip.isConnected) range.parentElement.append(tip);
+    const min = Number(range.min) || 0, max = Number(range.max) || 100;
+    const f = (Number(range.value) - min) / (max - min || 1);
+    const thumb = 12;
+    tip.style.left = `${range.offsetLeft + thumb / 2 + f * (range.offsetWidth - thumb)}px`;
+    tip.textContent = fmt(range.value);
+    tip.classList.add('on');
+    clearTimeout(timer);
+    timer = setTimeout(() => tip.classList.remove('on'), 900);
+  };
+  range.addEventListener('input', show);
+  range.addEventListener('pointerdown', show);
+  return show;
+}
+
 export function magnifier(key, onChange) {
   const steps = [1, 1.25, 1.5, 1.75, 2, 2.5, 3, 4];
   let z = 1;
   try { z = Math.min(4, Math.max(1, Number(localStorage.getItem(key)) || 1)); } catch { /* ignore */ }
-  const lbl = h('button', { class: 'mag-val', title: 'Zoom — click to fit the window' });
+  const lbl = h('button', { class: 'mag-val', title: 'Zoom — click to fit the window' }, 'Zoom');
+  const tip = h('span', { class: 'range-bubble', 'aria-hidden': 'true' });
+  let tipTimer = 0;
   const set = (v) => {
     z = Math.min(4, Math.max(1, v));
-    lbl.textContent = z === 1 ? 'Zoom' : `${Math.round(z * 100)}%`;
+    lbl.classList.toggle('zoomed', z !== 1);
+    lbl.setAttribute('aria-label', `Zoom ${Math.round(z * 100)}% — click to fit the window`);
+    tip.textContent = z === 1 ? 'Fit' : `${Math.round(z * 100)}%`;
+    tip.style.left = '50%';
+    tip.classList.add('on');
+    clearTimeout(tipTimer);
+    tipTimer = setTimeout(() => tip.classList.remove('on'), 900);
     try { localStorage.setItem(key, String(z)); } catch { /* ignore */ }
     onChange(z);
   };
@@ -237,8 +289,8 @@ export function magnifier(key, onChange) {
   lbl.addEventListener('click', () => set(1));
   const el = h('div', { class: 'mag', role: 'group', 'aria-label': 'Magnification' },
     h('button', { title: 'Zoom out', 'aria-label': 'Zoom out', onclick: () => step(-1) }, icon('minus', 14)), lbl,
-    h('button', { title: 'Zoom in (⌘/Ctrl + scroll)', 'aria-label': 'Zoom in', onclick: () => step(1) }, icon('plus', 14)));
-  lbl.textContent = z === 1 ? 'Zoom' : `${Math.round(z * 100)}%`;
+    h('button', { title: 'Zoom in (⌘/Ctrl + scroll)', 'aria-label': 'Zoom in', onclick: () => step(1) }, icon('plus', 14)), tip);
+  lbl.classList.toggle('zoomed', z !== 1);
   el.get = () => z;
   el.step = step;
   el.set = set;
@@ -372,6 +424,9 @@ export function installTooltips(root = document) {
     }, 450);
   }, true);
   root.addEventListener('mouseout', (e) => { if (owner && !owner.contains(e.relatedTarget)) hide(); }, true);
+  // Keyboard users get the (?) explanations too.
+  root.addEventListener('focusin', (e) => { if (e.target.classList?.contains('help-tip')) e.target.dispatchEvent(new MouseEvent('mouseover', { bubbles: true })); }, true);
+  root.addEventListener('focusout', (e) => { if (e.target === owner) hide(); }, true);
   root.addEventListener('mousedown', hide, true);
   root.addEventListener('keydown', hide, true);
   window.addEventListener('blur', hide);

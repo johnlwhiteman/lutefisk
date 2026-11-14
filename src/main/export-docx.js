@@ -11,7 +11,7 @@ import { unzipSync, zipSync, strFromU8, strToU8 } from 'fflate';
 import { prepare } from '../shared/bookhtml.js';
 import { parseMarkdown, safeAssetPath, renderInline, collectBookMath, COMMENT_RE, cleanBullet } from '../shared/markdown.js';
 import { mathKey } from '../shared/math.js';
-import { highlightCode, tokenStyle } from '../shared/code.js';
+import { highlightCode, parseCodeInfo, tokenStyle } from '../shared/code.js';
 import { parseHtml } from './html-walk.js';
 import { fillPlaceholders, SECTION_TYPES, DISPLAY_TYPES } from '../shared/sections.js';
 import { templateById, withCasePrefs, setCustomTemplates } from '../shared/templates.js';
@@ -242,13 +242,24 @@ export async function buildDocx({ dir, book, contents, rasterize }) {
       else if (t.type === 'align_open') stack.push({ kind: 'align', align: t.meta?.align });
       else if (/_(list|blockquote)_close$|^blockquote_close$|^align_close$/.test(t.type)) stack.pop();
       else if (t.type === 'fence' || t.type === 'code_block') {
-        const html = highlightCode(t.content.replace(/\n$/, ''), t.type === 'fence' ? t.info : 'plaintext', { enabled: book.codeHighlight !== false });
+        const info = parseCodeInfo(t.type === 'fence' ? t.info : 'plaintext');
+        const code = t.content.replace(/\n$/, '');
+        const html = highlightCode(code, info.lang, { enabled: book.codeHighlight !== false });
         const runs = [];
+        const size = Math.round(pt * 2 * 0.82);
+        const lineCount = code.split('\n').length;
+        const w = String(lineCount).length;
+        let lineNo = 1;
+        const num = () => new TextRun({ text: `${String(lineNo).padStart(w, '\u2007')}  `, font: 'Consolas', size, color: '8C959F' });
+        if (info.lineNumbers) runs.push(num());
         const walkCode = (nodes, cls) => {
           for (const n of nodes) {
             if (n.text != null) {
               const st = tokenStyle(cls);
-              n.text.split('\n').forEach((line, li) => runs.push(new TextRun({ text: line, break: li ? 1 : 0, font: 'Consolas', size: Math.round(pt * 2 * 0.82), color: st.color, bold: st.bold, italics: st.italic })));
+              n.text.split('\n').forEach((line, li) => {
+                if (li) { lineNo += 1; runs.push(new TextRun({ text: '', break: 1, font: 'Consolas', size })); if (info.lineNumbers) runs.push(num()); }
+                if (line) runs.push(new TextRun({ text: line, font: 'Consolas', size, color: st.color, bold: st.bold, italics: st.italic }));
+              });
             } else walkCode(n.children || [], `${cls} ${n.attrs?.class || ''}`);
           }
         };
@@ -425,10 +436,6 @@ export async function buildDocx({ dir, book, contents, rasterize }) {
           } else if (tpl.ornament) children.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 360 }, children: [new TextRun({ text: tpl.ornament, font: headFont })] }));
         } else if (s.type === 'dedication' || s.type === 'epigraph') {
           children.push(new Paragraph({ spacing: { before: 3600 }, children: [] }));
-        }
-        if (s.type === 'about-author' && book.authorPhoto) {
-          const img = await loadImage(book.authorPhoto);
-          if (img) children.push(new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 240, line: 240, lineRule: 'auto' }, children: [new ImageRun({ type: img.type, data: img.data, transformation: { width: 180, height: Math.round(180 * img.h / img.w) } })] }));
         }
         let paras = await mdParagraphs(contents[s.id] || '', ctx, isChapterLike, isChapterLike && s.dropCap !== false && (book.print?.dropCaps ?? book.dropCaps) !== false);
         if (DISPLAY_TYPES.has(s.type)) {

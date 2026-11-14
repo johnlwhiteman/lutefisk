@@ -4,8 +4,8 @@ const { contextBridge, ipcRenderer, webUtils } = require('electron');
 
 const call = (ch) => (...args) => ipcRenderer.invoke(ch, ...args);
 const MENU_COMMANDS = new Set([
-  'new-book', 'open-book', 'library', 'save', 'new-chapter', 'new-scene', 'split-scene', 'export-epub', 'export-pdf', 'export-docx', 'export-md', 'export-rtf', 'export-txt', 'export-mobi', 'reveal',
-  'view-device', 'view-print', 'view-stats', 'flush-and-close', 'zoom-in', 'zoom-out', 'zoom-reset', 'toggle-sidebar', 'focus-mode', 'toggle-preview', 'toggle-comments', 'toggle-split', 'content-search', 'open-characters', 'open-plot', 'open-history', 'open-settings', 'backup-book', 'find-replace',
+  'new-book', 'open-book', 'library', 'save', 'new-chapter', 'new-scene', 'split-scene', 'export-epub', 'export-pdf', 'export-docx', 'export-md', 'help', 'tour', 'export-rtf', 'export-txt', 'export-mobi', 'reveal',
+  'view-device', 'view-print', 'view-stats', 'flush-and-close', 'zoom-in', 'zoom-out', 'zoom-reset', 'toggle-sidebar', 'focus-mode', 'toggle-preview', 'toggle-comments', 'content-search', 'open-characters', 'open-plot', 'open-history', 'open-settings', 'backup-book', 'find-replace',
 ]);
 
 contextBridge.exposeInMainWorld('lutefisk', {
@@ -46,6 +46,7 @@ contextBridge.exposeInMainWorld('lutefisk', {
   fetchCitation: call('cite:fetch'),
   logHistory: call('history:log'),
   getHistory: call('history:get'),
+  resetHistory: call('history:reset'),
   openExternal: call('shell:open'),
   exportEpub: call('export:epub'),
   exportDocx: call('export:docx'),

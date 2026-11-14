@@ -1,6 +1,6 @@
 # Lutefisk 1.0.0 — Software Bill of Materials
 
-Generated 2026-11-13T19:51:01.820Z with `npm sbom` (npm 10.9.9).
+Generated 2026-11-14T01:56:21.923Z with `npm sbom` (npm 10.9.9).
 
 Machine-readable files:
 

@@ -3,6 +3,7 @@
 // plotline moves forward; drag them to re-plan. Data lives in book.plot.
 //   ctx = { book, kind, markDirty(), timeline(): [{id, title, short}], jump(id) }
 import { h, icon, popover, closePopovers, confirmDialog, toast, dialog } from './ui.js';
+import { toBin } from './bin.js';
 import { newId } from '../shared/sections.js';
 import { avatar } from './characters.js';
 
@@ -153,7 +154,7 @@ export function openPlot(ctx, sheet) {
   }
 
   async function removeCard(card) {
-    if ((card.title || card.text) && !(await confirmDialog('Delete this card?', card.title || ''))) return;
+    if (card.title || card.text) toBin(book, { kind: 'card', title: card.title || String(card.text).slice(0, 60), item: card });
     plot.cards.splice(plot.cards.indexOf(card), 1); save(); draw();
   }
 
@@ -199,7 +200,8 @@ export function openPlot(ctx, sheet) {
       '-',
       { label: 'Delete Plotline', icon: 'trash', danger: true, disabled: plot.lines.length < 2, onClick: async () => {
         const n = plot.cards.filter((c) => c.line === line.id).length;
-        if (n && !(await confirmDialog(`Delete “${line.title}”?`, `Its ${n} card${n === 1 ? '' : 's'} will be deleted too.`))) return;
+        if (n && !(await confirmDialog(`Delete “${line.title}”?`, `Its ${n} card${n === 1 ? '' : 's'} will move to the Recycle Bin.`))) return;
+        for (const c of plot.cards.filter((x) => x.line === line.id)) toBin(book, { kind: 'card', title: c.title || String(c.text || '').slice(0, 60) || 'Card', item: c });
         plot.lines.splice(i, 1); plot.cards = plot.cards.filter((c) => c.line !== line.id); save(); draw();
       } },
     ], { width: 220 });
@@ -216,7 +218,8 @@ export function openPlot(ctx, sheet) {
       '-',
       { label: col.link ? 'Hide Chapter from Board' : 'Delete Column', icon: 'trash', danger: true, onClick: async () => {
         const n = plot.cards.filter((c) => c.col === col.id).length;
-        if (n && !(await confirmDialog(`Remove “${colTitle(col)}” from the board?`, `Its ${n} card${n === 1 ? '' : 's'} will be deleted.`))) return;
+        if (n && !(await confirmDialog(`Remove “${colTitle(col)}” from the board?`, `Its ${n} card${n === 1 ? '' : 's'} will move to the Recycle Bin.`))) return;
+        for (const c of plot.cards.filter((x) => x.col === col.id)) toBin(book, { kind: 'card', title: c.title || String(c.text || '').slice(0, 60) || 'Card', item: c });
         if (col.link) plot.skip.push(col.link);
         plot.columns.splice(i, 1); plot.cards = plot.cards.filter((c) => c.col !== col.id); save(); draw();
       } },

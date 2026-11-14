@@ -47,7 +47,6 @@ export async function buildEpub({ dir, book, contents, rasterize }) {
   const addImg = (rel) => { const s = safeAssetPath(rel); if (s && !images.has(s)) images.set(s, assetName(s)); return s; };
   for (const id of Object.keys(contents)) for (const m of String(contents[id]).matchAll(/\]\((assets\/[^)\s"]+)/g)) addImg(m[1]);
   const cover = book.cover ? addImg(book.cover) : null;
-  if (book.authorPhoto) addImg(book.authorPhoto);
   if (tpl.ornamentImg) addImg(tpl.ornamentImg);
 
   // Equations: images (every reader, the default) or MathML.
@@ -195,8 +194,8 @@ ${navItems.map((r, i) => `<navPoint id="np-${i + 1}" playOrder="${i + 1}"><navLa
 <dc:title id="t1">${esc(book.title || 'Untitled')}</dc:title>
 ${book.subtitle ? `<dc:title id="t2">${esc(book.subtitle)}</dc:title><meta refines="#t2" property="title-type">subtitle</meta>` : ''}
 <meta refines="#t1" property="title-type">main</meta>
-<dc:creator id="creator">${esc(book.author || 'Unknown')}</dc:creator>
-<meta refines="#creator" property="role" scheme="marc:relators">aut</meta>
+${(book.authors?.length ? book.authors : [book.author || 'Unknown']).map((n, i) => `<dc:creator id="creator${i ? i + 1 : ''}">${esc(n)}</dc:creator>`).join('\n')}
+${(book.authors?.length ? book.authors : [book.author || 'Unknown']).map((_, i) => `<meta refines="#creator${i ? i + 1 : ''}" property="role" scheme="marc:relators">aut</meta>`).join('\n')}
 <dc:language>${esc(lang)}</dc:language>
 ${book.publisher ? `<dc:publisher>${esc(book.publisher)}</dc:publisher>` : ''}
 ${book.description ? `<dc:description>${esc(book.description)}</dc:description>` : ''}

@@ -8,7 +8,7 @@ import { FONTS, fontStack } from '../shared/fonts.js';
 import { toRoman, SECTION_TYPES, DISPLAY_TYPES, printDropCaps } from '../shared/sections.js';
 import { termRegex } from '../shared/bookhtml.js';
 import { h, icon, toast, magnifier, segmented, popover } from './ui.js';
-import { templateButtons } from './preview-device.js';
+import { templateStrip } from './preview-device.js';
 
 const RECTO_TYPES = new Set(['title-page', 'dedication', 'epigraph', 'toc', 'foreword', 'preface', 'introduction', 'prologue', 'chapter', 'epilogue', 'acknowledgments', 'appendix', 'endnotes', 'bibliography', 'index', 'about-author']);
 const G = 96; // gap between columns in the measuring flow
@@ -51,15 +51,13 @@ export function createPrintPreview(host, app) {
   const lastBtn = h('button', { class: 'pg-btn', title: 'Back cover (End)', 'aria-label': 'Back cover', onclick: () => go(layout.pages.length) }, icon('book', 15));
   const pageLbl = h('div', { class: 'pg-label' });
   const progress = h('div', { class: 'pg-progress' }, h('i'));
-  const pager = h('div', { class: 'pager' }, firstBtn, tocBtn, prevBtn, h('div', { class: 'pg-mid' }, pageLbl, progress), nextBtn, lastBtn);
+  const pager = h('div', { class: 'pager' }, tocBtn, prevBtn, h('div', { class: 'pg-mid' }, pageLbl, progress), nextBtn); // cover and back cover are in Contents (and Home / End)
   // Row 1 (shared header): text size and zoom. Row 2: page setup and templates.
   // Row 1 (shared header): page fit and type size, just left of Focus. Zoom is at the right of row 2.
   const row1 = h('div', { class: 'pv-row1-items' }, fitSeg, h('label', { class: 'pv-ctl', title: 'Type size — the body text size of the printed book, in points' }, icon('textSize', 15), sizeSel));
   const bar = h('div', { class: 'pv-bar' },
-    h('label', { class: 'pv-ctl', title: 'Trim size — the page size of the printed book' }, trimSel),
-    templateButtons(app),
-    h('span', { class: 'spacer' }),
-    mag);
+    h('label', { class: 'pv-ctl', title: 'Trim size — the page size of the printed book' }, trimSel));
+  const tplStrip = templateStrip(app);
   const stage = h('div', { class: 'pp-stage', tabindex: 0, 'aria-label': 'Print preview' });
   const desk = h('div', { class: 'pp-desk' });
   // In preview Focus, the mouse turns pages like a reader: left button back, right button forward.
@@ -86,7 +84,7 @@ export function createPrintPreview(host, app) {
     const info = m && layout?.bySec.get(m[1]);
     if (info) go(info.start);
   });
-  host.append(bar, h('div', { class: 'dv-stage-wrap pp-stage-wrap' }, stage, sideL, sideR), pager, styleEl, measure);
+  host.append(bar, h('div', { class: 'dv-stage-wrap pp-stage-wrap' }, stage, sideL, sideR), tplStrip, pager, styleEl, measure);
 
   trimSel.addEventListener('change', () => { P().trim = trimSel.value; changed(); });
   fontSel.addEventListener('change', () => { P().font = fontSel.value; changed(); });
@@ -394,6 +392,7 @@ ${styleEl.textContent}
 
   return {
     row1,
+    zoom: mag,
     init() { syncControls(); restyle(); },
     /** Re-layout after edits. sectionId/caret: where the writer is. */
     update(sectionId, caret, opts = {}) {

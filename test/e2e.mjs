@@ -76,6 +76,7 @@ await shot('01b-new-book');
 await evaluate(`document.querySelector('.nb-form .dlg-actions .btn.primary').click()`);
 await sleep(1500);
 await shot('01c-new-book-open');
+const newBookChapter = await evaluate(`[...document.querySelectorAll('.sb-name')].map(b => b.textContent.trim()).find(t => /^Chapter/.test(t))`);
 await click(`document.querySelector('.tb-left .tb-icon')`);
 await sleep(1200);
 await shot('01d-library-two');
@@ -86,12 +87,13 @@ await evaluate(`window.__nav = (n) => {
   if (n === 'Characters' || n === 'Plot') return [...document.querySelectorAll('.sb-row.nav .sb-name')].find((b) => b.textContent.includes(n));
   if (n === 'Focus') return document.querySelector('.ed-focus-btn');
   if (n === 'Insights') return document.querySelector('.bb-btn[title^="Insights"]');
-  if (n === 'Templates') return [...document.querySelectorAll('.pv-tpl')].find((b) => b.offsetParent);
+  if (n === 'Templates') return { click: () => { [...document.querySelectorAll('.ts-btn')].find((b) => b.offsetParent).click(); document.querySelector('.ts-list .ts-foot .btn').click(); } };
   if (n === 'References') return row('Bibliography');
   return null;
 }`);
 await sleep(1500);
 const results = {};
+results.newBookChapter = newBookChapter;
 
 // Select first chapter and screenshot each device.
 await click(`[...document.querySelectorAll('.sb-name')].find(b => b.textContent.includes('Last Lamp'))`);
@@ -140,13 +142,13 @@ await shot('22-galaxy-tab-image');
 
 // Whole-book navigation: front cover, end.
 await setSelect('.pv-device', 'kindle-paperwhite');
-await evaluate(`document.querySelector('.pg-btn[aria-label="Front cover"]').click()`);
+await evaluate(`[...document.querySelectorAll('.dv-stage, .pp-stage')].find(x => x.offsetParent).dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }))`);
 await sleep(400);
 await shot('23-front-cover');
 await evaluate(`document.querySelector('.pg-btn[aria-label="Next page"]').click()`);
 await sleep(400);
 await shot('24-after-cover');
-await evaluate(`document.querySelector('.pg-btn[aria-label="Back cover"]').click()`);
+await evaluate(`[...document.querySelectorAll('.dv-stage, .pp-stage')].find(x => x.offsetParent).dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }))`);
 await sleep(400);
 await shot('25-end');
 // Magnify the device and the editor text.
@@ -154,7 +156,8 @@ await evaluate(`document.querySelector('.mag button[aria-label="Zoom in"]').clic
 await evaluate(`document.querySelector('.editor-size .big-a').click(); document.querySelector('.editor-size .big-a').click()`);
 await sleep(500);
 await shot('26-zoomed');
-await evaluate(`document.querySelector('.mag-val').click(); document.querySelector('.zoom-val').click()`);
+results.scaleBubble = { editor: await evaluate(`document.querySelector('.editor-size .range-bubble.on')?.textContent || ''`), labelHidden: await evaluate(`![...document.querySelector('.editor-size').children].some(c => !c.classList.contains('range-bubble') && /\\d+%/.test(c.textContent))`) };
+await evaluate(`document.querySelector('.mag-val').click(); const r = document.querySelector('.editor-size .pv-size'); r.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }))`);
 await click(`[...document.querySelectorAll('.sb-name')].find(b => b.textContent.includes('Last Lamp'))`);
 await sleep(300);
 await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'dark' }] });
@@ -319,7 +322,7 @@ results.scenes.editorTools = await evaluate(`[...document.querySelectorAll('.sec
 await click(`document.querySelector('.chapters-menu')`); await sleep(300);
 results.chaptersMenu = await evaluate(`[...document.querySelectorAll('.popover .pop-item')].map(b => b.querySelector('.pop-label').textContent)`);
 await evaluate(`(() => { for (const m of document.querySelectorAll('.popover')) m.remove(); })()`);
-results.layout = await evaluate(`({ themeAfterGear: document.querySelector('.tb-left .tb-icon[title="Settings"]').nextElementSibling?.classList.contains('tb-theme') ?? false, rowTwo: [...document.querySelector('.pv-bar').children].filter(c => c.offsetParent).map(c => c.className), rowOne: [...document.querySelector('.pv-switch').querySelectorAll(':scope > *, .pv-row1-items > *')].map(c => c.className) })`);
+results.layout = await evaluate(`({ themeAfterGear: document.querySelector('.tb-tools .tb-icon[title="Settings"]').nextElementSibling?.classList.contains('tb-theme') ?? false, rowTwo: [...document.querySelector('.pv-bar').children].filter(c => c.offsetParent).map(c => c.className), rowOne: [...document.querySelector('.pv-switch').querySelectorAll(':scope > *, .pv-row1-items > *')].map(c => c.className) })`);
 
 // ---- Research
 await click(`document.querySelector('.sb-group.research .sb-add')`);
@@ -418,8 +421,41 @@ await sleep(700);
 await shot('40-templates');
 results.templateCards = await evaluate(`document.querySelectorAll('.tpl-card').length`);
 await click(`[...document.querySelectorAll('.tpl-card')].find(c => c.textContent.includes('Epic Fantasy'))`);
-await sleep(600);
+await sleep(900);
+const tplName = `[...document.querySelectorAll('.ts-name')].find(n => n.offsetParent)?.textContent`;
+results.templateLive = { docked: await evaluate(`!!document.querySelector('.overlay.tpl-docked')`), applied: await evaluate(tplName), example: await evaluate(`document.querySelector('.tpl-card:not(.new) .bk-title').textContent`) };
+// Live view: the cards show your own text
+await click(`document.querySelector('.tpl-live input')`); await sleep(300);
+results.templateLive.liveTitle = await evaluate(`document.querySelector('.tpl-card:not(.new) .bk-title').textContent`);
+await click(`document.querySelector('.tpl-live input')`); await sleep(200);
+// Arrow keys step through designs while the preview updates beside the panel
+await evaluate(`document.querySelector('.tpl-card.on').focus()`);
+await send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'ArrowRight', code: 'ArrowRight', windowsVirtualKeyCode: 39 }); await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'ArrowRight', code: 'ArrowRight', windowsVirtualKeyCode: 39 });
+await sleep(700);
+results.templateLive.afterArrow = await evaluate(`document.querySelector('.tpl-card.on .tpl-name').firstChild.textContent`);
 await shot('41-fantasy-template');
+await send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'ArrowLeft', code: 'ArrowLeft', windowsVirtualKeyCode: 37 }); await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'ArrowLeft', code: 'ArrowLeft', windowsVirtualKeyCode: 37 });
+await sleep(500);
+await send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13 }); await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Enter', code: 'Enter', windowsVirtualKeyCode: 13 });
+await sleep(500);
+results.templateLive.kept = await evaluate(`!document.querySelector('.overlay.tpl-docked') && ${tplName}`);
+// The template list under the device: ↓ applies the next design and the device redraws
+const press = async (k, code, vk) => { await send('Input.dispatchKeyEvent', { type: 'keyDown', key: k, code, windowsVirtualKeyCode: vk }); await send('Input.dispatchKeyEvent', { type: 'keyUp', key: k, code, windowsVirtualKeyCode: vk }); };
+const deviceFont = `getComputedStyle([...document.querySelectorAll('.scr .bk-title, .scr-flow .bk-title')].find(e => e.offsetParent) || document.body).fontFamily`;
+results.templateLive.fontBefore = await evaluate(deviceFont);
+await evaluate(`[...document.querySelectorAll('.ts-btn')].find(b => b.offsetParent).focus()`);
+await press('ArrowDown', 'ArrowDown', 40); await sleep(700);
+results.templateLive.stripNext = await evaluate(tplName);
+results.templateLive.fontAfter = await evaluate(deviceFont);
+await press('ArrowUp', 'ArrowUp', 38); await sleep(600);
+// The open list: ↓ ↓ apply live, Esc goes back
+await evaluate(`[...document.querySelectorAll('.ts-btn')].find(b => b.offsetParent).click()`); await sleep(300);
+const tplBefore = await evaluate(tplName);
+await press('ArrowDown', 'ArrowDown', 40); await sleep(400); await press('ArrowDown', 'ArrowDown', 40); await sleep(500);
+results.templateLive.listMoved = (await evaluate(tplName)) !== tplBefore;
+await shot('41b-template-list');
+await press('Escape', 'Escape', 27); await sleep(500);
+results.templateLive.listReverted = (await evaluate(tplName)) === tplBefore && (await evaluate(`!document.querySelector('.ts-list')`));
 
 // Insights: text analysis
 await click(`window.__nav('Insights')`);
@@ -582,8 +618,53 @@ await evaluate(`(() => { const t = document.querySelector('.sec-subtitle'); t.va
 await sleep(900);
 results.subtitle = await evaluate(`document.querySelector('.scr-flow .bk-subtitle')?.textContent`);
 await shot('92-subtitle');
+// Live counts in the title bar while typing
+results.liveCount = { before: await evaluate(`document.querySelector('.tb-count').textContent`) };
+await evaluate(`(() => { const ed = document.querySelector('.ProseMirror'); ed.focus(); const s = getSelection(); s.selectAllChildren(ed.querySelector('p')); s.collapseToEnd(); })()`);
+for (let i = 0; i < 8; i++) { await send('Input.insertText', { text: ' more' }); await sleep(70); }
+results.liveCount.during = await evaluate(`document.querySelector('.tb-count').textContent`);
+results.liveCount.updated = results.liveCount.during !== results.liveCount.before;
+// Logline
+await click(`document.querySelector('.sb-logline')`); await sleep(300);
+await evaluate(`(() => { const t = document.querySelector('.ll-main'); t.value = 'When every lamp goes dark, a lamplighter’s daughter must cross the mountains for clear oil.'; t.dispatchEvent(new Event('input')); })()`);
+await evaluate(`document.querySelector('.sheet-head .btn.primary').click()`); await sleep(300);
+results.notebook = { logline: await evaluate(`!!document.querySelector('.sb-ll-text')`) };
+// Snippets: create, then insert from the editor's right-click menu
+await click(`[...document.querySelectorAll('.sb-notebook .sb-name')].find(b => b.textContent.includes('Snippets'))`); await sleep(300);
+await click(`document.querySelector('.sn-new')`); await sleep(200);
+await evaluate(`(() => { document.querySelector('.sn-title-in').value = 'Weak tea'; document.querySelector('.sn-text-in .ProseMirror').focus(); })()`);
+await send('Input.insertText', { text: 'A light the color of weak tea.' });
+await click(`document.querySelector('.sn-card.editing .btn.primary')`); await sleep(200);
+await evaluate(`document.querySelector('.sheet-head .btn.primary').click()`); await sleep(300);
+await evaluate(`(() => { const p = document.querySelector('.ProseMirror p'); const r = p.getBoundingClientRect(); p.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: r.left + 20, clientY: r.top + 8 })); })()`);
+await sleep(300);
+await click(`[...document.querySelectorAll('.pop-item')].find(b => b.textContent.includes('Insert Snippet'))`); await sleep(300);
+await click(`[...document.querySelectorAll('.pop-item')].find(b => b.textContent.includes('Weak tea'))`); await sleep(400);
+results.notebook.snippetInserted = await evaluate(`document.querySelector('.ProseMirror').textContent.includes('color of weak tea')`);
+results.notebook.snippetGone = await evaluate(`!document.querySelector('.sb-notebook') || ![...document.querySelectorAll('.sb-notebook .sb-name')].find(b => b.textContent.includes('Snippets')).querySelector('.sb-count')`);
+// To-Do: an overdue item shows a red badge in Research
+await click(`document.querySelector('.sb-todo')`); await sleep(300);
+await evaluate(`(() => { document.querySelector('.todo-new').value = 'Check the timeline'; document.querySelector('.todo-capture .todo-date').value = '2020-01-02'; document.querySelector('.todo-capture .btn').click(); })()`); await sleep(200);
+results.todo = { rows: await evaluate(`document.querySelectorAll('.todo-row').length`), overdueStat: await evaluate(`document.querySelector('.todo-stat.late b')?.textContent`) };
+await evaluate(`document.querySelector('.sheet-head .btn.primary').click()`); await sleep(300);
+results.todo.badge = await evaluate(`document.querySelector('.sb-overdue')?.textContent`);
+// Recycle Bin: a deleted to-do can be restored
+await click(`document.querySelector('.sb-todo')`); await sleep(300);
+await evaluate(`[...document.querySelectorAll('.todo-row')].find(r => r.textContent.includes('Check the timeline')).querySelector('[aria-label^="Delete"]').click()`); await sleep(200);
+await evaluate(`document.querySelector('.sheet-head .btn.primary').click()`); await sleep(300);
+await click(`document.querySelector('.sb-bin')`); await sleep(300);
+results.bin = { rows: await evaluate(`document.querySelectorAll('.bin-row').length`) };
+await click(`document.querySelector('.bin-row .btn')`); await sleep(300);
+results.bin.emptyAfter = await evaluate(`!!document.querySelector('.bin-empty')`);
+await evaluate(`document.querySelector('.sheet-head .btn.primary').click()`); await sleep(300);
+results.bin.todoBack = await evaluate(`document.querySelector('.sb-overdue')?.textContent === '1'`);
+// Snippets panel beside the editor
+await click(`document.querySelector('.snippets-btn')`); await sleep(300);
+results.snippetPanel = await evaluate(`!document.querySelector('.snip-rail').hidden && document.querySelector('.editor-mount').classList.contains('with-snippets')`);
+await click(`document.querySelector('.snippets-btn')`); await sleep(200);
 results.editorTop = await evaluate(`[...document.querySelectorAll('.ed-top .sec-opts > button')].map(b => b.className.split(' ')[1])`);
-results.zoomInRowTwo = await evaluate(`[...document.querySelectorAll('.pv-bar .mag')].some(m => m.offsetParent)`);
+results.zoomAfterPrint = await evaluate(`document.querySelector('.pv-switch .segmented').nextElementSibling.querySelector('.mag') !== null`);
+results.pagerButtons = await evaluate(`[...document.querySelectorAll('.pv-host:not([hidden]) .pager .pg-btn')].map(b => b.getAttribute('aria-label'))`);
 results.stopwatchIcon = await evaluate(`!!document.querySelector('.sw-toggle .sw-ic svg')`);
 
 // ---- Table
@@ -769,7 +850,7 @@ await evaluate(`document.querySelector('.sheet-head .btn').click()`);
 await sleep(300);
 await click(`[...document.querySelectorAll('.pv-switch .segmented button')].find(b => b.textContent.includes('Print'))`);
 await sleep(800);
-await evaluate(`document.querySelector('.pv-host:not([hidden]) .pg-btn[aria-label="Front cover"]').click()`);
+await evaluate(`[...document.querySelectorAll('.dv-stage, .pp-stage')].find(x => x.offsetParent).dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }))`);
 await sleep(800);
 results.cover = { printAlt: await evaluate(`document.querySelector('.pp-cover img')?.alt`), printCss: await evaluate(`document.querySelector('.pp-cover img')?.style.objectFit + ' ' + document.querySelector('.pp-cover img')?.style.objectPosition`) };
 await shot('87-print-cover-margins-top');
@@ -895,7 +976,7 @@ await sleep(1500);
   const fsm = await import('node:fs');
   const files = fsm.readdirSync(join(bookDir, 'chapters')).map((f) => fsm.readFileSync(join(bookDir, 'chapters', f), 'utf8'));
   const md = files.find((t) => t.includes('####')) || '';
-  results.format.saved = { h4: /^#### /m.test(md), underline: /\+\+[^+]+\+\+/.test(md), sup: /[A-Za-z]\^[^^\s][^^\n]*\^/.test(md), verse: /^::: verse$/m.test(md), pagebreak: /^\\newpage$/m.test(md) };
+  results.format.saved = { h4: /^#### /m.test(md), underline: /\+\+[^+]+\+\+/.test(md), sup: /\^[^^\s][^^\n]*\^/.test(md), verse: /^::: verse$/m.test(md), pagebreak: /^\\newpage$/m.test(md) };
 }
 
 // Hide and show the panes
@@ -911,23 +992,11 @@ results.panes.binderHidden = await evaluate(`document.querySelector('.sidebar').
 await click(`document.querySelector('.sidebar .pane-rail')`); await sleep(500);
 results.panes.allBack = await evaluate(`!document.querySelector('.collapsed')`);
 
-// Split editor: side by side, then one above the other
-const splitTo = async (label) => { const dir = { 'Side by Side': 'side', 'One Above the Other': 'stack' }[label]; if (dir) await click(`document.querySelector('.ql-split-btn[data-dir="${dir}"]')`); else await click(`document.querySelector('.ql-split-btn.ql-active')`); await sleep(500); };
-await splitTo('Side by Side');
-results.split = { views: await evaluate(`document.querySelectorAll('.ql-split .ProseMirror').length`) };
-await evaluate(`(() => { const ed = document.querySelectorAll('.ql-split .ProseMirror')[1]; ed.focus(); const sel = getSelection(); sel.selectAllChildren(ed.lastElementChild); sel.collapseToEnd(); })()`);
-await send('Input.insertText', { text: ' Typed in the second view.' });
-await sleep(300);
-results.split.mirrored = await evaluate(`document.querySelectorAll('.ql-split .ProseMirror')[0].textContent.includes('Typed in the second view.')`);
-await shot('104-split');
-await splitTo('One Above the Other');
-results.split.stacked = await evaluate(`(() => { const v = document.querySelectorAll('.ql-split .ql-container'); return v.length === 2 && v[1].getBoundingClientRect().top > v[0].getBoundingClientRect().bottom - 2; })()`);
-await shot('104b-split-stacked');
-await splitTo('Close Split');
-results.split.closed = await evaluate(`document.querySelectorAll('.ql-split .ProseMirror').length === 1`);
+// The split editor was removed: one editor only.
+results.split = { gone: await evaluate(`!document.querySelector('.ql-split-btn') && document.querySelectorAll('.editor-mount .ProseMirror').length === 1`) };
 
 // Link: name and address; selected text becomes the name
-await evaluate(`(() => { const ed = document.querySelector('.ql-split .ProseMirror'); ed.focus(); const w = document.createTreeWalker(ed, NodeFilter.SHOW_TEXT); let t; while ((t = w.nextNode()) && t.textContent.length < 30); const r = document.createRange(); r.setStart(t, 0); r.setEnd(t, 4); const s = getSelection(); s.removeAllRanges(); s.addRange(r); })()`);
+await evaluate(`(() => { const ed = document.querySelector('.editor-mount .ProseMirror'); ed.focus(); const w = document.createTreeWalker(ed, NodeFilter.SHOW_TEXT); let t; while ((t = w.nextNode()) && t.textContent.length < 30); const r = document.createRange(); r.setStart(t, 0); r.setEnd(t, 4); const s = getSelection(); s.removeAllRanges(); s.addRange(r); })()`);
 await click(`document.querySelector('.ql-link')`); await sleep(400);
 results.link = { prefilled: await evaluate(`document.querySelector('.dlg input[name="text"]')?.value`) };
 await evaluate(`(() => { const i = document.querySelector('.dlg input[name="href"]'); i.value = 'example.org/lamps'; })()`);

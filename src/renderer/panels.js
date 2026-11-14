@@ -1,7 +1,7 @@
 // Side panels and dialogs: book settings, templates gallery, bibliography
 // manager, statistics dashboard and generated-section settings.
 import { titleCheckButton, recaseAll } from './title-check.js';
-import { TITLE_STYLES } from '../shared/titlecase.js';
+import { TITLE_STYLES, bookTitleStyle } from '../shared/titlecase.js';
 import { h, icon, dialog, toast, setHtml, assetUrl, confirmDialog, segmented, generatedCover } from './ui.js';
 import { templateById as tplById } from '../shared/templates.js';
 import { fontStack } from '../shared/fonts.js';
@@ -10,7 +10,7 @@ import { openTemplateEditor, myTemplates, bookSample } from './template-editor.j
 import { STYLES, formatEntry, extractFromDocument, fromCsl, parseName, sortKey } from '../shared/citations.js';
 import { bookReport } from '../shared/stats.js';
 import { markdownToPlain } from '../shared/markdown.js';
-import { SECTION_TYPES, CHAPTER_HEADINGS, HEADING_MODES, chapterHeadingMode } from '../shared/sections.js';
+import { SECTION_TYPES, CHAPTER_HEADINGS, HEADING_MODES, chapterHeadingMode, syncAuthors, authorLine } from '../shared/sections.js';
 import { TRIMS } from '../shared/print.js';
 import { openCoverEditor } from './cover-editor.js';
 import { coverOpts, coverAlt, coverImgCss, COVER_EXTENTS, COVER_VALIGNS } from '../shared/cover.js';
@@ -25,11 +25,29 @@ function textInput(obj, key, onChange, attrs = {}) {
   el.addEventListener('input', () => { obj[key] = attrs.type === 'number' ? Number(el.value) || '' : el.value; onChange(); });
   return el;
 }
+/** The book's authors: none, one or many. Keeps book.author (the joined line) in step. */
+function authorsField(b, onChange) {
+  syncAuthors(b);
+  const list = h('div', { class: 'authors-list' });
+  const draw = (focusLast = false) => {
+    list.replaceChildren(...b.authors.map((name, i) => {
+      const inp = h('input', { type: 'text', value: name, placeholder: 'Author name', 'aria-label': `Author ${i + 1}` });
+      inp.addEventListener('input', () => { b.authors[i] = inp.value; b.author = authorLine(b.authors); onChange(); });
+      inp.addEventListener('change', () => { syncAuthors(b); draw(); onChange(); });
+      return h('div', { class: 'author-row' }, inp,
+        h('button', { type: 'button', class: 'sb-tool', title: 'Remove this author', 'aria-label': `Remove ${name || 'author'}`, onclick: () => { b.authors.splice(i, 1); syncAuthors(b); draw(); onChange(); } }, icon('close', 14)));
+    }), h('button', { type: 'button', class: 'btn small plain', onclick: () => { b.authors.push(''); draw(true); } }, icon('plus', 14), b.authors.length ? 'Add Another Author' : 'Add Author'));
+    if (focusLast) list.querySelectorAll('input')[b.authors.length - 1]?.focus();
+  };
+  draw();
+  return h('div', { class: 'fld' }, h('span', {}, 'Authors'), list, h('small', { class: 'hint' }, 'None, one or several. They’re shown together on the title page and cover, and as separate creators in the e-book.'));
+}
+
 /** A title field with the Capitalize My Title button beside it. */
 function titleInput(app, obj, key, onChange) {
   const el = textInput(obj, key, onChange);
   return h('div', { class: 'title-row' }, el, titleCheckButton(el, {
-    getStyle: () => app.book?.titleStyle || '',
+    getStyle: () => bookTitleStyle(app.book),
     setStyle: (id) => { if (app.book.titleStyle !== id) { app.book.titleStyle = id; app.markDirty(); } },
   }));
 }
@@ -119,14 +137,14 @@ export function openBookSettings(app, initialTab = 'general') {
     general: () => h('div', { class: 'form-grid' },
       field('Title', titleInput(app, b, 'title', ch)),
       field('Subtitle', titleInput(app, b, 'subtitle', ch)),
-      field('Author', textInput(b, 'author', ch)),
+      authorsField(b, ch),
       field('Publisher', textInput(b, 'publisher', ch, { placeholder: 'Imprint name (optional)' })),
       h('div', { class: 'row2' }, field('Year', textInput(b, 'year', ch, { type: 'number' })),
         field('Language', select(b, 'language', [['en', 'English'], ['en-GB', 'English (UK)'], ['es', 'Spanish'], ['fr', 'French'], ['de', 'German'], ['it', 'Italian'], ['pt', 'Portuguese'], ['nl', 'Dutch'], ['sv', 'Swedish'], ['pl', 'Polish']], ch))),
       field('ISBN', textInput(b, 'isbn', ch, { placeholder: '978-…' }), 'Optional. Used as the EPUB identifier and on the copyright page.'),
       field('Description', desc, 'Appears in e-book metadata and on the generated back cover.'),
       field('Keywords', kw),
-      toggle(b, 'codeHighlight', 'Syntax highlighting in code blocks', 'Colours plus bold and italic, so code still reads on black-and-white e-ink screens. Long lines wrap to fit small screens.', ch),
+      toggle(b, 'codeHighlight', 'Syntax highlighting in code blocks', 'Colors plus bold and italic, so code still reads on black-and-white e-ink screens. Long lines wrap to fit small screens.', ch),
       toggle(b, 'wordComments', 'Include comments in Word export', 'Your comments and replies appear as real Word comments. They never appear in the e-book, PDF or print.', ch),
       field('Equations in e-books', select(b, 'mathOutput', [['image', 'Images — every reader, including Kindle and Nook'], ['mathml', 'MathML — searchable and scalable (Apple Books, Kobo, Google Play, newer Kindles)']], ch), 'How LaTeX equations are written into the EPUB. The preview, print and PDF always typeset them directly. Word always uses images.')),
     cover: () => h('div', { class: 'covers' },
@@ -142,13 +160,13 @@ export function openBookSettings(app, initialTab = 'general') {
       toggle(b.print, 'dropCaps', 'Drop caps in print', 'Same, for the PDF, Word export and print preview. Individual chapters can be switched off in the editor.', ch),
       field('Opening line of each chapter', select(b, 'firstLine', [['normal', 'Normal — exactly as typed'], ['smallcaps', 'Small capitals'], ['uppercase', 'All capitals'], ['template', 'As the template designs it']], ch)),
       (() => {
-        const sel = select(b, 'titleStyle', [['', 'Not set'], ...TITLE_STYLES.map((t) => [t.id, t.long])], ch);
+        const citeName = { apa: 'APA', mla: 'MLA', chicago: 'Chicago' }[b.citationStyle || 'apa'] || 'APA';
+        const sel = select(b, 'titleStyle', [['', `Same as citations (${citeName})`], ...TITLE_STYLES.map((t) => [t.id, t.long])], ch);
         const go = h('button', { type: 'button', class: 'btn small', onclick: () => {
-          const style = b.titleStyle || 'chicago';
+          const style = bookTitleStyle(b);
           const items = [];
           for (const sec of b.sections) { if (!SECTION_TYPES[sec.type]?.generated && sec.title) items.push(sec); for (const sc of sec.scenes || []) if (sc.title) items.push(sc); }
           const n = recaseAll(items, style) + recaseAll(b.sections.filter((x) => x.subtitle), style, (x) => x.subtitle, (x, v) => { x.subtitle = v; });
-          if (!b.titleStyle) b.titleStyle = style;
           app.markDirty(); app.refreshAll?.();
           toast(n ? `${n} title${n === 1 ? '' : 's'} recapitalized` : 'Every title already follows that style', 'ok', 2400);
         } }, 'Apply to All Titles');
@@ -167,18 +185,13 @@ export function openBookSettings(app, initialTab = 'general') {
   const seg = segmented([{ value: 'general', label: 'General' }, { value: 'cover', label: 'Covers' }, { value: 'chapters', label: 'Chapters' }, { value: 'print', label: 'Print' }], initialTab,
     (v) => pane.replaceChildren(tabs[v]()), { label: 'Settings section' });
   pane.replaceChildren(tabs[initialTab]());
-  // The book's design, one click from here.
-  const cur = tplById(b.template);
-  const tplRow = h('div', { class: 'bk-tpl-link' },
-    icon('palette', 16),
-    h('span', {}, 'Template: ', h('b', {}, cur.name)),
-    h('span', { class: 'spacer' }),
-    h('button', { type: 'button', class: 'btn small', title: 'Templates — choose a different design for this book', onclick: () => { close(); app.openTemplates(); } }, 'Change…'),
-    h('button', { type: 'button', class: 'btn small plain', title: 'Edit the current template — fonts, headings, ornament and spacing', onclick: () => { close(); app.editTemplate(); } }, icon('gear', 14), 'Edit'));
+  const backup = h('div', { class: 'bk-backup' },
+    h('div', {}, h('b', {}, 'Back up this book'), h('small', { class: 'hint' }, 'A .zip or a folder copy of the whole book, in the same folder or one you choose.')),
+    h('button', { type: 'button', class: 'btn small', onclick: () => { close(); app.backupBook(); } }, icon('download', 14), 'Back Up Book…'));
   const del = h('div', { class: 'bk-danger' },
     h('div', {}, h('b', {}, 'Delete this book'), h('small', { class: 'hint' }, 'Moves the whole book folder to the Trash after you confirm. You can restore it from there.')),
     h('button', { type: 'button', class: 'btn small danger', onclick: () => app.deleteOpenBook() }, icon('trash', 14), 'Delete Book…'));
-  const close = sheet('Book', h('div', {}, tplRow, h('div', { class: 'tab-bar' }, seg), pane, del), {});
+  const close = sheet('Book', h('div', {}, h('div', { class: 'tab-bar' }, seg), pane, backup, del), {});
 }
 
 function toggle(obj, key, label, hint, onChange) {
@@ -189,11 +202,34 @@ function toggle(obj, key, label, hint, onChange) {
 }
 
 /* ---------------------------------------------------------- templates */
-export function openTemplates(app) {
-  // My Templates: this book's custom designs plus any saved in the user's library.
+/** Every template this book can use: yours (this book's and your library's) and the built-ins, by name. */
+export function allTemplates(app) {
   const mine = [...(app.book.customTemplates || []).map((t) => sanitizeTemplate(t)), ...myTemplates()].filter((t, i, a) => a.findIndex((x) => x.id === t.id) === i);
   const byName = (a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
-  const all = [...mine, ...TEMPLATES].sort(byName);
+  return { mine: mine.sort(byName), all: [...mine, ...TEMPLATES].sort(byName) };
+}
+/** Use a template for this book now (a custom one is copied into the book so it travels with it). */
+export async function applyTemplate(app, t, { quiet = false } = {}) {
+  if (!t || app.book.template === t.id) return;
+  if (t.custom && !(app.book.customTemplates || []).some((x) => x.id === t.id)) {
+    const { ornamentData, ...copy } = t;
+    if (ornamentData && copy.ornamentImg) {
+      try { copy.ornamentImg = await window.lutefisk.writeImage({ name: `ornament-${t.name.toLowerCase()}`, data: Uint8Array.from(atob(ornamentData.split(',')[1]), (c) => c.charCodeAt(0)) }); } catch { copy.ornamentImg = ''; }
+    }
+    app.book.customTemplates = [...(app.book.customTemplates || []), copy];
+    setCustomTemplates(app.book.customTemplates);
+  }
+  app.book.template = t.id;
+  app.markDirty();
+  app.refreshAll();
+  for (const el of document.querySelectorAll('.ts-strip')) el.draw?.();
+  if (!quiet) toast(`Template: ${t.name}`, 'info', 1200);
+}
+
+export function openTemplates(app) {
+  // My Templates: this book's custom designs plus any saved in the user's library.
+  const { mine, all } = allTemplates(app);
+  const original = app.book.template; // Esc goes back to this
   const css = all.map((t) => templateCss(withCasePrefs(t, app.book), `.tpl-card .bk.tpl-${t.id}`, { ctx: 'device', dropCaps: true, color: true })).join('\n');
   const style = h('style', {}, `${baseCss('.tpl-card .bk', 'device')}\n${css}`);
   const grid = h('div', { class: 'tpl-grid' });
@@ -211,8 +247,8 @@ export function openTemplates(app) {
     return b;
   };
   const originChips = h('div', { class: 'tpl-origins', role: 'group', 'aria-label': 'Show only' },
-    originChip('new', 'Custom', 'Show your own designs (New Template)'),
-    originChip('changed', 'Changed from original', 'Show built-in designs you customized'));
+    originChip('new', 'Custom', 'Custom — designs you made with New Template'),
+    originChip('changed', 'Modified', 'Modified — built-in designs you changed'));
   const search = h('input', { type: 'search', class: 'tpl-search', placeholder: 'Search templates by name', 'aria-label': 'Search templates by name' });
   const empty = h('p', { class: 'tpl-empty', hidden: true }, 'No templates match.');
   const applyFilter = () => {
@@ -229,36 +265,95 @@ export function openTemplates(app) {
   search.addEventListener('input', applyFilter);
   search.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); const first = [...grid.children].find((c) => !c.hidden && !c.classList.contains('new')); first?.click(); } });
   const filter = segmented(cats.map((c) => ({ value: c, label: c })), 'All', (c) => { cat = c; applyFilter(); }, { label: 'Template category' });
-  const choose = async (t) => {
-    if (t.custom && !(app.book.customTemplates || []).some((x) => x.id === t.id)) {
-      const { ornamentData, ...copy } = t;
-      if (ornamentData && copy.ornamentImg) {
-        // Bring the picture ornament into this book's assets folder.
-        try { copy.ornamentImg = await window.lutefisk.writeImage({ name: `ornament-${t.name.toLowerCase()}`, data: Uint8Array.from(atob(ornamentData.split(',')[1]), (c) => c.charCodeAt(0)) }); } catch { copy.ornamentImg = ''; }
-      }
-      app.book.customTemplates = [...(app.book.customTemplates || []), copy]; // copy into the book so it travels with it
-      setCustomTemplates(app.book.customTemplates);
-    }
-    app.book.template = t.id; app.markDirty(); app.refreshAll(); close(); toast(`Template: ${t.name}`);
+  // Choosing a design applies it at once, so the preview beside this panel shows it. Done keeps it; Esc goes back.
+  const choose = (t, card) => {
+    for (const c of grid.querySelectorAll('.tpl-card.on')) c.classList.remove('on');
+    card?.classList.add('on');
+    current.textContent = t.name;
+    applyTemplate(app, t, { quiet: true });
   };
   grid.append(h('button', { class: 'tpl-card new', 'data-cat': 'My Templates', onclick: () => { close(); openTemplateEditor(app, tplById(app.book.template), { fresh: true, onSaved: () => openTemplates(app) }); } },
     h('div', { class: 'tpl-page tpl-new' }, icon('plus', 28), h('b', {}, 'New Template'), h('small', {}, `Start from ${tplById(app.book.template).name}`)), h('div', { class: 'tpl-name' }, 'Design your own', h('small', {}, 'Custom'))));
-  // Preview each design with your own words when there are any: the open chapter, or the first one with text.
+  // Each design shows example text; Live view swaps in your own (the open chapter, or the first with text).
   const esc = (x) => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  const mine2 = bookSample(app, { paras: 2, chars: 150 });
-  const sampleTitle = esc(mine2?.title || 'The Lantern Road');
-  const sampleBody = (mine2?.paras || ['Morning came slowly to the valley, spilling over the ridge like honey from a tipped jar.', 'She packed the lantern anyway.']).map((p) => `<p>${esc(p)}</p>`).join('');
+  const yours = bookSample(app, { paras: 2, chars: 150 });
+  let live = false;
+  try { live = localStorage.getItem('lutefisk.tplLive') === '1' && !!yours; } catch { /* ignore */ }
+  const EXAMPLE = { title: 'The Lantern Road', paras: ['Morning came slowly to the valley, spilling over the ridge like honey from a tipped jar. By the time it reached the mill, the river had already begun to sing.', 'She packed the lantern anyway.'] };
+  const samples = [];
+  const sampleHtml = (t) => {
+    const src = live && yours ? yours : EXAMPLE;
+    return `<section class="bk-sec t-chapter dc-ok dc"><header class="bk-head"><p class="bk-num">${t.numbering === 'none' ? '' : t.numbering.includes('roman') ? 'Chapter III' : t.numbering === 'number-only' ? '3' : 'Chapter Three'}</p><h1 class="bk-title">${esc(src.title)}</h1>${t.ornamentImg ? `<div class="bk-orn bk-orn-pic"><img src="${esc(t.ornamentData || assetUrl(t.ornamentImg))}" alt=""></div>` : '<div class="bk-orn"></div>'}</header><div class="bk-body">${src.paras.map((p) => `<p>${esc(p)}</p>`).join('')}<div class="bk-scene"><span></span></div></div></section>`;
+  };
+  const liveToggle = (() => {
+    const sw = h('input', { type: 'checkbox', role: 'switch', class: 'switch', checked: live, disabled: !yours, 'aria-label': 'Live view — preview the designs with your own text' });
+    sw.addEventListener('change', () => {
+      live = sw.checked;
+      app.setTemplateLive?.(live);
+      for (const [el, t] of samples) setHtml(el, sampleHtml(t));
+    });
+    return h('label', { class: 'tpl-live', title: yours ? 'Live — show each design (and the device) with your own chapter instead of the example text' : 'Live needs some text in your book first' }, sw, h('span', {}, 'Live — show my text'));
+  })();
   for (const t of all) {
     const sample = h('div', { class: `bk tpl-${t.id} dropcaps` });
-    setHtml(sample, `<section class="bk-sec t-chapter dc-ok dc"><header class="bk-head"><p class="bk-num">${t.numbering === 'none' ? '' : t.numbering.includes('roman') ? 'Chapter III' : t.numbering === 'number-only' ? '3' : 'Chapter Three'}</p><h1 class="bk-title">${sampleTitle}</h1>${t.ornamentImg ? `<div class="bk-orn bk-orn-pic"><img src="${esc(t.ornamentData || assetUrl(t.ornamentImg))}" alt=""></div>` : '<div class="bk-orn"></div>'}</header><div class="bk-body">${sampleBody}<div class="bk-scene"><span></span></div></div></section>`);
+    setHtml(sample, sampleHtml(t));
+    samples.push([sample, t]);
     const edit = h('span', { class: 'tpl-edit', role: 'button', title: t.custom ? 'Edit this template' : 'Customize — make your own version', onclick: (e) => { e.stopPropagation(); close(); openTemplateEditor(app, t, { onSaved: () => openTemplates(app) }); } }, icon(t.custom ? 'pen' : 'palette', 14), t.custom ? 'Edit' : 'Customize');
-    const card = h('button', { 'data-cat': t.category, 'data-name': t.name.toLowerCase(), 'data-mine': mine.some((m) => m.id === t.id) ? '1' : null, 'data-origin': t.custom ? t.origin : null, class: `tpl-card${app.book.template === t.id ? ' on' : ''}`, onclick: () => choose(t) },
+    const card = h('button', { 'data-cat': t.category, 'data-name': t.name.toLowerCase(), 'data-mine': mine.some((m) => m.id === t.id) ? '1' : null, 'data-origin': t.custom ? t.origin : null, class: `tpl-card${app.book.template === t.id ? ' on' : ''}`, 'data-id': t.id, onclick: (e) => choose(t, e.currentTarget) },
       h('div', { class: 'tpl-page' }, sample, edit), h('div', { class: 'tpl-name' }, t.name,
-        h('small', {}, t.custom ? (t.origin === 'changed' ? `Changed${t.baseName ? ` · from ${t.baseName}` : ''}` : 'Custom') : t.category)));
+        h('small', { title: t.custom && t.origin === 'changed' && t.baseName ? `Modified from ${t.baseName}` : null }, t.custom ? (t.origin === 'changed' ? 'Modified' : 'Custom') : t.category)));
     grid.append(card);
   }
   const newTpl = h('button', { class: 'btn small primary tpl-new-btn', onclick: () => { close(); openTemplateEditor(app, tplById(app.book.template), { fresh: true, onSaved: () => openTemplates(app) }); } }, icon('plus', 14), 'New Template');
-  close = sheet('Templates', h('div', {}, style, h('div', { class: 'tpl-filter' }, search, originChips, filter, newTpl, h('span', { class: 'hint' }, `${TEMPLATES.length} designs${mine.length ? ` + ${mine.length} of yours` : ''}. Each sets fonts, chapter headings, ornaments, scene breaks and drop caps for every format — preview, PDF, EPUB and Word. Choose New Template, or hover any design and choose Customize, to make your own.`)), grid, empty), { wide: true });
+  const current = h('b', {}, tplById(app.book.template).name);
+  const head = h('div', { class: 'tpl-current' }, icon('palette', 15), h('span', {}, 'Using '), current,
+    h('span', { class: 'hint' }, ' — arrow keys try each design live in the preview; Enter keeps it, Esc goes back.'));
+  close = sheet('Templates', h('div', {}, style, h('div', { class: 'tpl-top' }, head, h('div', { class: 'tpl-filter' }, search, originChips, filter, liveToggle, newTpl)), grid, empty), {
+    wide: true,
+    onClose: () => { document.removeEventListener('keydown', onKey, true); window.removeEventListener('resize', dock); app.setTemplateBrowsing?.(false); },
+  });
+  app.setTemplateBrowsing?.(true);
+  const overlay = [...document.querySelectorAll('.overlay')].pop();
+  // Dock beside the preview so it stays in view.
+  const dock = () => {
+    const pv = document.querySelector('.preview-pane');
+    const r = pv && !pv.classList.contains('collapsed') ? pv.getBoundingClientRect() : null;
+    const docked = !!(r && r.width > 300 && window.innerWidth - r.width > 520);
+    overlay.classList.toggle('tpl-docked', docked);
+    overlay.style.right = docked ? `${window.innerWidth - r.left}px` : '';
+    overlay.style.top = docked ? `${r.top}px` : '';
+  };
+  dock();
+  window.addEventListener('resize', dock);
+  const visibleCards = () => [...grid.querySelectorAll('.tpl-card:not(.new)')].filter((c) => !c.hidden);
+  const cols = () => Math.max(1, getComputedStyle(grid).gridTemplateColumns.split(' ').length);
+  const move = (d) => {
+    const cards = visibleCards();
+    if (!cards.length) return;
+    let i = cards.findIndex((c) => c.classList.contains('on'));
+    i = i < 0 ? 0 : Math.max(0, Math.min(cards.length - 1, i + d));
+    cards[i].focus({ preventScroll: true });
+    cards[i].scrollIntoView({ block: 'nearest' });
+    cards[i].click();
+  };
+  const onKey = (e) => {
+    if (!overlay.isConnected) return;
+    const inSearch = e.target === search;
+    if (e.key === 'Escape') {
+      e.preventDefault(); e.stopPropagation();
+      if (inSearch && search.value) { search.value = ''; applyFilter(); return; }
+      if (app.book.template !== original) applyTemplate(app, tplById(original), { quiet: true });
+      close();
+      return;
+    }
+    if (e.key === 'Enter' && !inSearch && e.target.closest?.('.tpl-card:not(.new)')) { e.preventDefault(); close(); toast(`Template: ${tplById(app.book.template).name}`); return; }
+    if (inSearch && e.key !== 'ArrowDown') return;
+    const d = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: cols(), ArrowUp: -cols() }[e.key];
+    if (d === undefined || e.target.closest?.('.segmented, .tpl-origins')) return;
+    e.preventDefault();
+    move(inSearch ? 0 : d);
+  };
+  document.addEventListener('keydown', onKey, true);
   requestAnimationFrame(() => { search.focus(); grid.querySelector('.tpl-card.on')?.scrollIntoView({ block: 'nearest' }); });
   void reopen;
 }
@@ -373,7 +468,7 @@ export function generatedPanel(app, sec) {
       return h('div', { class: 'gen-panel' },
         h('p', { class: 'hint' }, 'The title page is generated from your book details.'),
         field('Title', titleInput(app, b, 'title', ch)), field('Subtitle', titleInput(app, b, 'subtitle', ch)),
-        field('Author', textInput(b, 'author', ch)), field('Publisher / imprint', textInput(b, 'publisher', ch)));
+        authorsField(b, ch), field('Publisher / imprint', textInput(b, 'publisher', ch)));
     case 'toc':
       return h('div', { class: 'gen-panel' }, field('Heading', textInput(sec, 'title', ch, { placeholder: 'Contents' })),
         h('p', { class: 'hint' }, 'Built automatically from your sections. Print and PDF show page numbers; e-books get tappable links and a navigation menu.'));
@@ -397,7 +492,8 @@ export function generatedPanel(app, sec) {
 /* --------------------------------------------------------- statistics */
 /** A small (?) with an explanation shown on hover or focus. */
 export function helpTip(text) {
-  return h('span', { class: 'help-tip', tabindex: 0, role: 'note', 'aria-label': text, 'data-tip': text }, '?');
+  // Positioned by the app's hover tips, so it always stays inside the window.
+  return h('span', { class: 'help-tip', tabindex: 0, role: 'note', 'aria-label': text, title: text }, '?');
 }
 
 const HELP = {
@@ -415,7 +511,7 @@ const HELP = {
   'Automated Readability': 'Grade level from characters per word and words per sentence.',
   'Lexical diversity': 'Distinct words as a share of all words. Higher means a more varied vocabulary; it falls naturally as a text gets longer.',
   Dialogue: 'The share of words inside quotation marks.',
-  'Adverbs (‑ly)': 'Words ending in -ly, a quick proxy for adverbs. Many writers trim them in favour of stronger verbs.',
+  'Adverbs (‑ly)': 'Words ending in -ly, a quick proxy for adverbs. Many writers trim them in favor of stronger verbs.',
   'Possible passive voice': 'Phrases like “was taken” or “were seen”. Not always wrong — a prompt to check who is doing the action.',
   'Complex words (3+ syllables)': 'The share of words with three or more syllables. More makes text feel denser.',
   'Sentences over 30 words': 'Long sentences can be fine, but a lot of them in a row can tire readers.',
@@ -452,7 +548,7 @@ export function textInsights(units, { pages = 0, trimLabel = '', unitLabel = 'Se
   const r = rep.readability;
   const list = (rows, fmt) => h('ol', { class: 'wordlist' }, rows.map(([w, c]) => h('li', {}, h('span', {}, w), h('b', {}, fmt ? fmt(c) : n(c)))));
   const kv = (rows) => h('table', { class: 'kv' }, rows.map(([k, v]) => h('tr', {}, h('td', {}, ...withHelp(k)), h('td', { class: 'num' }, String(v)))));
-  if (!t.words) return h('div', { class: 'stats' }, h('p', { class: 'hint ins-empty' }, 'There’s no text to analyse yet.'));
+  if (!t.words) return h('div', { class: 'stats' }, h('p', { class: 'hint ins-empty' }, 'There’s no text to analyze yet.'));
 
   return h('div', { class: 'stats' },
     h('div', { class: 'tiles' },

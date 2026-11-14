@@ -3,6 +3,7 @@
 // Works through a small context object:
 //   ctx = { book, kind, markDirty(), units(), jump(id), unitWord, suggest() }
 import { h, icon, confirmDialog, popover, closePopovers, assetUrl, toast } from './ui.js';
+import { toBin } from './bin.js';
 import { AVATARS, avatarSvg, squareAvatar, AVATAR_PX } from './avatars.js';
 import { ROLES, DEFAULT_ATTRIBUTES, CHARACTER_COLORS, newCharacter, appearances, characterNames } from '../shared/characters.js';
 import { newId } from '../shared/sections.js';
@@ -10,7 +11,7 @@ import { newId } from '../shared/sections.js';
 const initials = (n) => String(n || '?').trim().split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase() || '?';
 
 const picOk = (v) => typeof v === 'string' && /^assets\/[A-Za-z0-9_\-./]{1,120}\.(png|jpe?g)$/.test(v) && !v.includes('..');
-/** A character's avatar: their picture, an icon portrait, or their initials — on their colour. */
+/** A character's avatar: their picture, an icon portrait, or their initials — on their color. */
 export function avatar(c, size = 32) {
   const style = { width: `${size}px`, height: `${size}px`, fontSize: `${Math.round(size * 0.38)}px`, background: c.color || CHARACTER_COLORS[0] };
   if (picOk(c.avatar)) return h('span', { class: 'ch-avatar pic', style }, h('img', { src: assetUrl(c.avatar), alt: '' }));
@@ -19,7 +20,7 @@ export function avatar(c, size = 32) {
   return h('span', { class: 'ch-avatar', style }, initials(c.name));
 }
 
-/** Avatar picker: colour, an icon portrait, your own picture, or initials. */
+/** Avatar picker: color, an icon portrait, your own picture, or initials. */
 function avatarPopover(anchor, c, onChange) {
   const pick = (v) => { if (v) c.avatar = v; else delete c.avatar; onChange(); closePopovers(); };
   const fileIn = h('input', { type: 'file', accept: 'image/png,image/jpeg,image/webp,image/gif', hidden: true });
@@ -34,18 +35,18 @@ function avatarPopover(anchor, c, onChange) {
       if (small) toast(`That picture is smaller than ${AVATAR_PX} × ${AVATAR_PX} px, so it may look soft`, 'info', 3500);
     } catch (err) { toast(String(err.message || err), 'error'); }
   });
-  const swatch = (col) => h('button', { class: `ch-color${col === c.color ? ' on' : ''}`, style: { background: col }, title: 'Colour', 'aria-label': `Colour ${col}`, onclick: () => { c.color = col; onChange(); closePopovers(); } });
+  const swatch = (col) => h('button', { class: `ch-color${col === c.color ? ' on' : ''}`, style: { background: col }, title: 'Color', 'aria-label': `Color ${col}`, onclick: () => { c.color = col; onChange(); closePopovers(); } });
   const iconBtn = (a) => h('button', { class: `ch-av-pick${c.avatar === `icon:${a.id}` ? ' on' : ''}`, title: a.label, 'aria-label': a.label, onclick: () => pick(`icon:${a.id}`) },
     h('span', { class: 'ch-avatar ic', style: { width: '36px', height: '36px', background: c.color || CHARACTER_COLORS[0] } }, avatarSvg(a.id)));
   const node = h('div', { class: 'ch-av-panel' },
-    h('div', { class: 'pop-head' }, 'Colour'),
+    h('div', { class: 'pop-head' }, 'Color'),
     h('div', { class: 'ch-colors' }, CHARACTER_COLORS.map(swatch)),
     h('div', { class: 'pop-head' }, 'Icon'),
     h('div', { class: 'ch-av-grid' }, AVATARS.map(iconBtn)),
     h('div', { class: 'ch-av-acts' },
       h('button', { class: 'btn small', onclick: () => fileIn.click() }, icon('image', 14), 'Upload Picture…'),
       h('button', { class: 'btn small plain', onclick: () => pick(null) }, 'Use Initials'), fileIn),
-    h('p', { class: 'hint ch-av-hint' }, `Pictures: a square image, ${AVATAR_PX} × ${AVATAR_PX} px or larger (PNG or JPEG). Others are cropped to the centre square and saved in the book's assets.`));
+    h('p', { class: 'hint ch-av-hint' }, `Pictures: a square image, ${AVATAR_PX} × ${AVATAR_PX} px or larger (PNG or JPEG). Others are cropped to the center square and saved in the book's assets.`));
   popover(anchor, [{ node }], { width: 330 });
 }
 
@@ -121,7 +122,7 @@ export function openCharacters(ctx, sheet, { select } = {}) {
     const a = apps.get(c.id) || [];
     const mentions = a.reduce((n, x) => n + x.count, 0);
 
-    const av = h('button', { class: 'ch-av-btn', title: 'Avatar — choose a colour and an icon, or upload a picture', onclick: () => avatarPopover(av, c, () => { save(); drawList(); drawDetail(); }) }, avatar(c, 64), h('span', { class: 'ch-av-edit' }, icon('pen', 12)));
+    const av = h('button', { class: 'ch-av-btn', title: 'Avatar — choose a color and an icon, or upload a picture', onclick: () => avatarPopover(av, c, () => { save(); drawList(); drawDetail(); }) }, avatar(c, 64), h('span', { class: 'ch-av-edit' }, icon('pen', 12)));
     const name = h('input', { class: 'ch-name', value: c.name || '', placeholder: 'Character name', 'aria-label': 'Name', spellcheck: 'false' });
     name.addEventListener('input', () => { c.name = name.value; save(); drawList(); av.replaceChildren(avatar(c, 64)); });
     name.addEventListener('change', () => { recount(); drawList(); drawApp(); });
@@ -132,7 +133,8 @@ export function openCharacters(ctx, sheet, { select } = {}) {
     const first = h('input', { type: 'checkbox', checked: c.matchFirst !== false });
     first.addEventListener('change', () => { c.matchFirst = first.checked; save(); recount(); drawList(); drawApp(); });
     const del = h('button', { class: 'btn small plain danger', onclick: async () => {
-      if (!(await confirmDialog(`Delete ${c.name || 'this character'}?`, 'Their attributes and notes will be removed. Your manuscript isn’t changed.'))) return;
+      if (!(await confirmDialog(`Delete ${c.name || 'this character'}?`, 'They move to the Recycle Bin, where you can restore them. Your manuscript isn’t changed.'))) return;
+      toBin(book, { kind: 'character', title: c.name || 'Unnamed character', item: c, where: { index: list.indexOf(c), cards: (book.plot?.cards || []).filter((k) => (k.chars || []).includes(c.id)).map((k) => k.id) } });
       list.splice(list.indexOf(c), 1);
       for (const card of book.plot?.cards || []) card.chars = (card.chars || []).filter((x) => x !== c.id);
       current = list[0]?.id || null; save(); recount(); drawList(); drawDetail();

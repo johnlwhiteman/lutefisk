@@ -36,7 +36,7 @@ const p = (...xs) => xs.join('\n\n');
 const contents = {};
 for (const s of book.sections) contents[s.id] = DEFAULT_CONTENT[s.type] || '';
 contents[S('dedication').id] = '*For my father, who kept the porch light on.*';
-contents[S('epigraph').id] = '*Light thinks it travels faster than anything but it is wrong. No matter how fast light travels, it finds the darkness has always got there first.*\n\n— A traveller’s proverb';
+contents[S('epigraph').id] = '*Light thinks it travels faster than anything but it is wrong. No matter how fast light travels, it finds the darkness has always got there first.*\n\n— A traveler’s proverb';
 contents[S('prologue').id] = p(
   'Long before the road had a name, the valley had its lamps. They stood at every crossing like patient sentries, iron posts with glass hearts, and every evening someone climbed a ladder to wake them.',
   'Nobody remembered who lit the first one. Everyone remembered who lit the last.');

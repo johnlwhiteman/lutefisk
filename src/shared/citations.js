@@ -25,7 +25,7 @@ function parseDate(d) {
   return { y: Number(m[1]), m: m[2] ? Number(m[2]) : null, d: m[3] ? Number(m[3]) : null };
 }
 
-/** Split "Jane Q. Doe" → {given:'Jane Q.', family:'Doe'}; keeps organisations literal. */
+/** Split "Jane Q. Doe" → {given:'Jane Q.', family:'Doe'}; keeps organizations literal. */
 export function parseName(raw) {
   const s = clean(raw).replace(/^by\s+/i, '');
   if (!s) return null;

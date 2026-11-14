@@ -37,7 +37,7 @@ export function openCoverEditor(app, key, onDone) {
     const { W, H } = frameSize();
     const d = dims();
     const s = baseScale() * st.zoom;
-    const hw = W / (2 * s * d.w), hh = H / (2 * s * d.h); // half crop size in normalised coords
+    const hw = W / (2 * s * d.w), hh = H / (2 * s * d.h); // half crop size in normalized coords
     st.cx = Math.min(1 - hw, Math.max(hw, st.cx));
     st.cy = Math.min(1 - hh, Math.max(hh, st.cy));
   }
@@ -51,7 +51,7 @@ export function openCoverEditor(app, key, onDone) {
     stage.style.height = `${H + 80}px`;
     frame.style.width = `${W}px`;
     frame.style.height = `${H}px`;
-    // Centre of the stage minus the crop centre, in screen pixels.
+    // Center of the stage minus the crop center, in screen pixels.
     const ox = (W + 160) / 2 - st.cx * d.w * s;
     const oy = (H + 80) / 2 - st.cy * d.h * s;
     view.style.width = `${img.naturalWidth * s}px`;

@@ -18,7 +18,7 @@ const render = (tex, display = false) => {
   return mathml.get(k);
 };
 
-/** Resolves to { tex, display }, { remove: true } or null if cancelled. */
+/** Resolves to { tex, display }, { remove: true } or null if canceled. */
 export function openMathDialog({ tex = '', display = false, isEdit = false } = {}) {
   return new Promise((resolve) => {
     const ta = h('textarea', { class: 'math-src', rows: 5, spellcheck: 'false', placeholder: 'e.g.  E = mc^2   or   \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}', 'aria-label': 'LaTeX source' });

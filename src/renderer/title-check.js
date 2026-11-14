@@ -1,4 +1,4 @@
-// Capitalize My Title: a small button beside a title field. It analyses the
+// Capitalize My Title: a small button beside a title field. It analyzes the
 // title and shows it in each style (Chicago, APA, MLA, AP, sentence case),
 // marking the words that would change, so you can pick one.
 import { h, icon, popover, closePopovers, toast } from './ui.js';
@@ -29,7 +29,8 @@ export function openTitleCheck(anchor, input, opts = {}) {
   const title = input.value.trim();
   if (!title) { toast('Type a title first', 'info', 1500); input.focus(); return; }
   const preferred = opts.getStyle?.() || '';
-  const results = analyzeTitle(title);
+  // The book's style (its citation style unless you chose another) comes first.
+  const results = analyzeTitle(title).sort((a, b) => (b.id === preferred) - (a.id === preferred));
   const follows = results.filter((r) => r.matches && r.id !== 'sentence').map((r) => r.label);
   const apply = (text) => {
     input.value = text;
@@ -50,7 +51,7 @@ export function openTitleCheck(anchor, input, opts = {}) {
       r.id !== preferred && opts.setStyle ? h('button', { type: 'button', class: 'btn small plain', title: `Make ${r.long} the style this book’s titles are checked against`, onclick: (e) => { e.stopPropagation(); opts.setStyle(r.id); closePopovers(); openTitleCheck(anchor, input, opts); } }, 'Make default') : null)));
   const all = opts.applyAll ? h('div', { class: 'tc-all' },
     h('span', {}, opts.applyAll.label),
-    h('select', { class: 'tc-all-sel', 'aria-label': 'Style for every title' }, TITLE_STYLES.map((s) => h('option', { value: s.id, selected: s.id === (preferred || 'chicago') }, s.label))),
+    h('select', { class: 'tc-all-sel', 'aria-label': 'Style for every title' }, TITLE_STYLES.map((s) => h('option', { value: s.id, selected: s.id === (preferred || 'apa') }, s.label))),
     h('button', { type: 'button', class: 'btn small', onclick: (e) => { const id = e.currentTarget.previousSibling.value; closePopovers(); opts.applyAll.run(id); } }, 'Apply')) : null;
   const panel = h('div', { class: 'tc-panel', onmousedown: (e) => e.stopPropagation() },
     h('div', { class: 'tc-head' }, icon('capTitle', 16), h('b', {}, 'Capitalize My Title'), h('span', { class: 'tc-sum' }, summary)),

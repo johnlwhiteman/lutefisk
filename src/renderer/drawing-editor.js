@@ -1,4 +1,4 @@
-// Freehand drawing: pen, pencil, brush, marker, shapes and eraser with colours,
+// Freehand drawing: pen, pencil, brush, marker, shapes and eraser with colors,
 // widths and opacity. Strokes are kept as editable JSON in the book's assets;
 // a PNG copy is what e-readers, print and Word receive.
 import { h, icon, toast } from './ui.js';
@@ -95,7 +95,7 @@ function drawStroke(c, s, si) {
 
 /**
  * Open the drawing editor. existing: { json, rel, pngRel } to edit, or null for a new drawing.
- * Resolves with { png, json } paths (in assets/) or null if cancelled.
+ * Resolves with { png, json } paths (in assets/) or null if canceled.
  */
 export function openDrawingEditor(existing = null) {
   return new Promise((resolve) => {
@@ -159,7 +159,7 @@ export function openDrawingEditor(existing = null) {
     // Toolbar
     const toolBtns = TOOLS.map((t) => h('button', { type: 'button', class: `dr-tool${t.id === st.tool ? ' on' : ''}`, 'data-t': t.id, title: `${t.label} — ${t.hint}`, onclick: () => { st.tool = t.id; for (const b of toolBtns) b.classList.toggle('on', b.dataset.t === t.id); } }, toolGlyph(t.id), h('span', {}, t.label)));
     const swatches = COLORS.map((c) => h('button', { type: 'button', class: `dr-swatch${c === st.color ? ' on' : ''}`, title: c, style: { background: c }, onclick: () => setColor(c) }));
-    const custom = h('input', { type: 'color', value: st.color, title: 'Custom colour', 'aria-label': 'Custom colour' });
+    const custom = h('input', { type: 'color', value: st.color, title: 'Custom color', 'aria-label': 'Custom color' });
     custom.addEventListener('input', () => setColor(custom.value));
     function setColor(c) { st.color = c; custom.value = c; for (const s of swatches) s.classList.toggle('on', s.title === c); }
     const widthIn = h('input', { type: 'range', min: '1', max: '60', value: String(st.width), 'aria-label': 'Width' });
@@ -205,7 +205,7 @@ export function openDrawingEditor(existing = null) {
       h('div', { class: 'dr-body' },
         h('aside', { class: 'dr-side' },
           h('div', { class: 'dr-group' }, h('h4', {}, 'Tip'), h('div', { class: 'dr-tools' }, toolBtns)),
-          h('div', { class: 'dr-group' }, h('h4', {}, 'Colour'), h('div', { class: 'dr-swatches' }, swatches, custom)),
+          h('div', { class: 'dr-group' }, h('h4', {}, 'Color'), h('div', { class: 'dr-swatches' }, swatches, custom)),
           h('div', { class: 'dr-group' }, h('h4', {}, 'Width'), h('div', { class: 'dr-row' }, widthIn, widthLbl)),
           h('div', { class: 'dr-group' }, h('h4', {}, 'Opacity'), h('div', { class: 'dr-row' }, opIn, opLbl)),
           h('label', { class: 'dr-check' }, fillBox, 'Fill shapes (tinted)'),

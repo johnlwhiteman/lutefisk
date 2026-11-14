@@ -44,11 +44,7 @@ export function renderSection(sec, ctx) {
       });
       notes = r.notes;
       const head = NO_HEAD.has(type) ? '' : header(sec, ctx);
-      let photo = '';
-      if (type === 'about-author' && book.authorPhoto && safeAssetPath(book.authorPhoto)) {
-        photo = `<img class="bk-author-photo" src="${esc(ctx.assetUrl ? ctx.assetUrl(book.authorPhoto) : book.authorPhoto)}" alt="${esc(book.author || 'Author photo')}"${ctx.xhtml ? ' /' : ''}>`;
-      }
-      inner = `${head}<div class="bk-body">${photo}${r.html}</div>`;
+      inner = `${head}<div class="bk-body">${r.html}</div>`;
       if (notes.length && book.notesPlacement !== 'book') inner += notesBlock(notes, ctx);
     }
   }

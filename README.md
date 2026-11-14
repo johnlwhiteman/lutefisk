@@ -1,303 +1,176 @@
-# Lutefisk
+<h1 align="center">Lutefisk</h1>
 
-**Write, design and publish books — privately, on your own computer.**
+<p align="center"><b>Write, design and publish books, privately, on your own computer.</b></p>
 
-Lutefisk is a desktop book studio for macOS, Windows and Linux. You write in a clean editor; beside it, a live preview shows your book exactly as it will appear on a Kindle, an iPhone, a Galaxy tablet or as a printed, bound book. When you're ready, it exports a store-ready EPUB, a print-ready PDF, Word, RTF, MOBI, Markdown or plain text — all from one manuscript.
+<p align="center">
+  macOS · Windows · Linux &nbsp;|&nbsp; No accounts · No cloud · No tracking
+</p>
 
-Everything stays on your machine. There are no accounts, no cloud and no telemetry, and your books are plain Markdown files in an ordinary folder.
+> [!WARNING]
+> **Experimental and unsupported.** Lutefisk is a personal, experimental project. It is provided as is, with no support, no warranty and no promise of updates or fixes. Features may change or be removed at any time, and book files from one version might not open in another. Keep your own backups of anything you write with it, and use it at your own risk. See [Disclaimer](#disclaimer).
 
-> Lutefisk is an experimental personal project. It is provided as is, without support or warranty.
+![Lutefisk: the binder, the editor and a live Kindle preview](docs/screenshots/main.png)
+
+Lutefisk is a desktop book studio. You write in a calm editor while a live preview shows the page as it will look on a Kindle, an iPhone, a Galaxy tablet or a printed book. When the book is ready, export it as an EPUB, a print-ready PDF, a Word file and more.
+
+Your books stay on your computer. Lutefisk has no accounts, no cloud sync, no telemetry and no auto-update, and the app window can't reach the internet at all.
 
 ---
 
 ## Contents
 
 - [Highlights](#highlights)
-- [A tour of the window](#a-tour-of-the-window)
-- [Writing](#writing)
-- [Organizing a book](#organizing-a-book)
-- [Previewing](#previewing)
-- [Designing: templates](#designing-templates)
-- [Research, citations and characters](#research-citations-and-characters)
-- [Goals, history and Insights](#goals-history-and-insights)
-- [Exporting](#exporting)
-- [Settings](#settings)
-- [Your book on disk](#your-book-on-disk)
-- [Keyboard shortcuts](#keyboard-shortcuts)
-- [Security and privacy](#security-and-privacy)
-- [Building from source](#building-from-source)
-- [SBOM](#sbom)
+- [Features](#features)
+- [Getting started](#getting-started)
+- [Your books](#your-books)
+- [Privacy and security](#privacy-and-security)
 - [Project layout](#project-layout)
-
----
+- [Disclaimer](#disclaimer)
 
 ## Highlights
 
-- **See it as readers will.** Seven devices drawn to scale — iPad, iPhone, Galaxy S26, Galaxy Tab S11, Kindle Basic, Kindle Paperwhite and Kindle Scribe — and a print preview that shows facing pages as an open book, with a crease down the middle. The preview updates as you type, in a few milliseconds.
-- **95 book designs** plus your own. A template sets fonts, chapter openings, ornaments, drop caps and scene breaks for every format at once.
-- **One manuscript, seven formats.** EPUB 3 (passes EPUBCheck with no errors or warnings), PDF, Word, RTF, MOBI, Markdown and plain text.
-- **Built for long work.** Chapters and scenes, labels and statuses, notes, comments, research, a character tracker, a plot board, writing goals and a history of every writing day.
-- **Private by design.** The app window can't reach the network at all. The only request Lutefisk ever makes is when you ask it to read a citation from a web page.
+### See the finished book while you write
 
----
+The preview redraws on the next frame after each keystroke. Choose a device, such as the iPad, iPhone, Galaxy S26, Galaxy Tab S11 or the Kindle Basic, Paperwhite or Scribe, and the page is drawn to scale with that screen's real resolution.
 
-## A tour of the window
+### 95 templates, one key press apart
 
-The **Library** opens first: your books as covers. Open one, start a **New Book**, or drag a book folder onto the window.
+A template sets the whole look of the book: fonts, chapter openings, drop caps, ornaments and scene breaks. The template list sits right under the device. Open it and press **↑** or **↓** to step through the designs; the device shows each one with example text, or with your own book when you turn on **Live**. Press **Enter** to keep a design, or **Esc** to go back. To change a template, click ⚙. Your edited version is saved as *Modified*, and a template you build from scratch is saved as *Custom*.
 
-A book window has three panes. Each pane has a hide button at its top right; a slim rail brings it back.
+![The template list beside the device, showing each design with example text](docs/screenshots/templates.png)
 
-| Area | What's there |
-|---|---|
-| **Title bar** | The Lutefisk icon (back to the Library), the **Settings** gear and the **day/night** switch on the left; **Export** on the right. |
-| **Binder** (left) | The cover, with **Book** (settings) and **Goals** stacked beside it; a search box; Front Matter, Body and Back Matter; **Characters**, **Plot** and **Research**. |
-| **Editor** (middle) | **Top row:** **Chapters** (jump anywhere), **Scenes**, **Comments** (shows or hides the comment margin on the right), and two split buttons — side by side, and one above the other — then the editor text size, **Focus** and hide. **Below the title:** the formatting toolbar. **Bottom bar:** Insights, the book's word and page counts, this session's change, today's words against your goal, this chapter's words, and the **stopwatch** (the stopwatch icon) at the far right. Click any number to open Insights. |
-| **Preview** (right) | **Top row:** E-book / Print, the reading **text size**, **Focus** and hide. **Second row:** the device (or trim size), its reading theme (light, sepia, dark), **Templates** and the **gear** that edits the current template, with **Zoom** at the right. Arrows on each side of the device turn the page; the pager underneath has the cover, the contents and the end. |
+### Print, as an open book
 
-Hover any button to see what it does — each control shows a short explanation after a moment.
+Switch to **Print** to see facing pages exactly as the PDF will print them. The print view includes trim sizes, running heads, page numbers, footnotes, drop caps, chapters that start on a right-hand page and roman numerals for the front matter.
 
----
+![A printed spread at 6″ × 9″](docs/screenshots/print-spread.png)
 
-## Writing
+### Plan before you write
 
-### The editor
+Use the **logline builder** to sum up your story in one sentence. It suggests a draft from five short prompts (Who, When, Wants, But and Or else) and shows when the sentence is a good length.
 
-The toolbar has two rows:
+![The logline builder](docs/screenshots/logline.png)
 
-| Row 1 | Row 2 |
-|---|---|
-| **Style:** Paragraph, Heading 1–6, Blockquote, Verse, Hanging Indent | **Image** |
-| **Bold** ⌘B · **Italic** ⌘I · **Underline** ⌘U | **Citation / Footnote** menu, with the book's citation style |
-| **Text:** Subscript ⌘, · Superscript ⌘. · Strikethrough ⇧⌘X | **Table** |
-| **Lists:** Bulleted, Numbered, **Custom Bullet…** | **f(x)** — an equation in LaTeX ⌥⌘E |
-| **Breaks:** Page Break ⌘↵, Scene Break | **Symbol** ⌥⌘I |
-| **Link** ⌘K | **Clear Formatting**, **Undo** ⌘Z, **Redo** ⇧⌘Z |
+### Snippets you can drag into place
 
-- **Links** have a name and a web address. Selected text becomes the name; inside a link, the same button edits it, and clearing the address removes it.
-- **Custom bullets:** any one to three characters — ★ ✓ ➤ ❧ ◆, or anything from the symbol picker.
-- **Verse** keeps every line where you put it. Enter starts a new line in the stanza; Enter on an empty line starts the next stanza.
-- **Hanging indent** suits reference lists and glossaries.
-- **Tables:** Tab moves between cells; the Table menu adds and removes rows and columns and aligns them.
-- **Code blocks:** type ``` and a language name. Highlighting works in every format and stays readable on black-and-white e-ink.
-- **Equations:** type LaTeX and watch it typeset. Inline or on its own line; click an equation to edit it.
-- **Symbols:** more than 700 characters in 12 categories, searchable by name or code point.
-- **Images:** drag to resize; choose alignment, caption, alt text and Word-style text wrapping.
-- **Right-click** for cut, copy, paste, New Comment, and inserting notes, citations, equations, symbols, links and tables.
-- **Find and Replace** (⇧⌘H) works on the whole book, a chapter, a scene or the selection, and can be undone.
+Save passages for later as **Snippets**, with the same formatting as the editor: bold, italic, underline, lists, block quotes and more. Open the Snippets panel beside the editor and drag a snippet to the exact spot in a chapter or scene. Once it's dropped, the text appears there and the snippet leaves the list.
 
-### Comments
+<p>
+  <img src="docs/screenshots/snippet-editor.png" alt="Writing a snippet with formatting" width="62%">
+  <img src="docs/screenshots/snippets.png" alt="The Snippets panel beside the editor, ready to drag in" width="34%">
+</p>
 
-Comments work like Word's: select text and press ⌃⌥M (or right-click › New Comment). They appear as balloons in a margin on the right, where you can reply, resolve, reopen and delete them. The **Comments** button at the top of the editor shows or hides that margin (⌥⌘C). They never appear in the book, but the Word export can include them as real Word comments.
+### A to-do list for every book
 
-### Split editor
+Under **Research**, the **To-Do** list keeps track of what's left to do. Each item records when you added and finished it and can have an optional deadline. Tick **Today** to give new to-dos today's date by default. Statistics show what's open, overdue and due this week, how much is complete, and how often you finish on time. A red badge in the binder shows how many to-dos are overdue.
 
-Two views of the same chapter, each scrolled separately — **side by side** or **one above the other**. Click the lit button again to close the split. You can type in either view.
+<p>
+  <img src="docs/screenshots/todo.png" alt="The To-Do list with deadlines and statistics" width="78%">
+  <img src="docs/screenshots/binder-research.png" alt="The binder, with a red badge for overdue to-dos" width="18%">
+</p>
 
-### Focus mode
+### Code, highlighted
 
-**Focus** at the top of the editor (⇧⌘F) hides everything but your page, dims all but the current paragraph and keeps your line centred. Esc exits.
+The **</>** button inserts a code block. Choose from dozens of programming, scripting and shell languages (Python, JavaScript, Bash, PowerShell, Go, Rust and many more) and data formats such as JSON, YAML and XML. Highlighting looks the same in the editor, the preview and every export. Line numbers are off by default; switch them on for any block.
 
-### Capitalize My Title
+![A Python code block with line numbers, in the editor and on the Kindle](docs/screenshots/code.png)
 
-The **Tᴛ** button beside any chapter, scene or book title shows it in **Chicago**, **APA**, **MLA**, **AP** and **sentence case**, highlights the words each style would change, and tells you which styles it already follows. **Use** applies one; **Make default** remembers your book's style. **Book › Chapters › Title capitalization** recapitalizes every title at once.
+### A Recycle Bin
 
----
+Deleted chapters, scenes, research notes, snippets, to-dos, characters and plot cards go to the **Recycle Bin** at the bottom of the binder. **Restore** puts an item back where it was. **Delete Forever** or **Empty Recycle Bin** removes items for good.
 
-## Organizing a book
+![The Recycle Bin](docs/screenshots/bin.png)
 
-- **Sections.** Front matter (title page, copyright, dedication, epigraph, contents, foreword, preface, introduction), the body (prologue, chapters, epilogue) and back matter (acknowledgments, appendices, endnotes, bibliography, index, about the author). Generated pages — title page, contents, bibliography, index — fill themselves in.
-- **Chapters menu.** Jump to any chapter or part of the book from the top of the editor.
-- **Scenes.** Write any chapter in scenes: split at scene breaks or at the cursor, add scenes, drag them to reorder or onto another chapter. In the book they're joined with your template's scene break.
-- **Chapter overview.** Click a chapter that has scenes to see its scene cards. The chapter and **every scene card** have **Insights** (just that text), a **Label**, a **Status** and an **Exclude from export** switch — change them right there. An open scene has the same row under its title.
-- **Labels and statuses.** Coloured labels and statuses such as First Draft or Needs Review, plus your own. The binder's **filter** shows only what you choose.
-- **Exclude from export.** Keep a chapter or scene in the manuscript but out of the preview and every export.
-- **Chapter headings.** Number and title, title only, or number only — "Chapter One", "Chapter 1", "Chapter I", "One", "1" or "I" — set for the whole book in **Book › Chapters**.
-- **Subtitles** appear under chapter titles in every format.
+### Know your text
 
----
+**Insights** charts your writing history and analyzes the text itself. It reports readability scores, sentence lengths, dialogue, adverbs, passive voice and a breakdown by section. **Reset…** clears the writing history for one book or for all of them.
 
-## Previewing
+![Insights: readability, style and a breakdown by section](docs/screenshots/insights.png)
 
-- **E-book.** The page is laid out in the device's real reading area, so pages break where they would on the device. Choose the reading text size, a reading font (21 bundled open-licence fonts, or device fonts such as Bookerly or Georgia when installed) and, on phones and tablets, light, sepia or dark. Kindles show E Ink paper and grayscale images.
-- **Print.** Eight trim sizes, shown as facing pages of an open book. Mirrored margins, chapters starting on right-hand pages, Roman-numbered front matter, running heads and folios. Fit the whole page or the width. The PDF is exactly what you see.
-- **Move around the whole book**, from the front cover to the back: the side arrows, the arrow keys, Home and End, or the pager. The **contents** button lists every part of the book; links on the book's own Contents page work too. Typing snaps the preview back to your cursor.
-- **Zoom** up to 400% (⌘ + scroll to zoom, then drag to pan).
-- **Focus** (⌥⌘P) shows only the preview. In Focus, the left mouse button turns back a page and the right turns forward.
+### Make it yours
 
----
+Lutefisk has day and night modes and 14 skins. Some skins are plain colors, and others add a texture, such as stitched Leather, a walnut Study, woven Linen, a Blueprint grid or Midnight's field of stars.
 
-## Designing: templates
+<p>
+  <img src="docs/screenshots/skin-leather.png" alt="The Leather skin" width="49%">
+  <img src="docs/screenshots/night-midnight.png" alt="The Midnight skin at night" width="49%">
+</p>
 
-**Templates** opens a gallery of 95 designs, each previewed with your own words. Find one by **name** with the search box at the top, or filter by category: General, Literary, Fiction, Nonfiction, Accessibility and World & Heritage (Chinese and Japanese Mincho, Old English blackletter, Gutenberg, Illuminated, Elizabethan).
+<p align="center"><img src="docs/screenshots/skins.png" alt="Choosing a skin in Settings" width="60%"></p>
 
-A template controls body and heading fonts, size, spacing and indents, justification, chapter heading style and size, rules, the ornament under the title, scene breaks, drop caps and the opening line. It applies everywhere: preview, PDF, EPUB, Word, RTF and MOBI.
-
-**Make it yours.** The **gear** beside Templates, or **Edit** in **Book** settings, opens the designer on the design you're using, with your own chapter as the sample; **All Templates…** in the designer goes back to the gallery. Built-in designs stay as they are; your changes are saved as your own copy. **New Template** starts a design of your own. The ornament can be a character (❦, ⁂…) or **a picture**, at any width. Your templates travel with the book and appear under **My Templates** in your other books. The **Custom** and **Changed from original** filters show your own designs and the built-ins you've customized, and each card says which design it came from.
-
-**Drop caps** can be switched on or off for e-books and print separately, and per chapter. The **opening line** after a drop cap can be left as typed, set in small capitals, or in all capitals.
-
----
-
-## Research, citations and characters
-
-- **Research.** Notes, images, PDFs and other files, kept with the book and never exported. Open any of them beside the editor.
-- **Bibliography.** Paste a link to an article, page or DOI and Lutefisk reads its citation details. References are formatted in **APA 7**, **MLA 9** or **Chicago 17**; one switch changes every in-text citation and every reference in the book.
-- **Citations.** Insert one from the Citation/Footnote menu (⌥⌘C) with an optional page number. They format themselves.
-- **Footnotes** go at the end of each chapter (pop-up notes in e-books) or in an Endnotes section.
-- **Characters.** A cast with roles, colours, nicknames and any attributes you like. Each character has an **avatar**: initials, one of 18 icon portraits (person, long hair, bearded, child, elder, knight, wizard, royalty, detective, villain, cat, dog, bird, robot, ghost, romance, hero, unknown) on their colour, or a picture you upload — square, **256 × 256 px or larger**, PNG or JPEG; others are cropped to the centre. Names that come up often in your manuscript are offered as potential characters, each with an avatar. Lutefisk finds each character in the manuscript and shows where they appear, chapter by chapter and scene by scene.
-- **Plot board.** A swimlane board: plotlines as rows, chapters as columns, cards you drag between them.
-- **Index.** Mark terms, and the Index lists every page they appear on.
-
----
-
-## Goals, history and Insights
-
-- **Goals:** manuscript length in words or pages, a deadline (Lutefisk works out the words a day you need), and daily goals for this book and across all books. **Reset goals** offers **This Book** or **All Books**, each after asking; your writing history is kept.
-- **Stopwatch:** the stopwatch icon at the bottom right of the editor. Click to start and stop; it never starts by itself, and its time is added to the day's log.
-- **Insights** — click any number in the editor's bottom bar:
-  - **Writing History:** words per day against your goal, manuscript size over time, writing time, streaks, a year-long calendar and a daily log.
-  - **Your Text:** words, reading time, six readability scores, dialogue, adverbs, passive voice, sentence lengths, most-used words and phrases, and a chapter-by-chapter table — for this book, all your books, or a single chapter or scene.
-
-Every figure has a **?** that explains it. History is kept only on your computer.
-
----
-
-## Exporting
-
-**Export** in the title bar:
-
-| Format | Details |
-|---|---|
-| **EPUB** | EPUB 3 with an EPUB 2 table of contents. Passes EPUBCheck 5.3 with no errors or warnings. Equations as images (every reader) or MathML. |
-| **Markdown** | One `.md` file with YAML front matter, plus its images. |
-| **MOBI** | For sideloading onto older Kindles. (Amazon KDP takes EPUB.) |
-| **PDF** | Print-ready, exactly as the print preview shows, with page numbers in the contents and index. |
-| **Rich Text** | RTF with your trim size, mirrored margins, footnotes, images, tables and equations. |
-| **Text** | Plain UTF-8 text at 72 columns: headings in capitals, `* * *` scene breaks, footnotes as `[1]`, equations as LaTeX. |
-| **Word** | .docx with real styles, native footnotes, a contents field, mirrored margins, odd/even headers and, optionally, your comments. |
-
----
-
-## Book settings
-
-**Book** in the binder opens the book's settings: General (title, author, publisher, ISBN, description…), Covers, Chapters and Print. At the top is the book's **template**, with **Change…** (the gallery) and **Edit**. At the bottom, **Delete Book…** moves the whole book folder to the Trash after you confirm by typing its title.
-
----
-
-## Settings
-
-The gear next to the Lutefisk icon (⌘,):
-
-- **Appearance:** day, night, or follow the system. The sun/moon button switches quickly.
-- **Books folder:** where new books go and what the Library lists. By default it's `local/books` inside the folder you start Lutefisk from — ignored by git, so your writing is never committed — or `Documents/Lutefisk` when that folder can't be used. With **Remember the last folder** on, New Book starts where you last saved a book.
-- **Saving:** automatically a few seconds after each change, or by hand with ⌘S.
-- **Backups:** a folder for the `.zip` backups each book can make from the Library.
-
----
-
-## Your book on disk
-
-A book is an ordinary folder you can back up, sync or put under version control:
-
-```
-The Lantern Road/
-  book.yaml            details, settings, section order, bibliography, templates
-  chapters/<id>.md     one Markdown file per section or scene
-  assets/              cover, author photo, images, ornaments
-  stats/               your writing history
-```
-
-The Markdown adds a few book features:
-
-| Feature | Syntax |
-|---|---|
-| Scene break | `* * *` |
-| Page break | `\newpage` |
-| Underline | `++text++` |
-| Subscript / superscript | `H~2~O`, `E = mc^2^` |
-| Verse | `::: verse` … `:::` |
-| Hanging indent | `::: hanging` … `:::` |
-| Centred or right-aligned | `::: center` … `:::`, `::: right` … `:::` |
-| Custom bullets | `::: bullets ★` … `:::` around a list |
-| Footnote | `text[^1]` and `[^1]: note text` |
-| Citation | `[@id, p. 12]` |
-| Equation | `$E = mc^2$`, `$$…$$` |
-| Sized image | `![alt](assets/map.png "Caption"){width=60% align=center}` |
-| Comment | `{==text==}{>>#id<<}` |
-| Placeholders | `{{author}}`, `{{year}}`, `{{title}}`, `{{isbn}}` |
-
----
-
-## Keyboard shortcuts
+## Features
 
 | | |
 |---|---|
-| New book / Open / Save | ⌘N / ⌘O / ⌘S |
-| Library | ⇧⌘L |
-| New chapter / New scene / Split scene at cursor | ⇧⌘N / ⌥⌘N / ⌥⌘K |
-| Search the book / Find and replace | ⌘F / ⇧⌘H |
-| Focus on writing / Focus on preview | ⇧⌘F / ⌥⌘P |
-| E-book / Print / Insights | ⌥⌘1 / ⌥⌘2 / ⌥⌘3 |
-| Split editor | ⌥⌘\ |
-| Show or hide comments | ⌥⌘C |
-| Editor text size | ⌘+ / ⌘− / ⌘0 |
-| Interface size | ⇧⌘+ / ⇧⌘− / ⇧⌘0 |
-| Export PDF | ⌘P |
+| **Write** | Paragraph styles, lists with custom bullets, footnotes, citations (APA, MLA and Chicago), equations, tables, images, code blocks with highlighting and optional line numbers, comments, find and replace, focus mode, text size from 25% to 300%, and a title capitalization check that follows your citation style |
+| **Structure** | Front matter, chapters and scenes, and back matter, with a generated title page, contents, bibliography and index |
+| **Plan** | A logline builder; Planning, with characters (with portraits) and a plot board; and Research, with formatted Snippets you drag into the text and a To-Do list with deadlines and statistics |
+| **Recover** | A Recycle Bin for everything you delete, with Restore and Delete Forever |
+| **Organize** | Labels, statuses and Exclude from Export for every chapter and scene, with a filter in the binder |
+| **Track** | A live word and page count as you type, daily goals, a stopwatch, writing history (which you can reset) and text insights |
+| **Preview** | Seven phones, tablets and e-readers drawn to scale, plus a print view with facing pages, a zoom control and a choice of light, sepia or dark reading themes |
+| **Export** | EPUB, PDF, Word, RTF, MOBI, Markdown and plain text |
+| **Back up** | Save a .zip or a folder copy of any book, beside the book or anywhere you choose (⇧⌘S) |
+| **Learn** | Built-in help and a guided tour that walks you through your first book (F1) |
 
-On Windows and Linux, use Ctrl for ⌘.
+## Getting started
 
----
-
-## Security and privacy
-
-- **Your book never leaves your computer.** No accounts, telemetry, crash reports, auto-updates or web fonts. Every http(s) and WebSocket request from the app window is cancelled.
-- **One exception, on request:** reading a citation. When you paste a link and press *Analyze*, Lutefisk fetches that one address, with no cookies and none of your book. Local-network addresses are refused, and the page is parsed without running its scripts.
-- **Locked-down app.** The interface runs sandboxed and context-isolated with a strict Content-Security-Policy and no Node.js. It reaches the rest of the app only through a small, fixed set of calls, and every file path is checked so nothing outside the open book can be read or written.
-- **Safe Markdown.** Raw HTML is disabled; links are limited to http(s) and mailto, images to the book's `assets/` folder.
-- **Hardened packages.** Packaged apps refuse debugging switches and turn on Electron's security fuses (no RunAsNode, no NODE_OPTIONS or `--inspect`, ASAR integrity, cookie encryption).
-- **Dependencies.** `npm audit` reports no vulnerabilities and `npm run check:deprecated` finds no deprecated packages.
-
----
-
-## Building from source
-
-Requires Node.js 22 or later.
+You need [Node.js](https://nodejs.org) 22 or later.
 
 ```bash
-npm ci
-npm start                                  # build and launch
-npm test                                   # unit tests
-node scripts/make-sample.mjs "./local/The Lantern Road"   # a sample book to open
+npm ci        # install dependencies
+npm start     # build and launch Lutefisk
+npm test      # run the unit tests
 ```
 
-Installable apps:
+To build an installable app, run `npm run package:mac`, `npm run package:win` or `npm run package:linux` on that system.
 
-```bash
-npm run package:mac       # on macOS   → release/Lutefisk-darwin-<arch>/Lutefisk.app
-npm run package:win       # on Windows → release/Lutefisk-win32-x64/Lutefisk.exe
-npm run package:linux     # on Linux   → release/Lutefisk-linux-x64/lutefisk
+New to Lutefisk? Click **?** in the title bar or press **F1**. The guided tour walks you through making your first book.
+
+![The Library](docs/screenshots/library.png)
+
+## Your books
+
+Each book is an ordinary folder, so you can copy it, sync it yourself or put it under version control:
+
+```
+My Book/
+├── book.yaml       title, authors, template, settings, snippets and to-dos
+├── chapters/       one Markdown file per chapter
+└── assets/         cover, pictures and character portraits
 ```
 
-To distribute publicly, sign the app with an Apple Developer ID (and notarize it) or a Windows Authenticode certificate.
+When you run Lutefisk from its source folder, new books go in `local/books`. Git ignores that folder, so your writing is never committed. A packaged copy of the app keeps books in `Documents/Lutefisk` instead. You can change the folder in Settings.
 
-**Keep your writing out of the repository.** Books live in your books folder (`local/books` when run from source), and settings in Lutefisk's own data folder. Nothing in the source refers to a path on your computer. `local/`, backups and `.env` files are ignored by git.
+## Privacy and security
 
----
-
-## SBOM
-
-`npm run sbom` regenerates `sbom/`: CycloneDX 1.5 and SPDX 2.3 for the shipped app (`lutefisk-runtime.*`) and for the full toolchain (`lutefisk-full.*`), plus `SBOM.md`, a readable summary with licences and the audit result.
-
----
+- **Nothing leaves your computer.** The app window is blocked from making network requests. There is one exception: the Bibliography tool fetches a link that you paste. It sends no cookies and none of your book, and it refuses addresses on your local network.
+- **Locked-down interface.** The interface is sandboxed and context-isolated, runs under a strict Content-Security-Policy and talks to the rest of the app only through a narrow bridge. The app checks every file path before it touches a file.
+- **Safe Markdown.** Raw HTML is disabled. Links must use http, https or mailto, and pictures must come from the book's own `assets` folder.
+- **Hardened builds.** Packaged builds turn on Electron's security fuses and refuse debugging switches.
+- **Clean dependencies.** `npm audit` reports no vulnerabilities, and `npm run check:deprecated` finds no deprecated packages.
+- **Software bill of materials.** `npm run sbom` writes CycloneDX 1.5 and SPDX 2.3 files and a readable summary to `sbom/`.
 
 ## Project layout
 
 ```
-src/main/       main process: windows, protocols, file access, EPUB / Word / RTF / MOBI / text export, PDF printing
-src/preload/    the narrow bridge between the interface and the main process
-src/renderer/   the interface: editor (ProseMirror), device and print previews, panels, template designer
-src/shared/     Markdown dialect, templates, fonts, citations, title case, statistics, book → HTML
-scripts/        build, package, SBOM, deprecation check, sample book
-test/           unit tests and an end-to-end test that drives the real app
-assets/, build/ the Lutefisk icon (a pale fish with a fish-hook L and a pen-nib tail) and its platform versions
+src/main/          main process: windows, files, exports, PDF printing
+src/preload/       the narrow bridge to the interface
+src/renderer/      the interface: editor, previews, panels, help
+src/shared/        Markdown, templates, fonts, citations, book → HTML
+scripts/           build, package, SBOM, sample book
+test/              unit and end-to-end tests
+docs/screenshots/  the images in this README, made from a sample book
+CLAUDE.md          the full specification
 ```
+
+## Disclaimer
+
+Lutefisk is an **experimental, unsupported** personal project.
+
+- **No support.** Questions, bug reports and feature requests may go unanswered.
+- **No warranty.** The software is provided "as is", without warranty of any kind. You use it at your own risk.
+- **Things may change.** Features can change or disappear between versions, and the book format may change without a migration path.
+- **Back up your work.** Lutefisk saves your books as ordinary files on your computer and includes a Back Up command, but it is not a substitute for your own backups.
+- **Not for publishing decisions.** Previews and exports aim to be accurate, but always check your files in the store's or printer's own tools before you publish.
+

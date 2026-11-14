@@ -1,14 +1,18 @@
 // Lutefisk renderer: library, application shell, section management, live
 // preview wiring, autosave and exports.
 import {
-  h, icon, dialog, toast, confirmDialog, debounce, assetUrl, popover, closePopovers, segmented, generatedCover, timeAgo, brandMark, installTooltips,
+  h, icon, dialog, toast, confirmDialog, debounce, assetUrl, popover, closePopovers, segmented, generatedCover, timeAgo, brandMark, installTooltips, rangeBubble,
 } from './ui.js';
 import { createEditor } from './editor.js';
 import { createDevicePreview } from './preview-device.js';
 import { createPrintPreview } from './preview-print.js';
-import { openBookSettings, openTemplates, openStats, generatedPanel, sheet } from './panels.js';
+import { openBookSettings, openTemplates, openStats, generatedPanel, sheet, allTemplates, applyTemplate } from './panels.js';
 import { openTemplateEditor } from './template-editor.js';
 import { titleCheckButton, recaseAll } from './title-check.js';
+import { bookTitleStyle } from '../shared/titlecase.js';
+import { openHelp, startTour, resumeTour } from './help.js';
+import { openLogline, openSnippets, pickSnippet, snippetRail, openTodos, overdueCount } from './notebook.js';
+import { toBin, binCount, openRecycleBin } from './bin.js';
 import { STYLES as CITE_STYLES } from '../shared/citations.js';
 import { createGoals, goalMeter, openGoals, stopwatchControl, sessionPopover, applyGoalReset } from './goals.js';
 import { openInsights } from './history.js';
@@ -16,11 +20,11 @@ import { openCharacters, suggestNames } from './characters.js';
 import { openPlot } from './plot.js';
 import { createSearch } from './search.js';
 import { replaceInMarkdown } from './editor.js';
-import { loadSettings, settings, autosaver, openSettings, backupProject, themeButton } from './settings.js';
+import { loadSettings, settings, autosaver, openSettings, backupProject, backupDialog, themeButton } from './settings.js';
 import { countMentions } from '../shared/characters.js';
 import { createCommentRail } from './comments.js';
 import {
-  GROUPS, SECTION_TYPES, DEFAULT_CONTENT, defaultBook, ensureSections, newId, numberSections, CHAPTER_HEADINGS,
+  GROUPS, SECTION_TYPES, DEFAULT_CONTENT, defaultBook, ensureSections, newId, numberSections, aboutAuthorsLabel, CHAPTER_HEADINGS, syncAuthors,
 } from '../shared/sections.js';
 import { renderSection, prepare, citer } from '../shared/bookhtml.js';
 import { TRIMS } from '../shared/print.js';
@@ -57,17 +61,17 @@ const countWords = (t) => (String(t || '').match(/[\p{L}\p{N}’']+/gu) || []).l
 
 /* ================================================================ zoom */
 
-const ZOOMS = [80, 90, 100, 110, 125, 140, 160, 180, 200];
-let editorZoom = (() => { try { return Number(localStorage.getItem('lutefisk.editorZoom')) || 110; } catch { return 110; } })();
+const ZOOMS = [25, 33, 50, 67, 75, 80, 90, 100, 110, 125, 150, 175, 200, 250, 300];
+const ZMIN = 25, ZMAX = 300;
+let editorZoom = (() => { try { return Math.min(ZMAX, Math.max(ZMIN, Number(localStorage.getItem('lutefisk.editorZoom')) || 110)); } catch { return 110; } })();
 function applyZoom() {
   document.documentElement.style.setProperty('--editor-zoom', String(editorZoom / 100));
-  if (els.zoomLbl) els.zoomLbl.textContent = `${editorZoom}%`;
-  if (els.zoomRange && Number(els.zoomRange.value) !== editorZoom) els.zoomRange.value = String(editorZoom);
+  if (els.zoomRange && Number(els.zoomRange.value) !== editorZoom) { els.zoomRange.value = String(editorZoom); els.zoomBubble?.(); }
   try { localStorage.setItem('lutefisk.editorZoom', String(editorZoom)); } catch { /* storage unavailable */ }
 }
 function zoom(dir) {
   if (dir === 0) editorZoom = 100;
-  else if (!ZOOMS.includes(editorZoom)) editorZoom = Math.max(70, Math.min(200, editorZoom + dir * 10));
+  else if (!ZOOMS.includes(editorZoom)) editorZoom = Math.max(ZMIN, Math.min(ZMAX, editorZoom + dir * 10));
   else {
     const i = ZOOMS.findIndex((z) => z >= editorZoom);
     editorZoom = ZOOMS[Math.max(0, Math.min(ZOOMS.length - 1, (ZOOMS[i] === editorZoom ? i : dir > 0 ? i - 1 : i) + dir))];
@@ -127,14 +131,22 @@ async function showLibrary() {
   const view = h('div', { class: 'library' },
     h('div', { class: 'lib-titlebar drag' }),
     h('div', { class: 'lib-brand' }, brandMark(52, 'lib-brand-mark'), h('div', {}, h('div', { class: 'brand-word' }, 'Lutefisk'), h('div', { class: 'brand-tag' }, 'Write, design and publish books, privately.')),
-      h('div', { class: 'lib-tools' }, themeButton(), h('button', { class: 'lib-gear', title: 'Settings', 'aria-label': 'Settings', onclick: () => openSettings(sheet) }, icon('gear', 20)))),
+),
     h('header', { class: 'lib-head' },
       h('div', {}, h('h1', {}, 'Library'), h('p', {}, data.books.length ? `${data.books.length} ${data.books.length === 1 ? 'book' : 'books'}` : 'Your books will appear here.')),
       h('div', { class: 'lib-actions' },
         h('button', { class: 'btn', title: 'Open a book folder', onclick: openBook }, icon('folder', 16), 'Open…'),
-        h('button', { class: 'btn primary', onclick: () => newBookSheet(data) }, icon('plus', 16), 'New Book'))),
+        h('button', { class: 'btn primary', onclick: () => newBookSheet(data) }, icon('plus', 16), 'New Book'),
+        h('div', { class: 'lib-tools' },
+          h('button', { class: 'lib-gear', title: 'Settings', 'aria-label': 'Settings', onclick: () => openSettings(sheet) }, icon('gear', 20)),
+          themeButton(),
+          h('button', { class: 'lib-gear', title: 'Help — how to make your first book, and a guided tour (F1)', 'aria-label': 'Help', onclick: () => openHelp(app) }, icon('help', 20))))),
     h('main', { class: 'lib-scroll' }, grid,
-      !data.books.length ? h('div', { class: 'lib-empty' }, brandMark(96, 'lib-empty-mark'), h('p', {}, 'Create your first book, or drag a book folder onto this window.')) : null),
+      !data.books.length ? h('div', { class: 'lib-empty' }, brandMark(96, 'lib-empty-mark'), h('p', {}, 'Create your first book, or drag a book folder onto this window.'),
+        h('div', { class: 'lib-empty-acts' },
+          h('button', { class: 'btn primary', onclick: () => newBookSheet(data) }, icon('plus', 15), 'New Book'),
+          h('button', { class: 'btn', onclick: () => startTour(app) }, icon('play', 14), 'Show Me How'),
+          h('button', { class: 'btn plain', onclick: () => openHelp(app) }, icon('help', 15), 'Help'))) : null),
     h('footer', { class: 'lib-foot' }, icon('eye', 14), h('span', {}, `New books are saved to ${pretty(data.libraryDir)}. Everything stays on this computer — no accounts, no cloud, no tracking.`)),
     h('div', { class: 'drop-hint' }, h('div', {}, icon('folder', 40), h('b', {}, 'Drop to open book'))));
   root.replaceChildren(view);
@@ -152,6 +164,9 @@ async function deleteProject(b) {
   try { await B.deleteProject(b.dir); toast(`Moved “${b.title || 'Untitled'}” to the ${B.platform === 'win32' ? 'Recycle Bin' : 'Trash'}`, 'ok', 3000); } catch (err) { toast(clean(err), 'error', 6000); }
   showLibrary();
 }
+
+/** Back Up Book: a copy of the whole book folder, beside it or anywhere you choose. */
+app.backupBook = () => backupDialog(app, () => save());
 
 /** Delete the open book (Book settings › General): asks first, then moves its folder to the Trash. */
 app.deleteOpenBook = async () => {
@@ -188,7 +203,7 @@ async function newBookSheet(lib) {
   const tplSel = h('select', { 'aria-label': 'Template' }, ['General', 'Fiction', 'Literary', 'Nonfiction'].map((c) =>
     h('optgroup', { label: c }, TEMPLATES.filter((t) => t.category === c).sort((a, b) => a.name.localeCompare(b.name)).map((t) => h('option', { value: t.id }, t.name)))));
   tplSel.value = 'classic';
-  let titleStyle = '';
+  let titleStyle = 'apa'; // same default as citations
   const tcOpts = { getStyle: () => titleStyle, setStyle: (id) => { titleStyle = id; } };
   try { author.value = localStorage.getItem('lutefisk.author') || ''; } catch { /* ignore */ }
   const locLbl = h('span', { class: 'loc-path' }, pretty(parent));
@@ -219,7 +234,7 @@ async function newBookSheet(lib) {
     create.disabled = true;
     const book = ensureSections(defaultBook({ title: title.value.trim() || 'Untitled Book', subtitle: subtitle.value.trim(), author: author.value.trim() }));
     book.template = tplSel.value;
-    if (titleStyle) book.titleStyle = titleStyle;
+    if (titleStyle !== 'apa') book.titleStyle = titleStyle;
     book.uuid = crypto.randomUUID();
     try { localStorage.setItem('lutefisk.author', author.value.trim()); } catch { /* ignore */ }
     const contents = {};
@@ -283,10 +298,14 @@ function buildShell() {
 
   const titlebar = h('header', { class: 'titlebar drag' },
     h('div', { class: 'tb-left' },
-      h('button', { class: 'tb-icon tb-brand', title: 'Lutefisk Library (⇧⌘L)', 'aria-label': 'Library', onclick: showLibrary }, brandMark(22)),
-      h('button', { class: 'tb-icon', title: 'Settings', 'aria-label': 'Settings', onclick: () => openSettings(sheet) }, icon('gear', 18)), themeButton()),
-    h('div', { class: 'tb-doc' }, els.docTitle, els.save),
-    h('div', { class: 'tb-right' }, exportBtn));
+      h('button', { class: 'tb-icon tb-brand', title: 'Lutefisk Library (⇧⌘L)', 'aria-label': 'Library', onclick: showLibrary }, brandMark(22))),
+    h('div', { class: 'tb-doc' }, els.docTitle, h('div', { class: 'tb-doc-sub' }, els.tbCount = h('span', { class: 'tb-count', 'aria-live': 'off' }), els.save,
+      h('button', { class: 'tb-backup', title: 'Back Up Book — save a copy of the whole book folder, beside it or in another folder', onclick: () => app.backupBook() }, icon('download', 12), 'Back Up'))),
+    h('div', { class: 'tb-right' }, exportBtn,
+      h('div', { class: 'tb-tools' },
+        h('button', { class: 'tb-icon', title: 'Settings', 'aria-label': 'Settings', onclick: () => openSettings(sheet) }, icon('gear', 18)),
+        themeButton(),
+        h('button', { class: 'tb-icon tb-help', title: 'Help — a short guide and a guided tour (F1)', 'aria-label': 'Help', onclick: () => openHelp(app) }, icon('help', 18)))));
 
   els.sidebar = h('aside', { class: 'sidebar', 'aria-label': 'Sections' });
   els.secKind = h('div', { class: 'sec-kind' });
@@ -294,7 +313,13 @@ function buildShell() {
   els.secSub = h('input', { class: 'sec-subtitle', 'aria-label': 'Chapter subtitle', placeholder: 'Subtitle (optional)', spellcheck: 'true', hidden: true });
   els.secSub.addEventListener('input', () => { const s = currentSection(); if (!s || currentScene()) return; if (els.secSub.value.trim()) s.subtitle = els.secSub.value; else delete s.subtitle; app.markDirty(); app.htmlCache?.clear?.(); schedulePreview(); });
   els.secSub.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); app.editor.focus(); } });
-  els.commentsBtn = h('button', { class: 'scene-btn comments-btn', onclick: () => setCommentsHidden(!commentsHidden_()) });
+  els.commentsBtn = h('button', { class: 'sb-tool ed-icon-btn comments-btn', onclick: () => setCommentsHidden(!commentsHidden_()) });
+  els.snipBtn = h('button', { class: 'sb-tool ed-icon-btn snippets-btn', onclick: () => setSnippetsShown(!snippetsShown) });
+  els.snipRail = snippetRail(app, {
+    onNew: () => openSnippets(app, sheet, { targets: snippetTargets, insert: insertSnippetInto }, refreshSidebar, { fresh: true }),
+    onEdit: (sn) => openSnippets(app, sheet, { targets: snippetTargets, insert: insertSnippetInto }, refreshSidebar, { edit: sn.id }),
+    onClose: () => setSnippetsShown(false),
+  });
   els.dcSwitch = h('input', { type: 'checkbox', class: 'switch', role: 'switch', 'aria-label': 'Drop cap for this chapter' });
   els.dcRow = h('label', { class: 'dc-chip', title: 'Drop cap at the start of this chapter' }, icon('dropcap', 15), h('span', {}, 'Drop cap'), els.dcSwitch);
   els.headRow = h('span', { hidden: true }); // chapter heading style now lives in Book › Chapters and the templates
@@ -339,17 +364,18 @@ function buildShell() {
     els.clock.el);
   app.goals.onUpdate = () => { els.goalMeter.draw(); els.clock.draw(); drawBookBar(); };
   // Text size for the editor — the same A–A slider as the device preview.
-  els.zoomLbl = h('button', { class: 'pv-size-lbl zoom-val', title: 'Actual size (⌘0)', onclick: () => zoom(0) });
-  els.zoomRange = h('input', { type: 'range', min: 70, max: 200, step: 5, class: 'pv-size', 'aria-label': 'Editor text size' });
+  els.zoomRange = h('input', { type: 'range', min: ZMIN, max: ZMAX, step: 5, class: 'pv-size', 'aria-label': 'Editor text size' });
   els.zoomRange.addEventListener('input', () => { editorZoom = Number(els.zoomRange.value); applyZoom(); });
-  const zoomCtl = h('div', { class: 'pv-ctl size-ctl editor-size', title: 'Editor text size (⌘+ / ⌘−) — doesn’t change the book' },
+  els.zoomRange.addEventListener('dblclick', () => zoom(0));
+  const zoomCtl = h('div', { class: 'pv-ctl size-ctl editor-size', title: 'Editor text size (⌘+ / ⌘−; double-click for actual size) — doesn’t change the book' },
     h('button', { class: 'small-a', 'aria-label': 'Smaller text', onclick: () => zoom(-1) }, 'A'), els.zoomRange,
-    h('button', { class: 'big-a', 'aria-label': 'Larger text', onclick: () => zoom(1) }, 'A'), els.zoomLbl);
+    h('button', { class: 'big-a', 'aria-label': 'Larger text', onclick: () => zoom(1) }, 'A'));
+  els.zoomBubble = rangeBubble(els.zoomRange);
   applyZoom();
   // Editor focus — the same chip as the preview's.
   els.edFocusBtn = h('button', { class: 'chip-toggle focus-btn ed-focus-btn', title: 'Focus on writing — hide everything else (⇧⌘F)', 'aria-label': 'Focus on writing', onclick: () => toggleWritingFocus() }, icon('expand', 15), h('span', {}, 'Focus'));
   els.edTop = h('div', { class: 'ed-top' },
-    h('div', { class: 'sec-opts' }, els.chaptersBtn, els.sceneBtn, els.commentsBtn, els.headTools = h('span', { class: 'sec-tools' })),
+    h('div', { class: 'sec-opts' }, els.chaptersBtn, els.sceneBtn, els.commentsBtn, els.snipBtn, els.headTools = h('span', { class: 'sec-tools' })),
     h('span', { class: 'spacer' }),
     zoomCtl, els.edFocusBtn,
     h('button', { class: 'sb-tool', title: 'Hide the editor', 'aria-label': 'Hide the editor', onclick: () => setPane('editor', false) }, icon('panelHide', 16)));
@@ -364,13 +390,14 @@ function buildShell() {
 
   els.viewSeg = segmented([{ value: 'device', label: 'E-book', icon: 'device', title: 'E-book — the book as it reads on a phone, tablet or e-reader' }, { value: 'print', label: 'Print', icon: 'print', title: 'Print — the printed book as an open spread, exactly as the PDF will be' }], 'device', (v) => setView(v), { label: 'Preview' });
   els.pvRow1 = h('div', { class: 'pv-row1-slot' });
+  els.pvZoom = h('div', { class: 'pv-row1-slot pv-zoom-slot' });
   els.researchHost = h('div', { class: 'pv-host research-host', hidden: true });
   els.deviceHost = h('div', { class: 'pv-host' });
   els.printHost = h('div', { class: 'pv-host', hidden: true });
   els.focusBtn = h('button', { class: 'chip-toggle focus-btn', title: 'Focus — show only the preview, full screen (⌥⌘P). Esc to exit.', 'aria-label': 'Focus on the preview', onclick: () => toggleFocus() }, icon('expand', 15), h('span', {}, 'Focus'));
   const previewPane = h('section', { class: 'preview-pane' },
     paneRail('preview', 'Preview', 'device'),
-    h('div', { class: 'pv-switch' }, els.viewSeg, h('span', { class: 'spacer' }), els.pvRow1, els.focusBtn,
+    h('div', { class: 'pv-switch' }, els.viewSeg, els.pvZoom, h('span', { class: 'spacer' }), els.pvRow1, els.focusBtn,
       h('button', { class: 'sb-tool', title: 'Hide the preview', 'aria-label': 'Hide the preview', onclick: () => setPane('preview', false) }, icon('panelHide', 16))),
     els.deviceHost, els.printHost, els.researchHost);
   const splitter = h('div', { class: 'splitter', role: 'separator', 'aria-orientation': 'vertical', title: 'Drag to resize' });
@@ -412,6 +439,9 @@ function buildShell() {
     },
     pickCitation: (attrs) => pickCitation(attrs),
     formatCitation: (ref, loc) => citer(app.book || {})(ref, loc),
+    snippets: () => app.book?.snippets || [],
+    pickSnippet: (at) => pickSnippet(app, at, (md) => app.editor.insertMarkdown(md), refreshSidebar),
+    dropSnippet: (id, pos) => dropSnippet(id, pos),
     citationStyles: () => CITE_STYLES.map((st) => ({ ...st, on: (app.book?.citationStyle || 'apa') === st.id })),
     setCitationStyle: (id) => { if (!app.book) return; app.book.citationStyle = id; app.editor.redraw(); app.markDirty(); app.htmlCache.clear(); app.refreshPreview(true); toast(`Every citation and reference is now in ${CITE_STYLES.find((x) => x.id === id)?.label}`, 'ok', 2200); },
     importImage: () => app.importImage(),
@@ -427,11 +457,7 @@ function buildShell() {
       toast(`“${term}” added to the index`);
     },
   });
-  // Split editor: one button for side by side, one for one above the other. Click the lit one to close the split.
-  const splitBtn = (dir, ic, label, tip) => h('button', { class: 'ql-split-btn', type: 'button', 'data-dir': dir, title: tip, 'aria-label': label, 'aria-pressed': 'false', onclick: () => toggleSplit(app.editor.split === dir ? false : dir) }, icon(ic, 16));
-  els.splitSideBtn = splitBtn('side', 'split', 'Split side by side', 'Split side by side — a second view of this chapter beside the first, scrolled separately (⌥⌘\\). Click again to close.');
-  els.splitStackBtn = splitBtn('stack', 'splitV', 'Split one above the other', 'Split one above the other — a second view of this chapter below the first, scrolled separately. Click again to close.');
-  els.headTools.append(els.splitSideBtn, els.splitStackBtn);
+  els.editorMount.append(els.snipRail); // beside the text, under the toolbar
   app.search = createSearch({
     units: (scope = 'book') => {
       const numbered = numberSections(app.book.sections, templateById(app.book.template), app.book);
@@ -493,6 +519,8 @@ function buildShell() {
   app.device = createDevicePreview(els.deviceHost, app);
   app.print = createPrintPreview(els.printHost, app);
   app.openTemplates = () => openTemplates(app);
+  app.templateList = () => allTemplates(app);
+  app.useTemplate = (id) => { const t = allTemplates(app).all.find((x) => x.id === id); if (t) applyTemplate(app, t, { quiet: true }); };
   app.editTemplate = () => openTemplateEditor(app, templateById(app.book.template), { current: true });
   app.openInsights = (tab) => openInsights(app, app.goals, sheet, { tab, trimLabel: () => TRIMS[app.book.print?.trim || '6x9']?.label.split(' (')[0] || '' });
   applyPanes();
@@ -500,7 +528,7 @@ function buildShell() {
 
 function selectSectionHeader(s) {
   const n = numberSections(app.book.sections, templateById(app.book.template), app.book).find((x) => x.id === s.id);
-  els.secKind.textContent = s.type === 'chapter' ? (n?.label || 'Chapter (no number)') : SECTION_TYPES[s.type].label;
+  els.secKind.textContent = s.type === 'chapter' ? (n?.label || 'Chapter (no number)') : s.type === 'about-author' ? aboutAuthorsLabel(app.book) : SECTION_TYPES[s.type].label;
 }
 
 function syncHeadSel() { /* the chapter heading style moved to Book › Chapters */ }
@@ -626,7 +654,7 @@ function chapterJumpMenu(anchor) {
 /* ---- Capitalize My Title */
 function titleCheckOpts(withAll) {
   return {
-    getStyle: () => app.book?.titleStyle || '',
+    getStyle: () => bookTitleStyle(app.book),
     setStyle: (id) => { if (app.book && app.book.titleStyle !== id) { app.book.titleStyle = id; app.markDirty(); } },
     applyAll: withAll ? {
       label: 'Every chapter and scene title in',
@@ -643,21 +671,6 @@ function titleCheckOpts(withAll) {
       },
     } : null,
   };
-}
-
-/* ---- split editor */
-function toggleSplit(force) {
-  let dir = 'side';
-  try { dir = localStorage.getItem('lutefisk.splitDir') === 'stack' ? 'stack' : 'side'; } catch { /* ignore */ }
-  const on = force ?? (app.editor.split ? false : dir);
-  app.editor.setSplit(on);
-  if (on) try { localStorage.setItem('lutefisk.splitDir', on === 'stack' ? 'stack' : 'side'); } catch { /* ignore */ }
-  const now = app.editor.split;
-  for (const b of [els.splitSideBtn, els.splitStackBtn]) {
-    const lit = now === b.dataset.dir;
-    b.classList.toggle('ql-active', lit);
-    b.setAttribute('aria-pressed', String(lit));
-  }
 }
 
 /* ---- story tools: characters and the plot board */
@@ -706,6 +719,39 @@ function openPlotBoard() {
   }), sheet);
 }
 
+/* ---- snippets panel: every snippet beside the text, ready to drag in */
+let snippetsShown = (() => { try { return localStorage.getItem('lutefisk.snippetsShown') === '1'; } catch { return false; } })();
+function setSnippetsShown(v) {
+  snippetsShown = !!v;
+  try { localStorage.setItem('lutefisk.snippetsShown', snippetsShown ? '1' : '0'); } catch { /* ignore */ }
+  drawSnippetsBtn();
+}
+function drawSnippetsBtn() {
+  if (!els.snipBtn) return;
+  const n = (app.book?.snippets || []).length;
+  const show = snippetsShown && !!app.book && !currentResearch?.();
+  els.snipBtn.hidden = !app.book || !!currentResearch?.();
+  els.snipBtn.classList.toggle('on', show);
+  els.snipBtn.setAttribute('aria-pressed', String(show));
+  els.snipBtn.title = `Snippets — ${show ? 'hide' : 'show'} your snippets beside the text, ready to drag in${n ? ` (${n})` : ''}`;
+  els.snipBtn.setAttribute('aria-label', show ? 'Hide snippets' : 'Show snippets');
+  els.snipBtn.replaceChildren(icon(show ? 'snippet' : 'snippetOff', 17), n ? h('span', { class: 'snip-btn-n' }, String(n)) : '');
+  els.snipRail.hidden = !show;
+  els.editorMount.classList.toggle('with-snippets', show);
+  if (show) els.snipRail.draw();
+}
+/** A snippet dropped into the text: insert it there, then it leaves Snippets. */
+function dropSnippet(id, pos) {
+  const list = app.book?.snippets || [];
+  const sn = list.find((x) => x.id === id);
+  if (!sn) return;
+  if (!app.editor.insertMarkdownAt(sn.text, pos)) return;
+  app.book.snippets = list.filter((x) => x !== sn);
+  app.markDirty();
+  refreshSidebar();
+  toast(`Inserted “${sn.title || 'snippet'}”`, 'ok', 1800);
+}
+
 /* ---- comments: show or hide the highlights and the margin of balloons */
 let commentCount = { open: 0, all: 0 };
 const commentsHidden_ = () => !!app.comments?.hidden;
@@ -721,7 +767,7 @@ function drawCommentsBtn() {
     ? `Comments — show the comment margin on the right (⌥⌘C). ${n ? `${n} open comment${n === 1 ? '' : 's'}.` : 'Select text and press ⌃⌥M to add one.'}`
     : `Comments — hide the comment margin (⌥⌘C). ${n ? `${n} open comment${n === 1 ? '' : 's'}.` : 'Select text and press ⌃⌥M to add one.'}`;
   els.commentsBtn.setAttribute('aria-label', hiddenNow ? 'Show comments' : 'Hide comments');
-  els.commentsBtn.replaceChildren(icon('comment', 14), h('span', {}, 'Comments'), ...(n ? [h('span', { class: 'cm-count' }, String(n))] : []));
+  els.commentsBtn.replaceChildren(icon(hiddenNow ? 'commentOff' : 'comment', 17));
 }
 
 function drawBookBar() {
@@ -733,6 +779,9 @@ function drawBookBar() {
   els.bbWords.num.textContent = words.toLocaleString();
   els.bbPages.num.textContent = `${pages.toLocaleString()}`;
   els.bbPages.unit.textContent = pages === 1 ? 'page' : 'pages';
+  const exact = !!app.printPageCount?.();
+  els.tbCount.textContent = `${words.toLocaleString()} word${words === 1 ? '' : 's'} · ${exact ? '' : '~'}${pages.toLocaleString()} page${pages === 1 ? '' : 's'}`;
+  els.tbCount.title = exact ? 'The whole book: words, and pages in the print layout' : `The whole book: words, and approximate pages (about ${Math.round(wpp)} words a page)`;
   els.bbPages.el.title = app.printPageCount?.() ? 'Pages in the print layout' : `Approximate — about ${Math.round(wpp)} words a page. Open the Print preview for an exact count.`;
   const target = Number(app.book.goals?.targetWords) || 0;
   els.bbGoal.hidden = !target;
@@ -790,6 +839,7 @@ function refreshSidebar() {
   const sb = els.sidebar;
   const book = app.book;
   if (!book) return;
+  drawSnippetsBtn();
   const numbered = numberSections(book.sections, templateById(book.template), book);
   const label = (s) => {
     const n = numbered.find((x) => x.id === s.id);
@@ -819,6 +869,11 @@ function refreshSidebar() {
 
   const scroller = h('div', { class: 'sb-scroll' });
   const navRow = (ic, text, sub, onclick, extra) => h('li', { class: 'sb-row nav' }, h('button', { class: 'sb-name', onclick }, icon(ic, 15), h('span', { class: 'sb-label' }, text), sub ? h('span', { class: 'sb-count' }, sub) : null), extra || null);
+  // The logline: your story in a sentence, above everything else.
+  const ll = (book.logline || '').trim();
+  scroller.append(h('section', { class: 'sb-group nav-group logline' }, h('ul', { class: 'sb-list' },
+    h('li', { class: 'sb-row nav' }, h('button', { class: 'sb-name sb-logline', title: ll ? `Logline — ${ll}` : 'Logline — your story in one or two sentences', onclick: () => openLogline(app, sheet, refreshSidebar) },
+      icon('logline', 15), h('span', { class: 'sb-label' }, ll ? h('span', { class: 'sb-ll-text' }, ll) : 'Logline'), ll ? null : h('span', { class: 'sb-count' }, 'Add'))))));
   for (const g of GROUPS) {
     const included = book.sections.filter((s) => SECTION_TYPES[s.type]?.group === g.id && (s.enabled !== false || SECTION_TYPES[s.type].multi));
     const available = book.sections.filter((s) => SECTION_TYPES[s.type]?.group === g.id && s.enabled === false && !SECTION_TYPES[s.type].multi);
@@ -828,7 +883,7 @@ function refreshSidebar() {
       if (g.id === 'body') items.push({ label: 'Chapter', icon: 'doc', hint: '⇧⌘N', onClick: () => addSection('chapter') });
       if (g.id === 'back') items.push({ label: 'Appendix', icon: 'doc', onClick: () => addSection('appendix') });
       if (items.length && available.length) items.push('-');
-      for (const s of available) items.push({ label: SECTION_TYPES[s.type].label, icon: TYPE_ICON[s.type] || 'doc', hint: SECTION_TYPES[s.type].generated ? 'Automatic' : '', onClick: () => { s.enabled = true; app.markDirty(); selectSection(s.id); } });
+      for (const s of available) items.push({ label: s.type === 'about-author' ? aboutAuthorsLabel(app.book) : SECTION_TYPES[s.type].label, icon: TYPE_ICON[s.type] || 'doc', hint: SECTION_TYPES[s.type].generated ? 'Automatic' : '', onClick: () => { s.enabled = true; app.markDirty(); selectSection(s.id); } });
       if (!items.length) items.push({ label: 'All sections added', disabled: true });
       popover(addBtn, items, { width: 220 });
     });
@@ -866,10 +921,11 @@ function refreshSidebar() {
   }
   const nChars = (book.characters || []).length;
   const nCards = (book.plot?.cards || []).length;
-  scroller.append(h('section', { class: 'sb-group nav-group story' }, h('ul', { class: 'sb-list' },
+  scroller.append(h('section', { class: 'sb-group nav-group story' }, h('div', { class: 'sb-head' }, h('span', {}, 'Planning')), h('ul', { class: 'sb-list' },
     navRow('people', 'Characters', nChars ? String(nChars) : '', () => openCast()),
     navRow('plot', 'Plot', nCards ? `${nCards} card${nCards === 1 ? '' : 's'}` : '', () => openPlotBoard()))));
   scroller.append(researchGroup());
+  scroller.append(binRow());
   sb.append(scroller, app.search.panel);
   sb.classList.toggle('searching', app.search.active);
   const total = enabledSections().reduce((n, s) => n + (SECTION_TYPES[s.type].generated ? 0 : countWords(app.contents[s.id])), 0);
@@ -908,7 +964,7 @@ async function newLabel(target) {
     const b = h('button', { type: 'button', class: `lbl-sw${c === color ? ' on' : ''}`, style: { background: c }, 'aria-label': c, onclick: () => { color = c; sw.querySelectorAll('.lbl-sw').forEach((x) => x.classList.toggle('on', x === b)); } });
     return b;
   }));
-  const res = await dialog({ title: 'New Label', fields: [{ name: 'name', label: 'Name', placeholder: 'e.g. Flashback, Needs research, Mara POV' }], body: h('div', { class: 'fld' }, h('span', {}, 'Colour'), sw), ok: 'Add Label' });
+  const res = await dialog({ title: 'New Label', fields: [{ name: 'name', label: 'Name', placeholder: 'e.g. Flashback, Needs research, Mara POV' }], body: h('div', { class: 'fld' }, h('span', {}, 'Color'), sw), ok: 'Add Label' });
   const name = res?.name?.trim();
   if (!name) return;
   if (!Array.isArray(app.book.labels) || !app.book.labels.length) app.book.labels = DEFAULT_LABELS.map((l) => ({ ...l }));
@@ -1019,8 +1075,13 @@ async function deleteSection(id) {
   const s = app.book.sections.find((x) => x.id === id);
   if (s.type === 'chapter' && app.book.sections.filter((x) => x.type === 'chapter').length <= 1) { toast('A book needs at least one chapter.', 'warn'); return; }
   const words = countWords(app.contents[id]);
-  if (!(await confirmDialog(`Delete “${s.title || SECTION_TYPES[s.type].label}”?`, `${words.toLocaleString()} words will be moved to the book’s .trash folder.`))) return;
+  if (!(await confirmDialog(`Delete “${s.title || SECTION_TYPES[s.type].label}”?`, `${words.toLocaleString()} words. It moves to the Recycle Bin, where you can restore it.`))) return;
+  flushSerialize();
   const i = app.book.sections.indexOf(s);
+  const n = numberSections(app.book.sections, templateById(app.book.template), app.book).find((x) => x.id === id);
+  const texts = { [id]: app.contents[id] || '' };
+  for (const sc of s.scenes || []) texts[sc.id] = app.contents[sc.id] || '';
+  toBin(app.book, { kind: 'section', title: s.type === 'chapter' ? ([n?.label, s.title].filter(Boolean).join(': ') || 'Chapter') : (s.title || SECTION_TYPES[s.type].label), item: s, texts, where: { index: i, after: app.book.sections[i - 1]?.id || null } });
   app.book.sections.splice(i, 1);
   app.removed.push(id);
   for (const sc of s.scenes || []) { app.removed.push(sc.id); delete app.contents[sc.id]; app.dirtyFiles.delete(sc.id); app.editor.forget(sc.id); }
@@ -1065,8 +1126,9 @@ function selectSection(id, goTo) {
   const def = SECTION_TYPES[s.type];
   selectSectionHeader(s);
   els.secTitle.hidden = !!def.generated || ['dedication', 'epigraph', 'copyright'].includes(s.type);
-  els.secTitle.value = s.title || '';
-  els.secTitle.placeholder = s.type === 'chapter' ? 'Chapter title' : def.label;
+  const aboutLbl = s.type === 'about-author' ? aboutAuthorsLabel(app.book) : '';
+  els.secTitle.value = aboutLbl && /^about the authors?$/i.test((s.title || '').trim()) ? aboutLbl : s.title || '';
+  els.secTitle.placeholder = s.type === 'chapter' ? 'Chapter title' : aboutLbl || def.label;
   els.dcRow.hidden = !['chapter', 'prologue', 'epilogue'].includes(s.type);
   els.dcSwitch.checked = s.dropCap !== false;
   els.headRow.hidden = s.type !== 'chapter';
@@ -1076,12 +1138,6 @@ function selectSection(id, goTo) {
   showNotesButton(s);
   syncHeadSel();
   els.secExtra.replaceChildren();
-  if (s.type === 'about-author') {
-    els.secExtra.append(h('div', { class: 'photo-row' },
-      app.book.authorPhoto ? h('img', { src: assetUrl(app.book.authorPhoto), alt: 'Author photo' }) : h('div', { class: 'photo-ph' }, icon('image', 18)),
-      h('button', { class: 'btn small', onclick: async () => { const rel = await app.importImage(); if (rel) { app.book.authorPhoto = rel; app.markDirty(); selectSection(id); } } }, app.book.authorPhoto ? 'Replace Photo…' : 'Add Author Photo…'),
-      app.book.authorPhoto ? h('button', { class: 'btn small plain', onclick: () => { app.book.authorPhoto = ''; app.markDirty(); selectSection(id); } }, 'Remove') : null));
-  }
   if (def.generated) {
     els.editorMount.hidden = true;
     els.genMount.hidden = false;
@@ -1224,6 +1280,7 @@ function showNotesButton(node) {
   if (node.synopsis && !node.notes) { node.notes = node.synopsis; app.markDirty(); } // older books: keep the text, no longer shown
   delete node.synopsis;
   drawCommentsBtn();
+  drawSnippetsBtn();
 }
 
 /** The scenes popover in the editor header. */
@@ -1324,8 +1381,11 @@ function addScene(chapter, at) {
 
 async function deleteScene(chapter, sc) {
   const words = countWords(app.contents[sc.id]);
-  if (words && !(await confirmDialog(`Delete “${sceneLabel(sc, chapter.scenes.indexOf(sc))}”?`, `${words.toLocaleString()} words will be moved to the book’s .trash folder.`))) return;
+  if (words && !(await confirmDialog(`Delete “${sceneLabel(sc, chapter.scenes.indexOf(sc))}”?`, `${words.toLocaleString()} words. It moves to the Recycle Bin, where you can restore it.`))) return;
+  flushSerialize();
   const i = chapter.scenes.indexOf(sc);
+  const cn = numberSections(app.book.sections, templateById(app.book.template), app.book).find((x) => x.id === chapter.id);
+  toBin(app.book, { kind: 'scene', title: sceneLabel(sc, i), item: sc, texts: { [sc.id]: app.contents[sc.id] || '' }, where: { chapter: chapter.id, index: i, from: [cn?.label, chapter.title].filter(Boolean).join(': ') } });
   chapter.scenes.splice(i, 1);
   app.removed.push(sc.id);
   delete app.contents[sc.id];
@@ -1367,7 +1427,7 @@ function combineScenes(chapter) {
 
 function resetHeaderControls() {
   els.dcRow.hidden = true; els.headRow.hidden = true; els.secTitle.hidden = false; els.sceneBtn.hidden = true;
-  els.secSub.hidden = true; els.commentsBtn.hidden = true;
+  els.secSub.hidden = true; els.commentsBtn.hidden = true; els.snipBtn.hidden = true; els.snipRail.hidden = true;
   els.secExtra.replaceChildren();
 }
 
@@ -1487,8 +1547,8 @@ function researchGroup() {
   const addBtn = h('button', { class: 'sb-add', title: 'Add research', 'aria-label': 'Add research' }, icon('plus', 15));
   addBtn.addEventListener('click', () => popover(addBtn, [
     { label: 'Note', icon: 'doc', onClick: () => addResearch('note') },
-    { label: 'Characters', icon: 'people', onClick: () => openCast() },
-    { label: 'Plot', icon: 'plot', onClick: () => openPlotBoard() },
+    { label: 'Snippet', icon: 'snippet', onClick: () => openSnippetsSheet() },
+    { label: 'To-Do', icon: 'checklist', onClick: () => openTodos(app, sheet, refreshSidebar) },
     '-',
     { label: 'Import Files…', icon: 'folder', hint: 'Images, PDFs, docs', onClick: () => importResearch() },
   ], { width: 230 }));
@@ -1512,8 +1572,154 @@ function researchGroup() {
     });
     ul.append(li);
   }
-  if (!items.length) ul.append(h('li', { class: 'sb-empty' }, 'Notes and files for your book. Never exported.'));
-  return h('section', { class: 'sb-group research' }, h('div', { class: 'sb-head' }, h('span', {}, 'Research'), addBtn), ul);
+  const nSnips = (app.book.snippets || []).length;
+  const nb = (ic, text, n, onclick, title) => h('li', { class: 'sb-row nav' }, h('button', { class: 'sb-name', title, onclick }, icon(ic, 15), h('span', { class: 'sb-label' }, text), n ? h('span', { class: 'sb-count' }, String(n)) : null));
+  const notebook = h('ul', { class: 'sb-list sb-notebook' },
+    nb('snippet', 'Snippets', nSnips, () => openSnippetsSheet(), 'Snippets — passages saved to insert into a chapter or scene later'),
+    todoRow());
+  return h('section', { class: 'sb-group research' }, h('div', { class: 'sb-head' }, h('span', {}, 'Research'), addBtn), notebook, ul);
+}
+
+/** Research › To-Do: open count, and a red badge with the number overdue. */
+function todoRow() {
+  const list = Array.isArray(app.book.todos) ? app.book.todos : [];
+  const open = list.filter((t) => !t.done).length;
+  const late = overdueCount(app.book);
+  return h('li', { class: 'sb-row nav' }, h('button', { class: 'sb-name sb-todo', title: `To-Do — things to do for this book${open ? ` · ${open} open` : ''}${late ? ` · ${late} overdue` : ''}`, onclick: () => openTodos(app, sheet, refreshSidebar) },
+    icon('checklist', 15), h('span', { class: 'sb-label' }, 'To-Do'),
+    late ? h('span', { class: 'sb-overdue', 'aria-label': `${late} overdue` }, String(late)) : null,
+    open ? h('span', { class: 'sb-count' }, String(open)) : null));
+}
+
+/* ---- Recycle Bin */
+function binRow() {
+  const n = binCount(app.book);
+  return h('section', { class: 'sb-group nav-group bin-group' }, h('ul', { class: 'sb-list' },
+    h('li', { class: 'sb-row nav' }, h('button', { class: 'sb-name sb-bin', title: 'Recycle Bin — deleted chapters, scenes, notes, snippets, to-dos, characters and plot cards. Restore them from here.', onclick: () => openBin() },
+      icon('trash', 15), h('span', { class: 'sb-label' }, 'Recycle Bin'), n ? h('span', { class: 'sb-count' }, String(n)) : null))));
+}
+function openBin() { openRecycleBin(app, sheet, { restore: restoreFromBin, onChange: () => { refreshSidebar(); app.refreshPreview(true); } }); }
+/** Put a Recycle Bin entry back where it was. Returns true when restored. */
+function restoreFromBin(e) {
+  const b = app.book;
+  const unique = (id) => !(b.sections.some((x) => x.id === id || x.scenes?.some((sc) => sc.id === id)) || (b.research || []).some((x) => x.id === id));
+  const putText = (id, text, note = false) => {
+    app.contents[id] = text ?? '';
+    if (note) { app.removedNotes = app.removedNotes.filter((x) => x !== id); app.dirtyNotes.add(id); }
+    else { app.removed = app.removed.filter((x) => x !== id); app.dirtyFiles.add(id); }
+    app.htmlCache.delete?.(id);
+  };
+  const it = e.item;
+  if (!it) return false;
+  switch (e.kind) {
+    case 'section': {
+      if (!unique(it.id)) { toast('It’s already in the book', 'info'); return true; }
+      const after = e.where?.after ? b.sections.findIndex((x) => x.id === e.where.after) : -1;
+      const at = after >= 0 ? after + 1 : Math.min(e.where?.index ?? b.sections.length, b.sections.length);
+      // Only one of each single section (title page, dedication…): if it was re-added, switch the existing one on instead.
+      if (!SECTION_TYPES[it.type]?.multi && b.sections.some((x) => x.type === it.type && it.type !== 'chapter')) {
+        const ex = b.sections.find((x) => x.type === it.type);
+        ex.enabled = true;
+        putText(ex.id, e.texts?.[it.id] ?? '');
+      } else {
+        b.sections.splice(at, 0, it);
+        for (const [id, text] of Object.entries(e.texts || {})) putText(id, text);
+      }
+      app.markDirty(); app.htmlCache.clear();
+      selectSection(it.id);
+      return true;
+    }
+    case 'scene': {
+      const ch = b.sections.find((x) => x.id === e.where?.chapter);
+      const text = e.texts?.[it.id] ?? '';
+      if (ch && hasScenes(ch)) {
+        if (!unique(it.id)) return true;
+        ch.scenes.splice(Math.min(e.where.index ?? ch.scenes.length, ch.scenes.length), 0, it);
+        putText(it.id, text);
+        rejoin(ch);
+        app.markDirty(); app.htmlCache.clear();
+        selectSection(it.id);
+      } else if (ch) {
+        // The chapter no longer has scenes: add the text at its end, after a scene break.
+        flushSerialize();
+        const prev = (app.contents[ch.id] || '').replace(/\s+$/, '');
+        putText(ch.id, `${prev}${prev ? '\n\n* * *\n\n' : ''}${text.trim()}\n`);
+        app.editor.forget?.(ch.id);
+        app.markDirty(); app.htmlCache.clear();
+        selectSection(ch.id);
+        toast('Added at the end of its chapter', 'info', 2200);
+      } else {
+        // Its chapter was deleted too: it comes back as a chapter of its own, at the end of the body.
+        const fresh = { id: it.id, type: 'chapter', title: it.title || '', enabled: true };
+        const end = b.sections.findIndex((x) => x.type === 'epilogue' || SECTION_TYPES[x.type].group === 'back');
+        b.sections.splice(end < 0 ? b.sections.length : end, 0, fresh);
+        putText(it.id, text);
+        app.markDirty(); app.htmlCache.clear();
+        selectSection(it.id);
+        toast('Its chapter is gone, so it came back as a chapter', 'info', 2600);
+      }
+      return true;
+    }
+    case 'research': {
+      b.research = Array.isArray(b.research) ? b.research : [];
+      if (!unique(it.id)) return true;
+      b.research.splice(Math.min(e.where?.index ?? b.research.length, b.research.length), 0, it);
+      if (isTextItem(it)) putText(it.id, e.texts?.[it.id] ?? '', true);
+      app.markDirty();
+      return true;
+    }
+    case 'snippet': b.snippets = Array.isArray(b.snippets) ? b.snippets : []; b.snippets.splice(Math.min(e.where?.index ?? 0, b.snippets.length), 0, it); app.markDirty(); return true;
+    case 'todo': b.todos = Array.isArray(b.todos) ? b.todos : []; b.todos.push(it); app.markDirty(); return true;
+    case 'character': {
+      b.characters = Array.isArray(b.characters) ? b.characters : [];
+      b.characters.splice(Math.min(e.where?.index ?? b.characters.length, b.characters.length), 0, it);
+      for (const card of b.plot?.cards || []) if ((e.where?.cards || []).includes(card.id)) card.chars = [...new Set([...(card.chars || []), it.id])];
+      app.markDirty();
+      return true;
+    }
+    case 'card': {
+      if (!b.plot) { toast('The plot board isn’t set up', 'warn'); return false; }
+      const line = b.plot.lines?.some((l) => l.id === it.line) ? it.line : b.plot.lines?.[0]?.id;
+      const col = b.plot.columns?.some((c) => c.id === it.col) ? it.col : b.plot.columns?.[0]?.id;
+      b.plot.cards.push({ ...it, line, col });
+      app.markDirty();
+      return true;
+    }
+    default: return false;
+  }
+}
+
+/* ---- snippets: insert into any chapter or scene */
+function snippetTargets() {
+  flushSerialize();
+  const out = [];
+  const cur = currentScene()?.id || (currentSection() && !SECTION_TYPES[currentSection().type]?.generated && !hasScenes(currentSection()) ? currentSection().id : null);
+  for (const s of numberSections(app.book.sections, templateById(app.book.template), app.book)) {
+    if (SECTION_TYPES[s.type]?.generated) continue;
+    const label = s.type === 'chapter' ? (s.displayTitle ? `${s.label ? `${s.label}: ` : ''}${s.displayTitle}` : s.label || 'Chapter') : (s.tocTitle || s.displayTitle);
+    if (hasScenes(s)) {
+      out.push({ id: null, label, depth: 0, group: true });
+      s.scenes.forEach((sc, i) => out.push({ id: sc.id, label: sceneLabel(sc, i), depth: 1, current: sc.id === cur }));
+    } else out.push({ id: s.id, label, depth: 0, current: s.id === cur });
+  }
+  return out.filter((t) => t.id);
+}
+function insertSnippetInto(snip, id, atEnd = false) {
+  if (!id) return false;
+  if (id === app.currentId && !atEnd && !els.editorMount.hidden) return app.editor.insertMarkdown(snip.text);
+  flushSerialize();
+  const prev = (app.contents[id] || '').replace(/\s+$/, '');
+  app.contents[id] = `${prev}${prev ? '\n\n' : ''}${snip.text.trim()}\n`;
+  app.dirtyFiles.add(id);
+  app.editor.forget?.(id);
+  if (id === app.currentId) selectSection(id);
+  app.markDirty();
+  refreshSidebar();
+  schedulePreview(false, true);
+  return true;
+}
+function openSnippetsSheet() {
+  openSnippets(app, sheet, { targets: snippetTargets, insert: insertSnippetInto }, refreshSidebar);
 }
 
 function researchMenu(anchor, r) {
@@ -1551,7 +1757,9 @@ async function importResearch() {
 }
 
 async function deleteResearch(r) {
-  if (!(await confirmDialog(`Delete “${r.title}”?`, isTextItem(r) ? 'The note will be moved to the book’s .trash folder.' : 'It will be removed from Research. The file stays in the book’s research folder.'))) return;
+  if (!(await confirmDialog(`Delete “${r.title}”?`, isTextItem(r) ? 'It moves to the Recycle Bin, where you can restore it.' : 'It moves to the Recycle Bin, where you can restore it. The file itself stays in the book’s research folder.'))) return;
+  flushSerialize();
+  toBin(app.book, { kind: 'research', title: r.title, item: r, texts: isTextItem(r) ? { [r.id]: app.contents[r.id] || '' } : {}, where: { index: app.book.research.indexOf(r) } });
   app.book.research = app.book.research.filter((x) => x !== r);
   if (isTextItem(r)) { app.removedNotes.push(r.id); app.dirtyNotes.delete(r.id); delete app.contents[r.id]; app.editor.forget(r.id); }
   if (app.pinnedId === r.id) app.pinnedId = null;
@@ -1732,6 +1940,16 @@ function flushSerialize() {
 }
 const flushSerializeSoon = debounce(() => { flushSerialize(); }, 400);
 
+const TEMPLATE_EXAMPLE = [
+  'Morning came slowly to the valley, spilling over the ridge like honey from a tipped jar. Mara had been awake for an hour already, listening to the house settle and the kettle tick as it cooled.',
+  'She packed the lantern anyway. Her grandmother had said it would be needed, and her grandmother had never once been wrong about weather, or roads, or people.',
+  '“You’ll want the long coat,” the old woman said from her chair by the stove. “The pass keeps its own seasons.”',
+  'Mara took the coat. She did not argue; there was no point arguing with someone who had already decided how a story ended.',
+  '* * *',
+  'By noon the road had narrowed to a path, and the path to a suggestion. The heather closed in on either side, and the wind came down off the high ground carrying the smell of rain that had not yet decided to fall.',
+  'She walked until the light went copper, then gold, then grey, and when at last she stopped to rest she found that the valley had vanished behind her, as if it had never been there at all.',
+].join('\n\n');
+
 /** Render section HTML (cached per section + context). */
 app.renderSectionHtml = (sec, extra = {}) => {
   const key = JSON.stringify([app.book.notesPlacement, extra.tocPages || null, extra.indexPages || null, sec.label, sec.displayTitle, sec.tocTitle]);
@@ -1761,7 +1979,10 @@ function schedulePreview(fromEditor = false, jump = false) {
 }
 app.refreshPreview = (full = false) => { if (full) fullPrint = true; app.htmlCache.clear(); app.editor?.refreshCitations(); if (app.view === 'research') drawResearchView(); schedulePreview(false, true); };
 app.refreshPreviewSoon = debounce(() => app.refreshPreview(), 250);
-app.refreshAll = () => { app.htmlCache.clear(); refreshSidebar(); app.device.build(); fullPrint = true; schedulePreview(false, true); };
+app.refreshAll = () => {
+  app.htmlCache.clear(); refreshSidebar(); app.device.build(); fullPrint = true; schedulePreview(false, true);
+  for (const el of document.querySelectorAll('.ts-strip')) el.draw?.();
+};
 
 function renderPreview() {
   if (!app.book) return;
@@ -1794,6 +2015,13 @@ function renderPreview() {
   els.printHost.classList.toggle('excluded', excluded);
 
   if (app.view === 'research') { drawResearchView(); return; }
+  if (app.view === 'device' && app.tplExample) {
+    // Browsing templates: the device shows example text in each design (unless Live is on).
+    const ex = numberSections([{ id: '__example', type: 'chapter', title: 'The Lantern Road' }], tpl, app.book)[0];
+    const html = renderSection(ex, { book: app.book, contents: { __example: TEMPLATE_EXAMPLE }, assetUrl, sections: [ex] }).html;
+    app.device.render({ html, sectionTitle: ex.tocTitle, bookTitle: app.book.title || 'The Lantern Road', before: 0, chars: 1, total: 1, special: null, sectionIndex: 0, sectionCount: 1, goTo: 'start' }, null);
+    return;
+  }
   if (app.view === 'device') {
     let before = 0, total = 0, chars = 0;
     for (const s of sections) {
@@ -1813,11 +2041,27 @@ function renderPreview() {
   }
 }
 
+/** Template browsing: example text by default; Live (a saved choice) shows your own book. */
+app.templateLive = () => { try { return localStorage.getItem('lutefisk.tplLive') === '1'; } catch { return false; } };
+app.setTemplateLive = (on) => {
+  try { localStorage.setItem('lutefisk.tplLive', on ? '1' : '0'); } catch { /* ignore */ }
+  if (app.tplBrowsing) app.setTemplateBrowsing(true);
+};
+app.setTemplateBrowsing = (on) => {
+  app.tplBrowsing = on;
+  const ex = on && !app.templateLive();
+  if (ex === !!app.tplExample) return;
+  app.tplExample = ex;
+  schedulePreview(false, !ex);
+};
+
 function setView(v) {
   app.view = v;
   els.viewSeg.setValue(v);
   const row1 = v === 'print' ? app.print?.row1 : v === 'device' ? app.device?.row1 : null;
   els.pvRow1.replaceChildren(...(row1 ? [row1] : []));
+  const zoom = v === 'print' ? app.print?.zoom : v === 'device' ? app.device?.zoom : null;
+  els.pvZoom.replaceChildren(...(zoom ? [zoom] : []));
   els.deviceHost.hidden = v !== 'device';
   els.printHost.hidden = v !== 'print';
   els.researchHost.hidden = v !== 'research';
@@ -1848,7 +2092,13 @@ function updateStatus() {
   const here = countWords(liveText());
   els.status.textContent = `${here.toLocaleString()} words · ${book.toLocaleString()} in book`;
 }
-const updateStatusSoon = debounce(updateStatus, 300);
+// While you type, the counts update a few times a second (not only when you pause).
+let statusTimer = 0, statusLast = 0;
+const updateStatusSoon = () => {
+  const wait = Math.max(0, 200 - (performance.now() - statusLast));
+  clearTimeout(statusTimer);
+  statusTimer = setTimeout(() => { statusLast = performance.now(); updateStatus(); }, wait);
+};
 
 /* ========================================================== persistence */
 
@@ -1915,6 +2165,7 @@ function loadBookData(data) {
   ensureSections(book);
   book.research = Array.isArray(book.research) ? book.research : [];
   setCustomTemplates(book.customTemplates);
+  syncAuthors(book);
   applyGoalReset(book);
   app.book = book;
   app.sessionStart = null;
@@ -1944,6 +2195,8 @@ function loadBookData(data) {
   if (app.dirtyFiles.size) app.markDirty();
   requestAnimationFrame(() => app.editor.focus());
   app.goals.load();
+  for (const el of document.querySelectorAll('.ts-strip')) el.draw?.();
+  resumeTour(app);
 }
 
 /* =============================================================== export */
@@ -1978,6 +2231,8 @@ B.onMenu(async (cmd) => {
     case 'new-book': await showLibrary(); return newBookSheet(await B.library());
     case 'open-book': return openBook();
     case 'library': return showLibrary();
+    case 'help': return openHelp(app);
+    case 'tour': return startTour(app);
     case 'save': if (app.book) { await save(); toast('Saved', 'ok', 1200); } return undefined;
     case 'new-chapter': return app.book && addSection('chapter');
     case 'new-scene': return app.book && newSceneHere();
@@ -2003,11 +2258,10 @@ B.onMenu(async (cmd) => {
     case 'open-history': return app.book && openInsights(app, app.goals, sheet);
     case 'content-search': return app.book && focusSearch();
     case 'find-replace': if (app.book) { focusSearch(); app.search.replace(); } return undefined;
-    case 'toggle-split': return app.book && toggleSplit();
     case 'toggle-comments': return app.book && setCommentsHidden(!commentsHidden_());
     case 'focus-mode': return app.book && toggleWritingFocus();
     case 'open-settings': return openSettings(sheet);
-    case 'backup-book': if (app.book) { await save(); return backupProject(null, { choose: !settings.backupDir }); } return undefined;
+    case 'backup-book': return app.backupBook();
     case 'flush-and-close': await confirmLeave(); try { if (!discardChanges) await save(); if (app.book) { app.goals.measured(true); app.goals.archiveSession(); await app.goals.flush(); } } finally { B.closeReady(); } return undefined;
     default: return undefined;
   }
@@ -2034,4 +2288,5 @@ window.addEventListener('blur', () => { if (app.book) { app.goals.measured(); ap
 
 buildShell();
 installTooltips();
+document.addEventListener('keydown', (e) => { if (e.key === 'F1') { e.preventDefault(); openHelp(app); } });
 loadSettings().finally(() => showLibrary());

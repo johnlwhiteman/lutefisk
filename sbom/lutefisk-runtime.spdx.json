@@ -3,9 +3,9 @@
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
   "name": "lutefisk@1.0.0",
-  "documentNamespace": "http://spdx.org/spdxdocs/lutefisk-1.0.0-c6107697-6ded-4158-81a3-9dbfc16756c1",
+  "documentNamespace": "http://spdx.org/spdxdocs/lutefisk-1.0.0-634d78e1-711c-47d7-ab67-b43301cf247f",
   "creationInfo": {
-    "created": "2026-11-13T19:51:00.825Z",
+    "created": "2026-11-14T01:56:20.613Z",
     "creators": [
       "Tool: npm/cli-10.9.9"
     ]

@@ -5,7 +5,7 @@
 //    main process only through the small, validated API in preload.js.
 //  • A strict Content-Security-Policy is sent with every app page.
 //  • The renderer cannot reach the network: every http(s)/ws request from the
-//    default session is cancelled. Book text never leaves this computer.
+//    default session is canceled. Book text never leaves this computer.
 //  • The only outbound request the app ever makes is when *you* paste a URL
 //    into the bibliography tool; that request goes to that URL only, from an
 //    in-memory session with no cookies, and carries no book data.
@@ -249,7 +249,8 @@ async function writePrefs(p) { await fs.writeFile(prefsFile(), JSON.stringify(p,
 let closeTimer = null;
 
 /* App settings the user controls. Paths are only ever set through a folder chooser. */
-const SETTINGS_DEFAULTS = { autosave: true, autosaveSeconds: 5, rememberLastDir: true, theme: 'system' };
+const SETTINGS_DEFAULTS = { autosave: true, autosaveSeconds: 5, rememberLastDir: true, theme: 'system', skin: 'classic' };
+const SKINS = ['classic', 'paper', 'typewriter', 'linen', 'leather', 'study', 'blueprint', 'midnight', 'fjord', 'forest', 'rose', 'lavender', 'graphite', 'contrast'];
 function cleanSettings(p) {
   const secs = Number(p.autosaveSeconds);
   return {
@@ -260,6 +261,7 @@ function cleanSettings(p) {
     rememberLastDir: p.rememberLastDir !== false,
     lastDir: typeof p.lastDir === 'string' && path.isAbsolute(p.lastDir) ? p.lastDir : '',
     theme: ['system', 'light', 'dark'].includes(p.theme) ? p.theme : 'system',
+    skin: SKINS.includes(p.skin) ? p.skin : 'classic',
   };
 }
 async function uiZoom(dir) {
@@ -287,7 +289,7 @@ function buildMenu() {
         { label: 'Open…', accelerator: 'CmdOrCtrl+O', click: send('open-book') },
         { label: 'Library', accelerator: 'CmdOrCtrl+Shift+L', click: send('library') },
         { label: 'Save', accelerator: 'CmdOrCtrl+S', click: send('save') },
-        { label: 'Back Up This Book…', click: send('backup-book') },
+        { label: 'Back Up Book…', accelerator: 'CmdOrCtrl+Shift+S', click: send('backup-book') },
         ...(mac ? [] : [{ type: 'separator' }, { label: 'Settings…', accelerator: 'Ctrl+,', click: send('open-settings') }]),
         { type: 'separator' },
         { label: 'New Chapter', accelerator: 'CmdOrCtrl+Shift+N', click: send('new-chapter') },
@@ -331,7 +333,6 @@ function buildMenu() {
         { type: 'separator' },
         { label: 'Search Book', accelerator: 'CmdOrCtrl+F', click: send('content-search') },
         { label: 'Find and Replace', accelerator: 'CmdOrCtrl+Shift+H', click: send('find-replace') },
-        { label: 'Split Editor', accelerator: 'CmdOrCtrl+Alt+\\', click: send('toggle-split') },
         { label: 'Show / Hide Comments', accelerator: 'CmdOrCtrl+Alt+C', click: send('toggle-comments') },
         { label: 'Toggle Sidebar', accelerator: MAC ? 'Cmd+Ctrl+S' : 'Ctrl+Shift+B', click: send('toggle-sidebar') },
         { type: 'separator' }, { role: 'togglefullscreen' },
@@ -339,7 +340,7 @@ function buildMenu() {
       ],
     },
     { role: 'windowMenu' },
-    ...(mac ? [] : [{ role: 'help', submenu: [{ role: 'about', label: 'About Lutefisk' }] }]),
+    { role: 'help', submenu: [{ label: 'Lutefisk Help', accelerator: 'F1', click: send('help') }, { label: 'Guided Tour', click: send('tour') }, ...(mac ? [] : [{ type: 'separator' }, { role: 'about', label: 'About Lutefisk' }])] },
   ];
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
@@ -356,7 +357,7 @@ function registerIpc() {
   handle('settings:set', async (patch = {}) => {
     const prefs = await readPrefs();
     // Paths can't be set from the window, only through the choosers below.
-    for (const k of ['autosave', 'autosaveSeconds', 'rememberLastDir', 'theme']) if (k in patch) prefs[k] = patch[k];
+    for (const k of ['autosave', 'autosaveSeconds', 'rememberLastDir', 'theme', 'skin']) if (k in patch) prefs[k] = patch[k];
     if (patch.resetLibraryDir) { delete prefs.libraryDir; customLibrary = ''; }
     if (patch.rememberLastDir === false) delete prefs.lastDir;
     Object.assign(prefs, cleanSettings({ ...SETTINGS_DEFAULTS, ...prefs }));
@@ -385,6 +386,18 @@ function registerIpc() {
     const p = cleanSettings({ ...SETTINGS_DEFAULTS, ...(await readPrefs()) });
     if (p.rememberLastDir && p.lastDir) { try { await fs.access(p.lastDir); return p.lastDir; } catch { /* moved */ } }
     return p.libraryDir || libraryDir();
+  }
+  /** Where picture and research pickers start: the folder you last picked from, else the working folder. */
+  async function pickStartDir() {
+    const prefs = await readPrefs();
+    if (prefs.rememberLastDir !== false && typeof prefs.lastPickDir === 'string') { try { await fs.access(prefs.lastPickDir); return prefs.lastPickDir; } catch { /* moved */ } }
+    return cwdLibrary ? path.dirname(path.dirname(cwdLibrary)) : app.getPath('pictures');
+  }
+  async function rememberPickDir(file) {
+    const prefs = await readPrefs();
+    if (prefs.rememberLastDir === false) return;
+    prefs.lastPickDir = path.dirname(file);
+    await writePrefs(prefs);
   }
   async function rememberDir(dir) {
     const prefs = await readPrefs();
@@ -538,16 +551,20 @@ function registerIpc() {
     await walk('');
     return new Promise((res, rej) => zipAsync(files, (err, data) => (err ? rej(err) : res(data))));
   }
-  handle('library:backup', async ({ dir, choose: chooseIn } = {}) => {
+  /**
+   * Back up a book: a .zip (default) or a full folder copy, saved beside the book
+   * (where: 'beside'), in the backup folder, or in a folder you choose.
+   */
+  handle('library:backup', async ({ dir, choose: chooseIn, where, asFolder = false } = {}) => {
     let choose = chooseIn;
     const target = dir || bookDir;
     if (!target || (target !== bookDir && !(await knownProject(target)))) throw new Error('That project couldn’t be found.');
     const prefs = await readPrefs();
-    let out = cleanSettings(prefs).backupDir;
+    let out = where === 'beside' ? path.dirname(target) : cleanSettings(prefs).backupDir;
     const testOut = !app.isPackaged && process.env.LUTEFISK_TEST_OUT;
     if (testOut) { out = testOut; choose = false; }
-    if (choose || !out) {
-      const res = await dialog.showOpenDialog(win, { title: 'Choose a Folder for the Backup', buttonLabel: 'Back Up Here', defaultPath: out || app.getPath('documents'), properties: ['openDirectory', 'createDirectory'] });
+    if (where !== 'beside' && (choose || !out)) {
+      const res = await dialog.showOpenDialog(win, { title: 'Choose a Folder for the Backup', buttonLabel: 'Back Up Here', defaultPath: out || path.dirname(target), properties: ['openDirectory', 'createDirectory'] });
       if (res.canceled || !res.filePaths[0]) return null;
       out = res.filePaths[0];
       prefs.backupDir = out;
@@ -555,15 +572,27 @@ function registerIpc() {
     }
     const sum = await readSummary(target).catch(() => ({ title: path.basename(target) }));
     const stamp = new Date().toISOString().slice(0, 16).replace('T', ' ').replace(':', '');
-    const name = `${String(sum.title || path.basename(target)).replace(/[\\/:*?"<>|\u0000-\u001f]+/g, '').trim().slice(0, 80) || 'Project'} — backup ${stamp}.zip`;
+    const base = `${String(sum.title || path.basename(target)).replace(/[\\/:*?"<>|\u0000-\u001f]+/g, '').trim().slice(0, 80) || 'Project'} — backup ${stamp}`;
+    if (asFolder) {
+      let copy = path.join(out, base);
+      for (let i = 2; await fs.access(copy).then(() => true, () => false); i++) copy = path.join(out, `${base} (${i})`);
+      if (path.resolve(copy).startsWith(path.resolve(target) + path.sep)) throw new Error('Choose a folder outside the book itself.');
+      await fs.cp(target, copy, { recursive: true, errorOnExist: true, force: false, filter: (src) => !/[\\/]\.trash([\\/]|$)/.test(src.slice(target.length)) });
+      let bytes = 0;
+      const walk = async (d) => { for (const e of await fs.readdir(d, { withFileTypes: true })) { const f = path.join(d, e.name); if (e.isDirectory()) await walk(f); else bytes += (await fs.stat(f)).size; } };
+      await walk(copy);
+      return { file: copy, dir: out, bytes, folder: true };
+    }
     const data = await zipFolder(target);
-    const file = path.join(out, name);
+    const file = path.join(out, `${base}.zip`);
     await fs.writeFile(file, data, { mode: 0o600 });
     return { file, dir: out, bytes: data.length };
   });
   handle('library:revealFile', async (file) => {
     const prefs = cleanSettings(await readPrefs());
-    if (typeof file === 'string' && prefs.backupDir && path.dirname(file) === prefs.backupDir) shell.showItemInFolder(file);
+    if (typeof file !== 'string') return;
+    const okDir = (prefs.backupDir && path.dirname(file) === prefs.backupDir) || (bookDir && path.dirname(file) === path.dirname(bookDir));
+    if (okDir) shell.showItemInFolder(file);
   });
 
   handle('book:new', async ({ book, contents, parent }) => {
@@ -633,10 +662,11 @@ function registerIpc() {
   handle('asset:import', async () => {
     const dir = requireBook();
     const res = await dialog.showOpenDialog(win, {
-      title: 'Choose Image', properties: ['openFile'],
+      title: 'Choose Image', properties: ['openFile'], defaultPath: await pickStartDir(),
       filters: [{ name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'] }],
     });
     if (res.canceled || !res.filePaths[0]) return null;
+    await rememberPickDir(res.filePaths[0]);
     return importAsset(dir, res.filePaths[0]);
   });
 
@@ -662,13 +692,14 @@ function registerIpc() {
   handle('research:import', async () => {
     const dir = requireBook();
     const res = await dialog.showOpenDialog(win, {
-      title: 'Add to Research', buttonLabel: 'Add', properties: ['openFile', 'multiSelections'],
+      title: 'Add to Research', buttonLabel: 'Add', properties: ['openFile', 'multiSelections'], defaultPath: await pickStartDir(),
       filters: [
         { name: 'Research files', extensions: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'pdf', 'txt', 'md', 'markdown', 'docx', 'doc', 'rtf', 'odt', 'epub', 'csv', 'xlsx', 'pptx', 'mp3', 'm4a', 'mp4', 'mov'] },
         { name: 'All files', extensions: ['*'] },
       ],
     });
     if (res.canceled) return [];
+    if (res.filePaths[0]) await rememberPickDir(res.filePaths[0]);
     const out = [];
     for (const f of res.filePaths.slice(0, 50)) {
       const ext = path.extname(f).toLowerCase();
@@ -719,6 +750,33 @@ function registerIpc() {
     const name = String(title || '').slice(0, 200);
     await fs.mkdir(path.dirname(globalHistory()), { recursive: true });
     await fs.appendFile(globalHistory(), rows.map((r) => JSON.stringify({ ...r, b: id, n: name })).join('\n') + '\n', { mode: 0o600 });
+  });
+
+  // Reset Insights: forget the writing history of the open book, or of every book.
+  handle('history:reset', async ({ scope, bookId } = {}) => {
+    const rm = (f) => fs.rm(f, { force: true }).catch(() => {});
+    if (scope === 'all') {
+      const dirs = new Set((await getRecent()).map((r) => r.dir));
+      for (const lib of [libraryDir(), defaultLibraryDir(), documentsLibraryDir(), legacyLibraryDir()]) {
+        try { for (const e of await fs.readdir(lib, { withFileTypes: true })) if (e.isDirectory()) dirs.add(path.join(lib, e.name)); } catch { /* none */ }
+      }
+      if (bookDir) dirs.add(bookDir);
+      for (const dir of dirs) if (await isBookDir(dir)) await rm(bookHistory(dir));
+      await rm(globalHistory());
+      return true;
+    }
+    const dir = requireBook();
+    await rm(bookHistory(dir));
+    // Drop this book's lines from the all-books history too.
+    const id = String(bookId || '').slice(0, 64);
+    try {
+      const keep = (await fs.readFile(globalHistory(), 'utf8')).split('\n').filter((line) => {
+        if (!line) return false;
+        try { return JSON.parse(line).b !== id; } catch { return false; }
+      });
+      await fs.writeFile(globalHistory(), keep.length ? `${keep.join('\n')}\n` : '', { mode: 0o600 });
+    } catch { /* no history yet */ }
+    return true;
   });
 
   handle('history:get', async ({ days = 400 } = {}) => {
@@ -813,7 +871,7 @@ function reveal(file) {
 
 async function saveTarget(book, ext, label) {
   const name = String(book?.title || 'Untitled').replace(/[\\/:*?"<>|]+/g, '').slice(0, 80) || 'book';
-  // Automated tests only (never honoured in packaged builds).
+  // Automated tests only (never honored in packaged builds).
   if (!app.isPackaged && process.env.LUTEFISK_TEST_OUT) return path.join(process.env.LUTEFISK_TEST_OUT, `${name}.${ext}`);
   const res = await dialog.showSaveDialog(win, {
     title: `Export ${label}`,

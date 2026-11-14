@@ -31,7 +31,7 @@ export function splitSentences(text) {
     .filter((s) => words(s).length > 0);
 }
 
-/** Analyse one plain-text body (paragraphs separated by blank lines). */
+/** Analyze one plain-text body (paragraphs separated by blank lines). */
 export function analyze(text) {
   const paragraphs = text.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
   const sentences = paragraphs.flatMap(splitSentences);
