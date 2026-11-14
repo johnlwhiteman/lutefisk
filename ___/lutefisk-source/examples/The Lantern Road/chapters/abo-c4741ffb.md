@@ -1,1 +1,0 @@
-Eliza Marrow grew up in a valley much like Mara’s and now lives somewhere with considerably more street lighting. *The Lantern Road* is her first book.

@@ -1,1 +1,0 @@
-Thank you to the early readers who told me, kindly, which chapters were too long; to my editor, who told me, less kindly, which sentences were; and to the night-shift baker on Alder Street, whose window light kept me company through the last draft.
